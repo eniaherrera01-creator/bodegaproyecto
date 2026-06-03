@@ -116,7 +116,7 @@
             Controls.Add(panel2);
             Controls.Add(panel1);
             Controls.Add(button1);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.None;
             Name = "menu";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "menu";

@@ -23,6 +23,8 @@ namespace bodegaproyecto
             InitializeComponent();
         }
 
+      
+
         private string ObtenerServidorSQL()
         {
             string nombrePC = Environment.MachineName;
