@@ -1,0 +1,166 @@
+﻿using Microsoft.Data.SqlClient;
+using System;
+using System.Data;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace bodegaproyecto
+{
+    public partial class Usuarios : Form
+    {
+        private int selectedUserId = -1;
+
+        public Usuarios()
+        {
+            InitializeComponent();
+            CargarUsuarios();
+        }
+
+        private void CargarUsuarios(string filtro = "")
+        {
+            try
+            {
+                using (SqlConnection conn = ConexionBD.ObtenerConexion())
+                {
+                    string query = "SELECT id_usuario, Nombre, usuario, Contraseña, rol FROM Usuario";
+                    if (!string.IsNullOrEmpty(filtro))
+                        query += " WHERE Nombre LIKE @filtro OR usuario LIKE @filtro OR rol LIKE @filtro";
+
+                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                    if (!string.IsNullOrEmpty(filtro))
+                        da.SelectCommand.Parameters.AddWithValue("@filtro", "%" + filtro + "%");
+
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    dgvUsuarios.DataSource = dt;
+
+                    dgvUsuarios.Columns["id_usuario"].HeaderText = "ID";
+                    dgvUsuarios.Columns["Nombre"].HeaderText = "Nombre Completo";
+                    dgvUsuarios.Columns["usuario"].HeaderText = "Usuario";
+                    dgvUsuarios.Columns["Contraseña"].HeaderText = "Contraseña";
+                    dgvUsuarios.Columns["rol"].HeaderText = "Rol";
+
+                    lblTotal.Text = "Total usuarios: " + dt.Rows.Count;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar usuarios: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LimpiarFormulario()
+        {
+            txtIDUsuario.Text = "(Automático)";
+            txtNombre.Clear();
+            txtUsuario.Clear();
+            txtContrasena.Clear();
+            cmbRol.SelectedIndex = -1;
+            selectedUserId = -1;
+        }
+
+        private void btnNuevo_Click(object sender, EventArgs e)
+        {
+            LimpiarFormulario();
+            txtNombre.Focus();
+        }
+
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtNombre.Text) ||
+                string.IsNullOrWhiteSpace(txtUsuario.Text) ||
+                string.IsNullOrWhiteSpace(txtContrasena.Text) ||
+                cmbRol.SelectedIndex == -1)
+            {
+                MessageBox.Show("Por favor complete todos los campos.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            try
+            {
+                using (SqlConnection conn = ConexionBD.ObtenerConexion())
+                {
+                    string query;
+                    if (selectedUserId == -1)
+                        query = "INSERT INTO Usuario (Nombre, usuario, Contraseña, rol) VALUES (@nombre, @usuario, @contrasena, @rol)";
+                    else
+                        query = "UPDATE Usuario SET Nombre=@nombre, usuario=@usuario, Contraseña=@contrasena, rol=@rol WHERE id_usuario=@id";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@nombre", txtNombre.Text.Trim());
+                    cmd.Parameters.AddWithValue("@usuario", txtUsuario.Text.Trim());
+                    cmd.Parameters.AddWithValue("@contrasena", txtContrasena.Text.Trim());
+                    cmd.Parameters.AddWithValue("@rol", cmbRol.SelectedItem.ToString());
+                    if (selectedUserId != -1)
+                        cmd.Parameters.AddWithValue("@id", selectedUserId);
+
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show(selectedUserId == -1 ? "✅ Usuario agregado." : "✅ Usuario actualizado.",
+                        "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LimpiarFormulario();
+                    CargarUsuarios();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al guardar: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            if (dgvUsuarios.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Seleccione un usuario para editar.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            DataGridViewRow row = dgvUsuarios.SelectedRows[0];
+            selectedUserId = Convert.ToInt32(row.Cells["id_usuario"].Value);
+            txtIDUsuario.Text = selectedUserId.ToString();
+            txtNombre.Text = row.Cells["Nombre"].Value.ToString();
+            txtUsuario.Text = row.Cells["usuario"].Value.ToString();
+            txtContrasena.Text = row.Cells["Contraseña"].Value.ToString();
+            cmbRol.SelectedItem = row.Cells["rol"].Value.ToString();
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            if (dgvUsuarios.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Seleccione un usuario para eliminar.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (MessageBox.Show("¿Eliminar este usuario?", "Confirmar",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                try
+                {
+                    int id = Convert.ToInt32(dgvUsuarios.SelectedRows[0].Cells["id_usuario"].Value);
+                    using (SqlConnection conn = ConexionBD.ObtenerConexion())
+                    {
+                        SqlCommand cmd = new SqlCommand("DELETE FROM Usuario WHERE id_usuario=@id", conn);
+                        cmd.Parameters.AddWithValue("@id", id);
+                        cmd.ExecuteNonQuery();
+                    }
+                    MessageBox.Show("✅ Usuario eliminado.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LimpiarFormulario();
+                    CargarUsuarios();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al eliminar: " + ex.Message, "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btnActualizar_Click(object sender, EventArgs e) { CargarUsuarios(); LimpiarFormulario(); }
+        private void btnCancelar_Click(object sender, EventArgs e) { LimpiarFormulario(); }
+        private void txtBuscar_TextChanged(object sender, EventArgs e) { CargarUsuarios(txtBuscar.Text); }
+        private void dgvUsuarios_SelectionChanged(object sender, EventArgs e) { }
+    }
+}
