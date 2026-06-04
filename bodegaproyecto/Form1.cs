@@ -23,7 +23,7 @@ namespace bodegaproyecto
             InitializeComponent();
         }
 
-      
+
 
         private string ObtenerServidorSQL()
         {
@@ -394,6 +394,11 @@ VALUES
         private void button1_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void lblTituloForm_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
