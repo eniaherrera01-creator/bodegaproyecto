@@ -28,8 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
+            btncerrar = new Button();
             panel1 = new Panel();
+            btnminimizar = new Button();
+            btnmaximizar = new Button();
             panel2 = new Panel();
             menuadmin = new Panel();
             btnusuarios = new Button();
@@ -40,25 +42,51 @@
             menuadmin.SuspendLayout();
             SuspendLayout();
             // 
-            // button1
+            // btncerrar
             // 
-            button1.Location = new Point(1096, 12);
-            button1.Name = "button1";
-            button1.Size = new Size(242, 87);
-            button1.TabIndex = 0;
-            button1.Text = "cerrar";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            btncerrar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btncerrar.FlatAppearance.BorderSize = 0;
+            btncerrar.FlatStyle = FlatStyle.Flat;
+            btncerrar.Location = new Point(1357, 12);
+            btncerrar.Name = "btncerrar";
+            btncerrar.Size = new Size(81, 51);
+            btncerrar.TabIndex = 0;
+            btncerrar.UseVisualStyleBackColor = true;
+            btncerrar.Click += button1_Click;
             // 
             // panel1
             // 
             panel1.BackColor = Color.Navy;
-            panel1.Controls.Add(button1);
+            panel1.Controls.Add(btnminimizar);
+            panel1.Controls.Add(btnmaximizar);
+            panel1.Controls.Add(btncerrar);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(1450, 83);
             panel1.TabIndex = 1;
+            // 
+            // btnminimizar
+            // 
+            btnminimizar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnminimizar.FlatAppearance.BorderSize = 0;
+            btnminimizar.FlatStyle = FlatStyle.Flat;
+            btnminimizar.Location = new Point(1183, 12);
+            btnminimizar.Name = "btnminimizar";
+            btnminimizar.Size = new Size(81, 51);
+            btnminimizar.TabIndex = 2;
+            btnminimizar.UseVisualStyleBackColor = true;
+            // 
+            // btnmaximizar
+            // 
+            btnmaximizar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnmaximizar.FlatAppearance.BorderSize = 0;
+            btnmaximizar.FlatStyle = FlatStyle.Flat;
+            btnmaximizar.Location = new Point(1270, 12);
+            btnmaximizar.Name = "btnmaximizar";
+            btnmaximizar.Size = new Size(81, 51);
+            btnmaximizar.TabIndex = 1;
+            btnmaximizar.UseVisualStyleBackColor = true;
             // 
             // panel2
             // 
@@ -141,12 +169,14 @@
 
         #endregion
 
-        private Button button1;
+        private Button btncerrar;
         private Panel panel1;
         private Panel panel2;
         private Button btnusuario;
         private Panel menuadmin;
         private Button btnusuarios;
         private Panel panelcontenedor;
+        private Button btnminimizar;
+        private Button btnmaximizar;
     }
 }

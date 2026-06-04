@@ -18,6 +18,21 @@ namespace bodegaproyecto
 
         private void menu_Load(object sender, EventArgs e)
         {
+            btncerrar.Text = "✕";
+            btnmaximizar.Text = "☐";
+            btnminimizar.Text = "─";
+
+            btncerrar.ForeColor = Color.White;
+            btnmaximizar.ForeColor = Color.White;
+            btnminimizar.ForeColor = Color.White;
+
+            btncerrar.FlatStyle = FlatStyle.Flat;
+            btnmaximizar.FlatStyle = FlatStyle.Flat;
+            btnminimizar.FlatStyle = FlatStyle.Flat;
+
+            btncerrar.FlatAppearance.BorderSize = 0;
+            btnmaximizar.FlatAppearance.BorderSize = 0;
+            btnminimizar.FlatAppearance.BorderSize = 0;
 
         }
 
