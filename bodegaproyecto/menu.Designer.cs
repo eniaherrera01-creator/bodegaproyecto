@@ -34,13 +34,15 @@
             menuadmin = new Panel();
             btnusuarios = new Button();
             btnusuario = new Button();
+            panelcontenedor = new Panel();
+            panel1.SuspendLayout();
             panel2.SuspendLayout();
             menuadmin.SuspendLayout();
             SuspendLayout();
             // 
             // button1
             // 
-            button1.Location = new Point(420, 117);
+            button1.Location = new Point(1096, 12);
             button1.Name = "button1";
             button1.Size = new Size(242, 87);
             button1.TabIndex = 0;
@@ -51,6 +53,7 @@
             // panel1
             // 
             panel1.BackColor = Color.Navy;
+            panel1.Controls.Add(button1);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
@@ -108,19 +111,29 @@
             btnusuario.UseVisualStyleBackColor = true;
             btnusuario.Click += btnusuario_Click;
             // 
+            // panelcontenedor
+            // 
+            panelcontenedor.Dock = DockStyle.Fill;
+            panelcontenedor.Location = new Point(183, 83);
+            panelcontenedor.Name = "panelcontenedor";
+            panelcontenedor.Size = new Size(1267, 690);
+            panelcontenedor.TabIndex = 3;
+            // 
             // menu
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1450, 773);
+            Controls.Add(panelcontenedor);
             Controls.Add(panel2);
             Controls.Add(panel1);
-            Controls.Add(button1);
             FormBorderStyle = FormBorderStyle.None;
             Name = "menu";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "menu";
+            WindowState = FormWindowState.Maximized;
             Load += menu_Load;
+            panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
             menuadmin.ResumeLayout(false);
             ResumeLayout(false);
@@ -134,5 +147,6 @@
         private Button btnusuario;
         private Panel menuadmin;
         private Button btnusuarios;
+        private Panel panelcontenedor;
     }
 }

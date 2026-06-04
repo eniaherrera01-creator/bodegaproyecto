@@ -39,6 +39,23 @@ namespace bodegaproyecto
         private void button2_Click(object sender, EventArgs e)
         {
             menuadmin.Visible = false;
+            AbrirFormulario(new Usuarios());
         }
+
+        private void AbrirFormulario(Form formulario)
+        {
+            panelcontenedor.Controls.Clear();
+
+            formulario.TopLevel = false;
+            formulario.FormBorderStyle = FormBorderStyle.None;
+            formulario.Dock = DockStyle.Fill;
+
+            panelcontenedor.Controls.Add(formulario);
+            panelcontenedor.Tag = formulario;
+            formulario.Show();
+        }
+
+
+
     }
 }
