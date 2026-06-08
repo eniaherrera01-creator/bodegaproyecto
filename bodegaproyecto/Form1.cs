@@ -365,23 +365,25 @@ VALUES
             {
                 using (SqlConnection con = ConexionBD.ObtenerConexion())
                 {
-                    string query = "SELECT COUNT(*) FROM Usuario WHERE usuario = @usuario AND Contraseña = @clave";
+                    string query = "SELECT rol FROM Usuario WHERE usuario=@usuario AND Contraseña=@clave";
+
                     SqlCommand cmd = new SqlCommand(query, con);
                     cmd.Parameters.AddWithValue("@usuario", nombre);
                     cmd.Parameters.AddWithValue("@clave", contra);
 
-                    int count = Convert.ToInt32(cmd.ExecuteScalar());
+                    object resultado = cmd.ExecuteScalar();
 
-                    if (count > 0)
+                    if (resultado != null)
                     {
-                        MessageBox.Show("Inicio de sesión exitoso.", "Bienvenido", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        menu frmMenu = new menu();
-                        frmMenu.Show();
+                        menu.RolUsuario = resultado.ToString();
+
+                        menu frm = new menu();
+                        frm.Show();
                         this.Hide();
                     }
                     else
                     {
-                        MessageBox.Show("Usuario o contraseña incorrectos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Usuario o contraseña incorrectos");
                     }
                 }
             }

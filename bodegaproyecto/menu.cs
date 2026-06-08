@@ -11,10 +11,14 @@ namespace bodegaproyecto
 {
     public partial class menu : Form
     {
+
+        public static string RolUsuario = "";
+
         public menu()
         {
             InitializeComponent();
         }
+
 
         private void menu_Load(object sender, EventArgs e)
         {
@@ -34,6 +38,12 @@ namespace bodegaproyecto
             btnmaximizar.FlatAppearance.BorderSize = 0;
             btnminimizar.FlatAppearance.BorderSize = 0;
 
+
+            ///Unicamente sera visible para el adminsitrador, el boton de administracion, para que los usuarios normales no puedan acceder a esa seccion.
+            if (RolUsuario != "Administrador")
+            {
+                btnusuario.Visible = false;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
