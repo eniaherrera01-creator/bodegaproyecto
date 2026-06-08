@@ -5,6 +5,8 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using System.Security.Cryptography; // HASH
+using System.Text; // HASH
 
 namespace bodegaproyecto
 {
@@ -354,7 +356,7 @@ VALUES
         private void btningresar_Click(object sender, EventArgs e)
         {
             string nombre = txtusuario.Text.Trim();
-            string contra = txtcontra.Text.Trim();
+            string contra = CalcularSHA256(txtcontra.Text.Trim()); // HASH
 
             if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(contra))
             {
@@ -402,6 +404,25 @@ VALUES
         private void lblTituloForm_Click(object sender, EventArgs e)
         {
 
+        }
+
+
+        // PARTE DEL HASH
+        private string CalcularSHA256(string texto)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(texto));
+
+                StringBuilder builder = new StringBuilder();
+
+                foreach (byte b in bytes)
+                {
+                    builder.Append(b.ToString("x2"));
+                }
+
+                return builder.ToString();
+            }
         }
     }
 }

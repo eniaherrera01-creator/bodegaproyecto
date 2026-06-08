@@ -3,6 +3,8 @@ using System;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Security.Cryptography; // HASH
+using System.Text; // HASH
 
 namespace bodegaproyecto
 {
@@ -102,7 +104,7 @@ namespace bodegaproyecto
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@nombre", txtNombre.Text.Trim());
                     cmd.Parameters.AddWithValue("@usuario", txtUsuario.Text.Trim());
-                    cmd.Parameters.AddWithValue("@contrasena", txtContrasena.Text.Trim());
+                    cmd.Parameters.AddWithValue("@contrasena", CalcularSHA256(txtContrasena.Text.Trim())); // HASH
                     cmd.Parameters.AddWithValue("@rol", cmbRol.SelectedItem.ToString());
                     if (selectedUserId != -1)
                         cmd.Parameters.AddWithValue("@id", selectedUserId);
@@ -169,6 +171,23 @@ namespace bodegaproyecto
 
             MessageBox.Show("Estado actualizado correctamente.");
             CargarUsuarios();
+        }
+
+        // PARTE DEL HASH
+        private string CalcularSHA256(string texto)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(texto));
+
+                StringBuilder builder = new StringBuilder();
+                foreach (byte b in bytes)
+                {
+                    builder.Append(b.ToString("x2"));
+                }
+
+                return builder.ToString();
+            }
         }
 
         private void btnActualizar_Click(object sender, EventArgs e) { CargarUsuarios(); LimpiarFormulario(); }
