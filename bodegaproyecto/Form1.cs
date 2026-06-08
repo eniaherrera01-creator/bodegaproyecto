@@ -187,7 +187,6 @@ namespace bodegaproyecto
                     string script = @"
 
 
-
 CREATE TABLE Usuario (
     id_usuario INT IDENTITY(1,1) PRIMARY KEY,
     Nombre VARCHAR(100) NOT NULL,
@@ -268,12 +267,29 @@ CREATE TABLE Detalle_Venta (
 
 INSERT INTO Usuario (Nombre, usuario, Contraseña, rol, Estado)
 VALUES
-('Juan Perez', 'jperez', '1234', 'Administrador', 1),
-('Maria Lopez', 'mlopez', '1234', 'Cajero', 1),
-('Carlos Ramos', 'cramos', '1234', 'Supervisor', 1),
-('Ana Torres', 'atorres', '1234', 'Vendedor', 1),
-('Luis Mejia', 'lmejia', '1234', 'Bodega', 1),
-('Fernanda Herrera', 'fherrera', '12345', 'Administrador', 1);
+('Juan Perez', 'jperez',
+ CONVERT(VARCHAR(64), HASHBYTES('SHA2_256','1234'),2),
+ 'Administrador', 1),
+
+('Maria Lopez', 'mlopez',
+ CONVERT(VARCHAR(64), HASHBYTES('SHA2_256','1234'),2),
+ 'Cajero', 1),
+
+('Carlos Ramos', 'cramos',
+ CONVERT(VARCHAR(64), HASHBYTES('SHA2_256','1234'),2),
+ 'Supervisor', 1),
+
+('Ana Torres', 'atorres',
+ CONVERT(VARCHAR(64), HASHBYTES('SHA2_256','1234'),2),
+ 'Vendedor', 1),
+
+('Luis Mejia', 'lmejia',
+ CONVERT(VARCHAR(64), HASHBYTES('SHA2_256','1234'),2),
+ 'Bodega', 1),
+
+('Fernanda Herrera', 'fherrera',
+ CONVERT(VARCHAR(64), HASHBYTES('SHA2_256','12345'),2),
+ 'Administrador', 1);
 
 INSERT INTO Categoria (Nombre_Categoria,Descripcion)
 VALUES
@@ -300,6 +316,8 @@ VALUES
 ('Cloro','Producto de limpieza',35,50,40,NULL,4),
 ('Pan Integral','Pan saludable',28,40,30,'2026-08-10',5);
 ";
+
+// Cambio en el insert de la base de datos
 
                     SqlCommand cmd = new SqlCommand(script, con);
                     cmd.ExecuteNonQuery();
