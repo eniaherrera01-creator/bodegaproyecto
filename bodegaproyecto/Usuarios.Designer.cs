@@ -24,7 +24,7 @@
         private System.Windows.Forms.Label lblTituloLista;
         private System.Windows.Forms.Button btnNuevo;
         private System.Windows.Forms.Button btnEditar;
-        private System.Windows.Forms.Button btnEliminar;
+        private System.Windows.Forms.Button btnEstado;
         private System.Windows.Forms.Button btnActualizar;
         private System.Windows.Forms.TextBox txtBuscar;
         private System.Windows.Forms.DataGridView dgvUsuarios;
@@ -61,7 +61,7 @@
             lblTituloLista = new Label();
             btnNuevo = new Button();
             btnEditar = new Button();
-            btnEliminar = new Button();
+            btnEstado = new Button();
             btnActualizar = new Button();
             txtBuscar = new TextBox();
             dgvUsuarios = new DataGridView();
@@ -256,7 +256,7 @@
             pnlDerecho.Controls.Add(lblTituloLista);
             pnlDerecho.Controls.Add(btnNuevo);
             pnlDerecho.Controls.Add(btnEditar);
-            pnlDerecho.Controls.Add(btnEliminar);
+            pnlDerecho.Controls.Add(btnEstado);
             pnlDerecho.Controls.Add(btnActualizar);
             pnlDerecho.Controls.Add(txtBuscar);
             pnlDerecho.Controls.Add(dgvUsuarios);
@@ -308,20 +308,20 @@
             btnEditar.UseVisualStyleBackColor = false;
             btnEditar.Click += btnEditar_Click;
             // 
-            // btnEliminar
+            // btnEstado
             // 
-            btnEliminar.BackColor = Color.White;
-            btnEliminar.Cursor = Cursors.Hand;
-            btnEliminar.FlatAppearance.BorderColor = Color.FromArgb(200, 40, 40);
-            btnEliminar.FlatStyle = FlatStyle.Flat;
-            btnEliminar.ForeColor = Color.FromArgb(200, 40, 40);
-            btnEliminar.Location = new Point(225, 50);
-            btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(105, 34);
-            btnEliminar.TabIndex = 3;
-            btnEliminar.Text = "🗑 Eliminar";
-            btnEliminar.UseVisualStyleBackColor = false;
-            btnEliminar.Click += btnEliminar_Click;
+            btnEstado.BackColor = Color.White;
+            btnEstado.Cursor = Cursors.Hand;
+            btnEstado.FlatAppearance.BorderColor = Color.FromArgb(200, 40, 40);
+            btnEstado.FlatStyle = FlatStyle.Flat;
+            btnEstado.ForeColor = Color.Green;
+            btnEstado.Location = new Point(225, 50);
+            btnEstado.Name = "btnEstado";
+            btnEstado.Size = new Size(105, 34);
+            btnEstado.TabIndex = 3;
+            btnEstado.Text = "👤 Estado";
+            btnEstado.UseVisualStyleBackColor = false;
+            btnEstado.Click += btnEliminar_Click;
             // 
             // btnActualizar
             // 
@@ -380,6 +380,7 @@
             dgvUsuarios.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvUsuarios.Size = new Size(785, 465);
             dgvUsuarios.TabIndex = 6;
+            dgvUsuarios.CellContentClick += dgvUsuarios_CellContentClick;
             dgvUsuarios.SelectionChanged += dgvUsuarios_SelectionChanged;
             // 
             // lblTotal

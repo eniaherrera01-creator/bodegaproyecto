@@ -22,7 +22,18 @@ namespace bodegaproyecto
             {
                 using (SqlConnection conn = ConexionBD.ObtenerConexion())
                 {
-                    string query = "SELECT id_usuario, Nombre, usuario, Contraseña, rol FROM Usuario";
+                    string query = @"SELECT
+                    id_usuario,
+                    Nombre,
+                    usuario,
+                    Contraseña,
+                    rol,
+                    CASE
+                        WHEN Estado = 1 THEN 'Activo'
+                        ELSE 'Inactivo'
+                    END AS Estado
+                 FROM Usuario";
+
                     if (!string.IsNullOrEmpty(filtro))
                         query += " WHERE Nombre LIKE @filtro OR usuario LIKE @filtro OR rol LIKE @filtro";
 
@@ -39,6 +50,7 @@ namespace bodegaproyecto
                     dgvUsuarios.Columns["usuario"].HeaderText = "Usuario";
                     dgvUsuarios.Columns["Contraseña"].HeaderText = "Contraseña";
                     dgvUsuarios.Columns["rol"].HeaderText = "Rol";
+                    dgvUsuarios.Columns["Estado"].HeaderText = "Estado";
 
                     lblTotal.Text = "Total usuarios: " + dt.Rows.Count;
                 }
@@ -130,37 +142,58 @@ namespace bodegaproyecto
         {
             if (dgvUsuarios.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Seleccione un usuario para eliminar.", "Aviso",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Seleccione un usuario.");
                 return;
             }
-            if (MessageBox.Show("¿Eliminar este usuario?", "Confirmar",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+
+            int idUsuario = Convert.ToInt32(
+                dgvUsuarios.SelectedRows[0].Cells["id_usuario"].Value);
+
+            string estadoActual = dgvUsuarios.SelectedRows[0]
+                .Cells["Estado"].Value.ToString();
+
+            int nuevoEstado = estadoActual == "Activo" ? 0 : 1;
+
+            using (SqlConnection con = ConexionBD.ObtenerConexion())
             {
-                try
-                {
-                    int id = Convert.ToInt32(dgvUsuarios.SelectedRows[0].Cells["id_usuario"].Value);
-                    using (SqlConnection conn = ConexionBD.ObtenerConexion())
-                    {
-                        SqlCommand cmd = new SqlCommand("DELETE FROM Usuario WHERE id_usuario=@id", conn);
-                        cmd.Parameters.AddWithValue("@id", id);
-                        cmd.ExecuteNonQuery();
-                    }
-                    MessageBox.Show("✅ Usuario eliminado.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LimpiarFormulario();
-                    CargarUsuarios();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al eliminar: " + ex.Message, "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                string sql = @"UPDATE Usuario
+                       SET Estado = @Estado
+                       WHERE id_usuario = @id";
+
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@Estado", nuevoEstado);
+                cmd.Parameters.AddWithValue("@id", idUsuario);
+
+                cmd.ExecuteNonQuery();
             }
+
+            MessageBox.Show("Estado actualizado correctamente.");
+            CargarUsuarios();
         }
 
         private void btnActualizar_Click(object sender, EventArgs e) { CargarUsuarios(); LimpiarFormulario(); }
         private void btnCancelar_Click(object sender, EventArgs e) { LimpiarFormulario(); }
         private void txtBuscar_TextChanged(object sender, EventArgs e) { CargarUsuarios(txtBuscar.Text); }
         private void dgvUsuarios_SelectionChanged(object sender, EventArgs e) { }
+
+        private void dgvUsuarios_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                string estado = dgvUsuarios.Rows[e.RowIndex]
+                    .Cells["Estado"].Value.ToString().Trim();
+
+                MessageBox.Show("Estado: " + estado);
+
+                if (estado == "Activo")
+                {
+                    btnEstado.Text = "Inhabilitar";
+                }
+                else
+                {
+                    btnEstado.Text = "Habilitar";
+                }
+            }
+        }
     }
 }

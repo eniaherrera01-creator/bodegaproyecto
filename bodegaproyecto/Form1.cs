@@ -184,16 +184,16 @@ namespace bodegaproyecto
                     //Todas con claves primarias y foráneas correctamente definidas.
                     string script = @"
 
-CREATE DATABASE Sistema_Bodega;
 
-USE Sistema_Bodega;
 
 CREATE TABLE Usuario (
     id_usuario INT IDENTITY(1,1) PRIMARY KEY,
     Nombre VARCHAR(100) NOT NULL,
     usuario VARCHAR(50) NOT NULL UNIQUE,
     Contraseña VARCHAR(100) NOT NULL,
-    rol VARCHAR(50) NOT NULL
+    rol VARCHAR(50) NOT NULL,
+    Estado BIT NOT NULL DEFAULT 1,
+
 );
 
 CREATE TABLE Categoria (
@@ -264,13 +264,14 @@ CREATE TABLE Detalle_Venta (
     REFERENCES Producto(id_producto)
 );
 
-INSERT INTO Usuario (Nombre, usuario, Contraseña, rol)
+INSERT INTO Usuario (Nombre, usuario, Contraseña, rol, Estado)
 VALUES
-('Juan Perez','jperez','1234','Administrador'),
-('Maria Lopez','mlopez','1234','Cajero'),
-('Carlos Ramos','cramos','1234','Supervisor'),
-('Ana Torres','atorres','1234','Vendedor'),
-('Luis Mejia','lmejia','1234','Bodega');
+('Juan Perez', 'jperez', '1234', 'Administrador', 1),
+('Maria Lopez', 'mlopez', '1234', 'Cajero', 1),
+('Carlos Ramos', 'cramos', '1234', 'Supervisor', 1),
+('Ana Torres', 'atorres', '1234', 'Vendedor', 1),
+('Luis Mejia', 'lmejia', '1234', 'Bodega', 1),
+('Fernanda Herrera', 'fherrera', '12345', 'Administrador', 1);
 
 INSERT INTO Categoria (Nombre_Categoria,Descripcion)
 VALUES

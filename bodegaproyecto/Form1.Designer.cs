@@ -57,13 +57,14 @@
             txtcontra.Name = "txtcontra";
             txtcontra.Size = new Size(238, 27);
             txtcontra.TabIndex = 4;
+            txtcontra.UseSystemPasswordChar = true;
             // 
             // btningresar
             // 
-            btningresar.BackColor = SystemColors.InactiveCaption;
+            btningresar.BackColor = Color.Transparent;
             btningresar.FlatAppearance.BorderSize = 0;
             btningresar.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
-            btningresar.FlatAppearance.MouseOverBackColor = Color.Cyan;
+            btningresar.FlatAppearance.MouseOverBackColor = Color.Silver;
             btningresar.FlatStyle = FlatStyle.Flat;
             btningresar.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             btningresar.Location = new Point(221, 380);
@@ -76,8 +77,10 @@
             // 
             // button1
             // 
-            button1.BackColor = Color.IndianRed;
+            button1.BackColor = Color.Transparent;
             button1.BackgroundImageLayout = ImageLayout.Center;
+            button1.FlatAppearance.BorderSize = 0;
+            button1.FlatAppearance.MouseOverBackColor = Color.Silver;
             button1.FlatStyle = FlatStyle.Flat;
             button1.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button1.ForeColor = SystemColors.ControlText;

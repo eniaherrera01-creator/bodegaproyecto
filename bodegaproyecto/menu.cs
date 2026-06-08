@@ -80,7 +80,15 @@ namespace bodegaproyecto
             formulario.Show();
         }
 
+        private void btnmaximizar_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Maximized;
+            btnmaximizar.Visible = false;
+        }
 
-
+        private void btnminimizar_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
     }
 }

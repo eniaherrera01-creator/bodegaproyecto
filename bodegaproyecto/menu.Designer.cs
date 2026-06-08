@@ -76,6 +76,7 @@
             btnminimizar.Size = new Size(81, 51);
             btnminimizar.TabIndex = 2;
             btnminimizar.UseVisualStyleBackColor = true;
+            btnminimizar.Click += btnminimizar_Click;
             // 
             // btnmaximizar
             // 
@@ -87,6 +88,7 @@
             btnmaximizar.Size = new Size(81, 51);
             btnmaximizar.TabIndex = 1;
             btnmaximizar.UseVisualStyleBackColor = true;
+            btnmaximizar.Click += btnmaximizar_Click;
             // 
             // panel2
             // 
