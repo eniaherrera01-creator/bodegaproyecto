@@ -108,24 +108,23 @@
             // 
             // Sesion
             // 
-            Sesion.BackColor = Color.AliceBlue;
             Sesion.Checked = true;
             Sesion.CheckState = CheckState.Checked;
             Sesion.DropDownItems.AddRange(new ToolStripItem[] { CerrarSesion });
             Sesion.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Sesion.ForeColor = SystemColors.ActiveCaptionText;
+            Sesion.ForeColor = Color.White;
             Sesion.Name = "Sesion";
-            Sesion.Size = new Size(96, 35);
-            Sesion.Text = "Sesion";
+            Sesion.Size = new Size(135, 35);
+            Sesion.Text = "🔄 Sesion";
             Sesion.Click += sesionNombreDeUsuarioToolStripMenuItem_Click;
             // 
             // CerrarSesion
             // 
-            CerrarSesion.BackColor = SystemColors.ButtonHighlight;
-            CerrarSesion.ForeColor = SystemColors.ActiveCaptionText;
+            CerrarSesion.BackColor = Color.FromArgb(0, 0, 192);
+            CerrarSesion.ForeColor = Color.White;
             CerrarSesion.Name = "CerrarSesion";
-            CerrarSesion.Size = new Size(241, 36);
-            CerrarSesion.Text = "Cerrar Sesion";
+            CerrarSesion.Size = new Size(271, 36);
+            CerrarSesion.Text = "🔄Cerrar sesión";
             CerrarSesion.Click += cerrarSesionToolStripMenuItem_Click;
             // 
             // panel2
