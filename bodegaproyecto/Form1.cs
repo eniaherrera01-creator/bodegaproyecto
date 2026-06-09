@@ -397,10 +397,21 @@ VALUES
                     if (resultado != null)
                     {
                         menu.RolUsuario = resultado.ToString();
+                        menu.UsuarioActual = nombre;
 
                         menu frm = new menu();
-                        frm.Show();
+
                         this.Hide();
+
+                        frm.ShowDialog();
+
+                        // Cuando el menú se cierre,
+                        // volvemos a mostrar el login.
+
+                        txtusuario.Clear();
+                        txtcontra.Clear();
+
+                        this.Show();
                     }
                     else
                     {

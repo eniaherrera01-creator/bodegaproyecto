@@ -32,12 +32,16 @@
             panel1 = new Panel();
             btnminimizar = new Button();
             btnmaximizar = new Button();
+            menuStrip1 = new MenuStrip();
+            Sesion = new ToolStripMenuItem();
+            CerrarSesion = new ToolStripMenuItem();
             panel2 = new Panel();
             menuadmin = new Panel();
             btnusuarios = new Button();
             btnusuario = new Button();
             panelcontenedor = new Panel();
             panel1.SuspendLayout();
+            menuStrip1.SuspendLayout();
             panel2.SuspendLayout();
             menuadmin.SuspendLayout();
             SuspendLayout();
@@ -60,6 +64,7 @@
             panel1.Controls.Add(btnminimizar);
             panel1.Controls.Add(btnmaximizar);
             panel1.Controls.Add(btncerrar);
+            panel1.Controls.Add(menuStrip1);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
@@ -89,6 +94,39 @@
             btnmaximizar.TabIndex = 1;
             btnmaximizar.UseVisualStyleBackColor = true;
             btnmaximizar.Click += btnmaximizar_Click;
+            // 
+            // menuStrip1
+            // 
+            menuStrip1.BackColor = Color.Navy;
+            menuStrip1.ImageScalingSize = new Size(20, 20);
+            menuStrip1.Items.AddRange(new ToolStripItem[] { Sesion });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(1450, 39);
+            menuStrip1.TabIndex = 3;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // Sesion
+            // 
+            Sesion.BackColor = Color.AliceBlue;
+            Sesion.Checked = true;
+            Sesion.CheckState = CheckState.Checked;
+            Sesion.DropDownItems.AddRange(new ToolStripItem[] { CerrarSesion });
+            Sesion.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            Sesion.ForeColor = SystemColors.ActiveCaptionText;
+            Sesion.Name = "Sesion";
+            Sesion.Size = new Size(96, 35);
+            Sesion.Text = "Sesion";
+            Sesion.Click += sesionNombreDeUsuarioToolStripMenuItem_Click;
+            // 
+            // CerrarSesion
+            // 
+            CerrarSesion.BackColor = SystemColors.ButtonHighlight;
+            CerrarSesion.ForeColor = SystemColors.ActiveCaptionText;
+            CerrarSesion.Name = "CerrarSesion";
+            CerrarSesion.Size = new Size(241, 36);
+            CerrarSesion.Text = "Cerrar Sesion";
+            CerrarSesion.Click += cerrarSesionToolStripMenuItem_Click;
             // 
             // panel2
             // 
@@ -158,12 +196,16 @@
             Controls.Add(panel2);
             Controls.Add(panel1);
             FormBorderStyle = FormBorderStyle.None;
+            MainMenuStrip = menuStrip1;
             Name = "menu";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "menu";
             WindowState = FormWindowState.Maximized;
             Load += menu_Load;
             panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             panel2.ResumeLayout(false);
             menuadmin.ResumeLayout(false);
             ResumeLayout(false);
@@ -180,5 +222,8 @@
         private Panel panelcontenedor;
         private Button btnminimizar;
         private Button btnmaximizar;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem Sesion;
+        private ToolStripMenuItem CerrarSesion;
     }
 }

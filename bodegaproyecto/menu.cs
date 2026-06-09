@@ -13,11 +13,13 @@ namespace bodegaproyecto
     {
 
         public static string RolUsuario = "";
+        public static string UsuarioActual = "";
 
         public menu()
         {
             InitializeComponent();
         }
+
 
 
         private void menu_Load(object sender, EventArgs e)
@@ -44,6 +46,8 @@ namespace bodegaproyecto
             {
                 btnusuario.Visible = false;
             }
+
+            Sesion.Text = UsuarioActual + " (" + RolUsuario + ")";
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -89,6 +93,25 @@ namespace bodegaproyecto
         private void btnminimizar_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void sesionNombreDeUsuarioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+        "¿Seguro que deseas cerrar sesión?",
+        "Cerrar Sesión",
+        MessageBoxButtons.YesNo,
+        MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                this.Close();
+            }
         }
     }
 }
