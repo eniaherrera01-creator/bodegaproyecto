@@ -166,7 +166,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.BackColor = Color.FromArgb(248, 250, 252);
+            label7.BackColor = Color.Transparent;
             label7.Font = new Font("Segoe Fluent Icons", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label7.ForeColor = Color.Black;
             label7.Location = new Point(492, 95);
