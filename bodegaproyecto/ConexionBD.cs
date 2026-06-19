@@ -65,9 +65,11 @@ namespace bodegaproyecto
         {
             string[] posiblesServidores =
             {
-                Environment.MachineName + "\\SQLEXPRESS",
-                Environment.MachineName + "\\ENIAGOMEZ",
-                Environment.MachineName,
+                Environment.MachineName + "\\SQLSERVER",
+                "localhost\\SQLSERVER",
+                 Environment.MachineName + "\\SQLEXPRESS",
+                 Environment.MachineName + "\\ENIAGOMEZ",
+                 Environment.MachineName,
                 "localhost\\SQLEXPRESS",
                 "localhost",
                 "(localdb)\\MSSQLLocalDB"
