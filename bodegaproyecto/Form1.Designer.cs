@@ -29,171 +29,188 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            txtusuario = new TextBox();
             txtcontra = new TextBox();
+            panel1 = new Panel();
+            pictureBox1 = new PictureBox();
+            label4 = new Label();
+            label1 = new Label();
+            btncerrar = new Button();
             btningresar = new Button();
-            button1 = new Button();
-            pnlHeader = new Panel();
-            lblTituloForm = new Label();
-            label3 = new Label();
-            label2 = new Label();
-            panel2 = new Panel();
-            pictureBox2 = new PictureBox();
-            pnlHeader.SuspendLayout();
-            panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            txtusuario = new TextBox();
+            label5 = new Label();
+            label6 = new Label();
+            label7 = new Label();
+            panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
-            // 
-            // txtusuario
-            // 
-            txtusuario.Location = new Point(207, 203);
-            txtusuario.Name = "txtusuario";
-            txtusuario.Size = new Size(238, 27);
-            txtusuario.TabIndex = 3;
             // 
             // txtcontra
             // 
-            txtcontra.Location = new Point(207, 285);
+            txtcontra.BorderStyle = BorderStyle.None;
+            txtcontra.Location = new Point(476, 259);
+            txtcontra.Multiline = true;
             txtcontra.Name = "txtcontra";
-            txtcontra.Size = new Size(238, 27);
+            txtcontra.Size = new Size(285, 27);
             txtcontra.TabIndex = 4;
             txtcontra.UseSystemPasswordChar = true;
             // 
+            // panel1
+            // 
+            panel1.BackColor = Color.FromArgb(234, 243, 255);
+            panel1.Controls.Add(pictureBox1);
+            panel1.Controls.Add(label4);
+            panel1.Controls.Add(label1);
+            panel1.Dock = DockStyle.Left;
+            panel1.Location = new Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(303, 550);
+            panel1.TabIndex = 16;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(78, 95);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(150, 150);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.TabIndex = 11;
+            pictureBox1.TabStop = false;
+            // 
+            // label4
+            // 
+            label4.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label4.ForeColor = Color.FromArgb(85, 85, 119);
+            label4.Location = new Point(54, 315);
+            label4.Name = "label4";
+            label4.Size = new Size(200, 72);
+            label4.TabIndex = 9;
+            label4.Text = "Accede a tu cuenta para continuar";
+            label4.TextAlign = ContentAlignment.TopCenter;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI Semibold", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.ForeColor = Color.DodgerBlue;
+            label1.Location = new Point(62, 258);
+            label1.Name = "label1";
+            label1.Size = new Size(192, 46);
+            label1.TabIndex = 10;
+            label1.Text = "Bienvenido";
+            // 
+            // btncerrar
+            // 
+            btncerrar.BackColor = Color.Transparent;
+            btncerrar.BackgroundImageLayout = ImageLayout.Center;
+            btncerrar.FlatAppearance.BorderSize = 0;
+            btncerrar.FlatAppearance.MouseOverBackColor = Color.Silver;
+            btncerrar.FlatStyle = FlatStyle.Flat;
+            btncerrar.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btncerrar.ForeColor = Color.FromArgb(59, 130, 246);
+            btncerrar.Location = new Point(461, 437);
+            btncerrar.Name = "btncerrar";
+            btncerrar.Size = new Size(300, 45);
+            btncerrar.TabIndex = 15;
+            btncerrar.Text = "Cerrar";
+            btncerrar.UseVisualStyleBackColor = false;
+            btncerrar.Click += btncerrar_Click;
+            // 
             // btningresar
             // 
-            btningresar.BackColor = Color.Transparent;
+            btningresar.BackColor = Color.FromArgb(59, 130, 246);
+            btningresar.BackgroundImageLayout = ImageLayout.Stretch;
             btningresar.FlatAppearance.BorderSize = 0;
             btningresar.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btningresar.FlatAppearance.MouseOverBackColor = Color.Silver;
             btningresar.FlatStyle = FlatStyle.Flat;
             btningresar.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            btningresar.Location = new Point(221, 380);
+            btningresar.ForeColor = Color.White;
+            btningresar.Location = new Point(461, 373);
             btningresar.Name = "btningresar";
-            btningresar.Size = new Size(105, 58);
-            btningresar.TabIndex = 5;
+            btningresar.Size = new Size(300, 45);
+            btningresar.TabIndex = 14;
             btningresar.Text = "Ingresar";
             btningresar.UseVisualStyleBackColor = false;
-            btningresar.Click += btningresar_Click;
+            btningresar.Click += button3_Click;
             // 
-            // button1
+            // txtusuario
             // 
-            button1.BackColor = Color.Transparent;
-            button1.BackgroundImageLayout = ImageLayout.Center;
-            button1.FlatAppearance.BorderSize = 0;
-            button1.FlatAppearance.MouseOverBackColor = Color.Silver;
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.ForeColor = SystemColors.ControlText;
-            button1.Location = new Point(332, 380);
-            button1.Name = "button1";
-            button1.Size = new Size(113, 58);
-            button1.TabIndex = 6;
-            button1.Text = "Cerrar";
-            button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click;
+            txtusuario.BorderStyle = BorderStyle.None;
+            txtusuario.ForeColor = Color.Black;
+            txtusuario.Location = new Point(476, 206);
+            txtusuario.Multiline = true;
+            txtusuario.Name = "txtusuario";
+            txtusuario.Size = new Size(285, 28);
+            txtusuario.TabIndex = 12;
             // 
-            // pnlHeader
+            // label5
             // 
-            pnlHeader.BackColor = Color.FromArgb(26, 42, 74);
-            pnlHeader.Controls.Add(lblTituloForm);
-            pnlHeader.Dock = DockStyle.Top;
-            pnlHeader.Location = new Point(201, 0);
-            pnlHeader.Name = "pnlHeader";
-            pnlHeader.Size = new Size(307, 55);
-            pnlHeader.TabIndex = 9;
+            label5.AutoSize = true;
+            label5.ForeColor = SystemColors.ActiveBorder;
+            label5.Location = new Point(362, 259);
+            label5.Name = "label5";
+            label5.Size = new Size(108, 20);
+            label5.TabIndex = 18;
+            label5.Text = "🔒 Contraseña";
             // 
-            // lblTituloForm
+            // label6
             // 
-            lblTituloForm.AutoSize = true;
-            lblTituloForm.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
-            lblTituloForm.ForeColor = Color.White;
-            lblTituloForm.Location = new Point(20, 12);
-            lblTituloForm.Name = "lblTituloForm";
-            lblTituloForm.Size = new Size(187, 37);
-            lblTituloForm.TabIndex = 0;
-            lblTituloForm.Text = "Iniciar Sesión";
-            lblTituloForm.Click += lblTituloForm_Click;
+            label6.AutoSize = true;
+            label6.ForeColor = SystemColors.ActiveBorder;
+            label6.Location = new Point(362, 214);
+            label6.Name = "label6";
+            label6.Size = new Size(84, 20);
+            label6.TabIndex = 17;
+            label6.Text = "👤 Usuario";
             // 
-            // label3
+            // label7
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 13.8F, FontStyle.Italic);
-            label3.ForeColor = SystemColors.ControlLightLight;
-            label3.Location = new Point(72, 285);
-            label3.Name = "label3";
-            label3.Size = new Size(126, 31);
-            label3.TabIndex = 2;
-            label3.Text = "Contraseña";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 13.8F, FontStyle.Italic);
-            label2.ForeColor = SystemColors.ButtonFace;
-            label2.Location = new Point(72, 203);
-            label2.Name = "label2";
-            label2.Size = new Size(90, 31);
-            label2.TabIndex = 1;
-            label2.Text = "Usuario";
-            // 
-            // panel2
-            // 
-            panel2.BackColor = Color.FromArgb(26, 42, 74);
-            panel2.Controls.Add(label2);
-            panel2.Controls.Add(label3);
-            panel2.Dock = DockStyle.Left;
-            panel2.Location = new Point(0, 0);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(201, 478);
-            panel2.TabIndex = 8;
-            // 
-            // pictureBox2
-            // 
-            pictureBox2.ErrorImage = (Image)resources.GetObject("pictureBox2.ErrorImage");
-            pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(239, 61);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(194, 124);
-            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox2.TabIndex = 10;
-            pictureBox2.TabStop = false;
+            label7.AutoSize = true;
+            label7.BackColor = Color.FromArgb(248, 250, 252);
+            label7.Font = new Font("Segoe Fluent Icons", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label7.ForeColor = Color.Black;
+            label7.Location = new Point(492, 95);
+            label7.Name = "label7";
+            label7.Size = new Size(215, 40);
+            label7.TabIndex = 11;
+            label7.Text = "Iniciar Sesión";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(508, 478);
-            Controls.Add(pictureBox2);
-            Controls.Add(pnlHeader);
-            Controls.Add(panel2);
-            Controls.Add(button1);
+            ClientSize = new Size(900, 550);
+            Controls.Add(panel1);
+            Controls.Add(btncerrar);
             Controls.Add(btningresar);
-            Controls.Add(txtcontra);
             Controls.Add(txtusuario);
+            Controls.Add(label5);
+            Controls.Add(label6);
+            Controls.Add(label7);
+            Controls.Add(txtcontra);
             FormBorderStyle = FormBorderStyle.None;
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
             Load += Form1_Load;
-            pnlHeader.ResumeLayout(false);
-            pnlHeader.PerformLayout();
-            panel2.ResumeLayout(false);
-            panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private TextBox txtusuario;
         private TextBox txtcontra;
+        private Panel panel1;
+        private PictureBox pictureBox1;
+        private Label label4;
+        private Label label1;
+        private Button btncerrar;
         private Button btningresar;
-        private Button button1;
-        private Panel pnlHeader;
-        private Label lblTituloForm;
-        private Label label3;
-        private Label label2;
-        private Panel panel2;
-        private PictureBox pictureBox2;
+        private TextBox txtusuario;
+        private Label label5;
+        private Label label6;
+        private Label label7;
     }
 }

@@ -4,9 +4,9 @@ using Microsoft.Data.SqlClient;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Windows.Forms;
 using System.Security.Cryptography; // HASH
 using System.Text; // HASH
+using System.Windows.Forms;
 
 namespace bodegaproyecto
 {
@@ -317,7 +317,7 @@ VALUES
 ('Pan Integral','Pan saludable',28,40,30,'2026-08-10',5);
 ";
 
-// Cambio en el insert de la base de datos
+                    // Cambio en el insert de la base de datos
 
                     SqlCommand cmd = new SqlCommand(script, con);
                     cmd.ExecuteNonQuery();
@@ -371,7 +371,38 @@ VALUES
 
         }
 
-        private void btningresar_Click(object sender, EventArgs e)
+       
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void lblTituloForm_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+        // PARTE DEL HASH
+        private string CalcularSHA256(string texto)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(texto));
+
+                StringBuilder builder = new StringBuilder();
+
+                foreach (byte b in bytes)
+                {
+                    builder.Append(b.ToString("x2"));
+                }
+
+                return builder.ToString();
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
         {
             string nombre = txtusuario.Text.Trim();
             string contra = CalcularSHA256(txtcontra.Text.Trim()); // HASH
@@ -425,33 +456,9 @@ VALUES
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btncerrar_Click(object sender, EventArgs e)
         {
             Application.Exit();
-        }
-
-        private void lblTituloForm_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-        // PARTE DEL HASH
-        private string CalcularSHA256(string texto)
-        {
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(texto));
-
-                StringBuilder builder = new StringBuilder();
-
-                foreach (byte b in bytes)
-                {
-                    builder.Append(b.ToString("x2"));
-                }
-
-                return builder.ToString();
-            }
         }
     }
 }

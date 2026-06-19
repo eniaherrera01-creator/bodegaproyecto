@@ -36,6 +36,7 @@
             Sesion = new ToolStripMenuItem();
             CerrarSesion = new ToolStripMenuItem();
             panel2 = new Panel();
+            pictureBox1 = new PictureBox();
             menuadmin = new Panel();
             btnusuarios = new Button();
             btnusuario = new Button();
@@ -43,6 +44,7 @@
             panel1.SuspendLayout();
             menuStrip1.SuspendLayout();
             panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             menuadmin.SuspendLayout();
             SuspendLayout();
             // 
@@ -60,7 +62,7 @@
             // 
             // panel1
             // 
-            panel1.BackColor = Color.Navy;
+            panel1.BackColor = Color.FromArgb(128, 196, 233);
             panel1.Controls.Add(btnminimizar);
             panel1.Controls.Add(btnmaximizar);
             panel1.Controls.Add(btncerrar);
@@ -97,7 +99,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.BackColor = Color.Navy;
+            menuStrip1.BackColor = Color.FromArgb(128, 196, 233);
             menuStrip1.ImageScalingSize = new Size(20, 20);
             menuStrip1.Items.AddRange(new ToolStripItem[] { Sesion });
             menuStrip1.Location = new Point(0, 0);
@@ -120,7 +122,7 @@
             // 
             // CerrarSesion
             // 
-            CerrarSesion.BackColor = Color.FromArgb(0, 0, 192);
+            CerrarSesion.BackColor = Color.SteelBlue;
             CerrarSesion.ForeColor = Color.White;
             CerrarSesion.Name = "CerrarSesion";
             CerrarSesion.Size = new Size(271, 36);
@@ -129,7 +131,8 @@
             // 
             // panel2
             // 
-            panel2.BackColor = Color.FromArgb(0, 0, 64);
+            panel2.BackColor = Color.SteelBlue;
+            panel2.Controls.Add(pictureBox1);
             panel2.Controls.Add(menuadmin);
             panel2.Controls.Add(btnusuario);
             panel2.Dock = DockStyle.Left;
@@ -138,6 +141,17 @@
             panel2.Size = new Size(183, 690);
             panel2.TabIndex = 2;
             panel2.Paint += panel2_Paint;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            pictureBox1.Image = Properties.Resources.WhatsApp_Image_2026_06_19_at_1_34_05_PM_removebg_preview;
+            pictureBox1.Location = new Point(14, 533);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(151, 157);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.TabIndex = 0;
+            pictureBox1.TabStop = false;
             // 
             // menuadmin
             // 
@@ -151,9 +165,9 @@
             // btnusuarios
             // 
             btnusuarios.FlatAppearance.BorderSize = 0;
-            btnusuarios.FlatAppearance.MouseOverBackColor = Color.Navy;
+            btnusuarios.FlatAppearance.MouseOverBackColor = Color.DarkGray;
             btnusuarios.FlatStyle = FlatStyle.Flat;
-            btnusuarios.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            btnusuarios.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnusuarios.ForeColor = Color.White;
             btnusuarios.Location = new Point(6, 16);
             btnusuarios.Name = "btnusuarios";
@@ -166,13 +180,13 @@
             // btnusuario
             // 
             btnusuario.FlatAppearance.BorderSize = 0;
-            btnusuario.FlatAppearance.MouseOverBackColor = Color.Navy;
+            btnusuario.FlatAppearance.MouseOverBackColor = Color.DarkGray;
             btnusuario.FlatStyle = FlatStyle.Flat;
-            btnusuario.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            btnusuario.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnusuario.ForeColor = Color.White;
             btnusuario.Location = new Point(12, 105);
             btnusuario.Name = "btnusuario";
-            btnusuario.Size = new Size(153, 51);
+            btnusuario.Size = new Size(168, 51);
             btnusuario.TabIndex = 3;
             btnusuario.Text = "Administracion";
             btnusuario.UseVisualStyleBackColor = true;
@@ -206,6 +220,7 @@
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             menuadmin.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -224,5 +239,6 @@
         private MenuStrip menuStrip1;
         private ToolStripMenuItem Sesion;
         private ToolStripMenuItem CerrarSesion;
+        private PictureBox pictureBox1;
     }
 }

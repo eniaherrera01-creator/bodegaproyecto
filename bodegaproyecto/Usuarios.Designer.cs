@@ -74,7 +74,7 @@
             // 
             // pnlHeader
             // 
-            pnlHeader.BackColor = Color.FromArgb(26, 42, 74);
+            pnlHeader.BackColor = Color.SteelBlue;
             pnlHeader.Controls.Add(lblTituloForm);
             pnlHeader.Dock = DockStyle.Top;
             pnlHeader.Location = new Point(0, 0);
