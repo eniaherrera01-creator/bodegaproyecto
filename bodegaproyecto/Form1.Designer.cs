@@ -48,9 +48,8 @@
             // 
             txtcontra.BorderStyle = BorderStyle.None;
             txtcontra.Location = new Point(476, 259);
-            txtcontra.Multiline = true;
             txtcontra.Name = "txtcontra";
-            txtcontra.Size = new Size(285, 27);
+            txtcontra.Size = new Size(285, 20);
             txtcontra.TabIndex = 4;
             txtcontra.UseSystemPasswordChar = true;
             // 
