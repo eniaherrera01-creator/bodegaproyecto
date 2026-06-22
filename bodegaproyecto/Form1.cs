@@ -193,9 +193,10 @@ CREATE TABLE Usuario (
     usuario VARCHAR(50) NOT NULL UNIQUE,
     Contraseña VARCHAR(100) NOT NULL,
     rol VARCHAR(50) NOT NULL,
-    Estado BIT NOT NULL DEFAULT 1,
+	Estado BIT NOT NULL DEFAULT 1,
 
 );
+
 
 CREATE TABLE Categoria (
     id_categoria INT IDENTITY(1,1) PRIMARY KEY,
@@ -211,6 +212,7 @@ CREATE TABLE Proveedor (
     Direccion VARCHAR(200)
 );
 
+
 CREATE TABLE Producto (
     id_producto INT IDENTITY(1,1) PRIMARY KEY,
     Nombre_Producto VARCHAR(100) NOT NULL,
@@ -219,18 +221,23 @@ CREATE TABLE Producto (
     Precio_Venta DECIMAL(10,2) NOT NULL,
     Stock INT NOT NULL,
     fecha_vencimiento DATE NULL,
+	impuesto DECIMAL(10,2) NOT NULL DEFAULT 0,
     id_categoria INT NOT NULL,
-    FOREIGN KEY (id_categoria)
-    REFERENCES Categoria(id_categoria)
+
+    CONSTRAINT FK_Producto_Categoria
+    FOREIGN KEY (id_categoria) REFERENCES Categoria(id_categoria)
 );
+
 
 CREATE TABLE Compra (
     id_compra INT IDENTITY(1,1) PRIMARY KEY,
     fecha_compra DATE NOT NULL,
     id_proveedor INT NOT NULL,
-    FOREIGN KEY (id_proveedor)
-    REFERENCES Proveedor(id_proveedor)
+
+    CONSTRAINT FK_Compra_Proveedor
+    FOREIGN KEY (id_proveedor) REFERENCES Proveedor(id_proveedor)
 );
+
 
 CREATE TABLE Detalle_Compra (
     id_DetalleCompra INT IDENTITY(1,1) PRIMARY KEY,
@@ -238,19 +245,53 @@ CREATE TABLE Detalle_Compra (
     precio_unitario DECIMAL(10,2) NOT NULL,
     id_compra INT NOT NULL,
     id_producto INT NOT NULL,
-    FOREIGN KEY (id_compra)
-    REFERENCES Compra(id_compra),
-    FOREIGN KEY (id_producto)
-    REFERENCES Producto(id_producto)
+
+    CONSTRAINT FK_DetalleCompra_Compra
+    FOREIGN KEY (id_compra) REFERENCES Compra(id_compra),
+
+    CONSTRAINT FK_DetalleCompra_Producto
+    FOREIGN KEY (id_producto) REFERENCES Producto(id_producto)
+);
+
+
+CREATE TABLE Cliente (
+    id_cliente INT IDENTITY(1,1) PRIMARY KEY,
+    Codigo_Cliente VARCHAR(20) NOT NULL UNIQUE,
+    Nombre VARCHAR(100) NOT NULL,
+    RTN VARCHAR(20) NULL,
+    DNI VARCHAR(20) NULL,
+    Telefono VARCHAR(20) NULL,
+    Correo VARCHAR(100) NULL,
+    Direccion VARCHAR(200) NULL,
+    Fecha_Registro DATETIME NOT NULL DEFAULT GETDATE(),
+    Estado BIT NOT NULL DEFAULT 1
+);
+
+INSERT INTO Cliente
+(Codigo_Cliente, Nombre, RTN, DNI, Telefono, Correo, Direccion, Estado) VALUES
+(
+    'CL000',
+    'CLIENTE GENERICO',
+    '00000000000000',
+    '0000000000000',
+    'N/A',
+    'N/A',
+    'VENTA AL CONTADO',
+    1
 );
 
 CREATE TABLE Venta (
     id_venta INT IDENTITY(1,1) PRIMARY KEY,
-    Fecha_Venta DATE NOT NULL,
+    Fecha_Venta DATETIME NOT NULL DEFAULT GETDATE(),
     metodo_pago VARCHAR(50) NOT NULL,
     id_usuario INT NOT NULL,
+    id_cliente INT NOT NULL DEFAULT 1,
+
     FOREIGN KEY (id_usuario)
-    REFERENCES Usuario(id_usuario)
+    REFERENCES Usuario(id_usuario),
+
+    FOREIGN KEY (id_cliente)
+    REFERENCES Cliente(id_cliente)
 );
 
 CREATE TABLE Detalle_Venta (
@@ -259,11 +300,14 @@ CREATE TABLE Detalle_Venta (
     precio_unitario DECIMAL(10,2) NOT NULL,
     id_venta INT NOT NULL,
     id_producto INT NOT NULL,
-    FOREIGN KEY (id_venta)
-    REFERENCES Venta(id_venta),
-    FOREIGN KEY (id_producto)
-    REFERENCES Producto(id_producto)
+
+    CONSTRAINT FK_DetalleVenta_Venta
+    FOREIGN KEY (id_venta) REFERENCES Venta(id_venta),
+
+    CONSTRAINT FK_DetalleVenta_Producto
+    FOREIGN KEY (id_producto) REFERENCES Producto(id_producto)
 );
+
 
 INSERT INTO Usuario (Nombre, usuario, Contraseña, rol, Estado)
 VALUES
@@ -291,30 +335,32 @@ VALUES
  CONVERT(VARCHAR(64), HASHBYTES('SHA2_256','12345'),2),
  'Administrador', 1);
 
-INSERT INTO Categoria (Nombre_Categoria,Descripcion)
-VALUES
-('Bebidas','Productos liquidos'),
-('Lacteos','Productos derivados de leche'),
-('Snacks','Botanas y frituras'),
-('Limpieza','Productos de aseo'),
-('Panaderia','Productos de pan');
 
-INSERT INTO Proveedor (Nombre,Telefono,Correo,Direccion)
+INSERT INTO Categoria (Nombre_Categoria, Descripcion)
 VALUES
-('Distribuidora Norte','9999-1111','norte@gmail.com','Tegucigalpa'),
-('Alimentos SA','9999-2222','alimentos@gmail.com','San Pedro Sula'),
-('Honduras Market','9999-3333','market@gmail.com','Choluteca'),
-('Productos Centro','9999-4444','centro@gmail.com','La Ceiba'),
-('Distribuidora Sur','9999-5555','sur@gmail.com','Comayagua');
+('Bebidas', 'Productos liquidos'),
+('Lacteos', 'Productos derivados de leche'),
+('Snacks', 'Botanas y frituras'),
+('Limpieza', 'Productos de aseo'),
+('Panaderia', 'Productos de pan');
 
-INSERT INTO Producto
-(Nombre_Producto,Descripcion,Precio_Compra,Precio_Venta,Stock,fecha_vencimiento,id_categoria)
+INSERT INTO Proveedor (Nombre, Telefono, Correo, Direccion)
 VALUES
-('Coca Cola','Bebida gaseosa',18,25,100,'2026-12-31',1),
-('Leche Sula','Leche entera',22,30,80,'2026-10-15',2),
-('Doritos','Snack de maiz',12,18,60,'2026-09-20',3),
-('Cloro','Producto de limpieza',35,50,40,NULL,4),
-('Pan Integral','Pan saludable',28,40,30,'2026-08-10',5);
+('Distribuidora Norte', '9999-1111', 'norte@gmail.com', 'Tegucigalpa'),
+('Alimentos SA', '9999-2222', 'alimentos@gmail.com', 'San Pedro Sula'),
+('Honduras Market', '9999-3333', 'market@gmail.com', 'Choluteca'),
+('Productos Centro', '9999-4444', 'centro@gmail.com', 'La Ceiba'),
+('Distribuidora Sur', '9999-5555', 'sur@gmail.com', 'Comayagua');
+
+
+INSERT INTO Producto 
+(Nombre_Producto, Descripcion, Precio_Compra, Precio_Venta, Stock, fecha_vencimiento, id_categoria)
+VALUES
+('Coca Cola', 'Bebida gaseosa', 18.00, 25.00, 100, '2026-12-31', 1),
+('Leche Sula', 'Leche entera', 22.00, 30.00, 80, '2026-10-15', 2),
+('Doritos', 'Snack de maiz', 12.00, 18.00, 60, '2026-09-20', 3),
+('Cloro', 'Producto de limpieza', 35.00, 50.00, 40, NULL, 4),
+('Pan Integral', 'Pan saludable', 28.00, 40.00, 30, '2026-08-10', 5);
 ";
 
                     // Cambio en el insert de la base de datos

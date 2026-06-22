@@ -154,6 +154,7 @@ namespace bodegaproyecto
             {
                 DataGridViewRow fila = dgvCategorias.Rows[e.RowIndex];
                 txtId.Text = fila.Cells["ID"].Value.ToString();
+                txtId.Visible = false;
                 txtNombre.Text = fila.Cells["Nombre Categoria"].Value.ToString();
                 txtNombre.ForeColor = Color.Black;
                 txtDescripcion.Text = fila.Cells["Descripción"].Value.ToString();
@@ -202,6 +203,11 @@ namespace bodegaproyecto
         }
 
         private void panelHeader_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnGuardar_Click_1(object sender, EventArgs e)
         {
 
         }

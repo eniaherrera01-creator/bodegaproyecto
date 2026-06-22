@@ -47,8 +47,9 @@ namespace bodegaproyecto
                     da.Fill(dt);
                     dgvUsuarios.DataSource = dt;
 
-                    dgvUsuarios.Columns["Contraseña"].Visible = false; 
-                    //sirve para ocultar la columna de contraseña. Quitar esta linea en caso de querer ver ese campo
+                    dgvUsuarios.Columns["Contraseña"].Visible = false;
+                    dgvUsuarios.Columns["id_usuario"].Visible = false;
+                    //sirve para ocultar la columna de contraseña y id. Quitar estas lineas en caso de querer ver esos campos en dgv
 
                     dgvUsuarios.Columns["id_usuario"].HeaderText = "ID";
                     dgvUsuarios.Columns["Nombre"].HeaderText = "Nombre Completo";
