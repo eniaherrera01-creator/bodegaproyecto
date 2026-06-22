@@ -200,5 +200,10 @@ namespace bodegaproyecto
             txtDescripcion.ForeColor = Color.Gray;
             lblAlerta.Visible = false;
         }
+
+        private void panelHeader_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

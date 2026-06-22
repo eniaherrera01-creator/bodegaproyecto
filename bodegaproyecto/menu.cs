@@ -18,6 +18,7 @@ namespace bodegaproyecto
         public menu()
         {
             InitializeComponent();
+            btnproveedores.Click += btnproveedores_Click;
         }
 
 
@@ -123,6 +124,11 @@ namespace bodegaproyecto
         {
             menuinventario.Visible = false;
             AbrirFormulario(new FrmCategoria());
+        }
+        private void btnproveedores_Click(object sender, EventArgs e)
+        {
+            menuinventario.Visible = false;
+            AbrirFormulario(new ProveedoresForm());
         }
 
         private void menuinventario_Paint(object sender, PaintEventArgs e)

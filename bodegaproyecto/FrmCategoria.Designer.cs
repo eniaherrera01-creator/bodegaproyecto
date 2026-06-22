@@ -47,6 +47,7 @@
             panelHeader.Name = "panelHeader";
             panelHeader.Size = new Size(882, 60);
             panelHeader.TabIndex = 0;
+            panelHeader.Paint += panelHeader_Paint;
             // 
             // lblTitulo
             // 

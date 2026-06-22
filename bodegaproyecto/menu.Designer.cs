@@ -44,6 +44,7 @@
             btnusuarios = new Button();
             btnusuario = new Button();
             panelcontenedor = new Panel();
+            btnproveedores = new Button();
             panel1.SuspendLayout();
             menuStrip1.SuspendLayout();
             panel2.SuspendLayout();
@@ -136,6 +137,7 @@
             // panel2
             // 
             panel2.BackColor = Color.SteelBlue;
+            panel2.Controls.Add(btnproveedores);
             panel2.Controls.Add(menuinventario);
             panel2.Controls.Add(btninventario);
             panel2.Controls.Add(pictureBox1);
@@ -165,7 +167,7 @@
             btncategorias.FlatStyle = FlatStyle.Flat;
             btncategorias.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btncategorias.ForeColor = Color.White;
-            btncategorias.Location = new Point(3, 13);
+            btncategorias.Location = new Point(5, 3);
             btncategorias.Name = "btncategorias";
             btncategorias.Size = new Size(130, 51);
             btncategorias.TabIndex = 4;
@@ -248,6 +250,20 @@
             panelcontenedor.TabIndex = 3;
             panelcontenedor.Paint += panelcontenedor_Paint;
             // 
+            // btnproveedores
+            // 
+            btnproveedores.FlatAppearance.BorderSize = 0;
+            btnproveedores.FlatAppearance.MouseOverBackColor = Color.DarkGray;
+            btnproveedores.FlatStyle = FlatStyle.Flat;
+            btnproveedores.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnproveedores.ForeColor = Color.White;
+            btnproveedores.Location = new Point(32, 289);
+            btnproveedores.Name = "btnproveedores";
+            btnproveedores.Size = new Size(151, 51);
+            btnproveedores.TabIndex = 5;
+            btnproveedores.Text = "Proveedores";
+            btnproveedores.UseVisualStyleBackColor = true;
+            // 
             // menu
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -292,5 +308,6 @@
         private Button btninventario;
         private Panel menuinventario;
         private Button btncategorias;
+        private Button btnproveedores;
     }
 }
