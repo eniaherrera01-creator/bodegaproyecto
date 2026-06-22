@@ -36,6 +36,9 @@
             Sesion = new ToolStripMenuItem();
             CerrarSesion = new ToolStripMenuItem();
             panel2 = new Panel();
+            menuinventario = new Panel();
+            btncategorias = new Button();
+            btninventario = new Button();
             pictureBox1 = new PictureBox();
             menuadmin = new Panel();
             btnusuarios = new Button();
@@ -44,6 +47,7 @@
             panel1.SuspendLayout();
             menuStrip1.SuspendLayout();
             panel2.SuspendLayout();
+            menuinventario.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             menuadmin.SuspendLayout();
             SuspendLayout();
@@ -132,6 +136,8 @@
             // panel2
             // 
             panel2.BackColor = Color.SteelBlue;
+            panel2.Controls.Add(menuinventario);
+            panel2.Controls.Add(btninventario);
             panel2.Controls.Add(pictureBox1);
             panel2.Controls.Add(menuadmin);
             panel2.Controls.Add(btnusuario);
@@ -141,6 +147,46 @@
             panel2.Size = new Size(183, 690);
             panel2.TabIndex = 2;
             panel2.Paint += panel2_Paint;
+            // 
+            // menuinventario
+            // 
+            menuinventario.Controls.Add(btncategorias);
+            menuinventario.Location = new Point(42, 206);
+            menuinventario.Name = "menuinventario";
+            menuinventario.Size = new Size(138, 77);
+            menuinventario.TabIndex = 5;
+            menuinventario.Visible = false;
+            menuinventario.Paint += menuinventario_Paint;
+            // 
+            // btncategorias
+            // 
+            btncategorias.FlatAppearance.BorderSize = 0;
+            btncategorias.FlatAppearance.MouseOverBackColor = Color.DarkGray;
+            btncategorias.FlatStyle = FlatStyle.Flat;
+            btncategorias.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btncategorias.ForeColor = Color.White;
+            btncategorias.Location = new Point(3, 13);
+            btncategorias.Name = "btncategorias";
+            btncategorias.Size = new Size(130, 51);
+            btncategorias.TabIndex = 4;
+            btncategorias.Text = "Categorias";
+            btncategorias.UseVisualStyleBackColor = true;
+            btncategorias.Click += btncategorias_Click;
+            // 
+            // btninventario
+            // 
+            btninventario.FlatAppearance.BorderSize = 0;
+            btninventario.FlatAppearance.MouseOverBackColor = Color.DarkGray;
+            btninventario.FlatStyle = FlatStyle.Flat;
+            btninventario.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btninventario.ForeColor = Color.White;
+            btninventario.Location = new Point(0, 149);
+            btninventario.Name = "btninventario";
+            btninventario.Size = new Size(168, 51);
+            btninventario.TabIndex = 4;
+            btninventario.Text = "Inventario";
+            btninventario.UseVisualStyleBackColor = true;
+            btninventario.Click += btninventario_Click;
             // 
             // pictureBox1
             // 
@@ -156,11 +202,12 @@
             // menuadmin
             // 
             menuadmin.Controls.Add(btnusuarios);
-            menuadmin.Location = new Point(24, 162);
+            menuadmin.Location = new Point(42, 73);
             menuadmin.Name = "menuadmin";
-            menuadmin.Size = new Size(156, 98);
+            menuadmin.Size = new Size(138, 77);
             menuadmin.TabIndex = 3;
             menuadmin.Visible = false;
+            menuadmin.Paint += menuadmin_Paint;
             // 
             // btnusuarios
             // 
@@ -169,9 +216,9 @@
             btnusuarios.FlatStyle = FlatStyle.Flat;
             btnusuarios.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnusuarios.ForeColor = Color.White;
-            btnusuarios.Location = new Point(6, 16);
+            btnusuarios.Location = new Point(3, 13);
             btnusuarios.Name = "btnusuarios";
-            btnusuarios.Size = new Size(153, 51);
+            btnusuarios.Size = new Size(130, 51);
             btnusuarios.TabIndex = 4;
             btnusuarios.Text = "Usuarios";
             btnusuarios.UseVisualStyleBackColor = true;
@@ -184,7 +231,7 @@
             btnusuario.FlatStyle = FlatStyle.Flat;
             btnusuario.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnusuario.ForeColor = Color.White;
-            btnusuario.Location = new Point(12, 105);
+            btnusuario.Location = new Point(9, 36);
             btnusuario.Name = "btnusuario";
             btnusuario.Size = new Size(168, 51);
             btnusuario.TabIndex = 3;
@@ -220,6 +267,7 @@
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             panel2.ResumeLayout(false);
+            menuinventario.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             menuadmin.ResumeLayout(false);
             ResumeLayout(false);
@@ -240,5 +288,8 @@
         private ToolStripMenuItem Sesion;
         private ToolStripMenuItem CerrarSesion;
         private PictureBox pictureBox1;
+        private Button btninventario;
+        private Panel menuinventario;
+        private Button btncategorias;
     }
 }

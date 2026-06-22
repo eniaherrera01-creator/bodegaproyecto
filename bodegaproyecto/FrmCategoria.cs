@@ -80,8 +80,7 @@ namespace bodegaproyecto
         {
             string nombre = txtNombre.Text.Trim();
             string desc = txtDescripcion.Text == "Descripción detallada de la categoría..." ? "" : txtDescripcion.Text.Trim();
-            string estado = cmbEstado.SelectedItem.ToString();
-
+     
             if (string.IsNullOrEmpty(nombre) || nombre == "Ej: Medicamentos...")
             {
                 MessageBox.Show("El nombre de la categoría es obligatorio.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -108,7 +107,7 @@ namespace bodegaproyecto
 
                     cmd.Parameters.AddWithValue("@nombre", nombre);
                     cmd.Parameters.AddWithValue("@desc", desc);
-                    cmd.Parameters.AddWithValue("@estado", estado);
+                 
 
                     cmd.ExecuteNonQuery();
                     MessageBox.Show("¡Registro guardado con éxito!", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -167,7 +166,7 @@ namespace bodegaproyecto
                 txtNombre.ForeColor = Color.Black;
                 txtDescripcion.Text = fila.Cells["Descripción"].Value.ToString();
                 txtDescripcion.ForeColor = Color.Black;
-                cmbEstado.SelectedItem = fila.Cells["Estado"].Value.ToString();
+  
                 lblAlerta.Visible = false;
             }
         }
@@ -208,8 +207,13 @@ namespace bodegaproyecto
             txtNombre.ForeColor = Color.Gray;
             txtDescripcion.Text = "Descripción detallada de la categoría...";
             txtDescripcion.ForeColor = Color.Gray;
-            cmbEstado.SelectedIndex = 0;
+           
             lblAlerta.Visible = false;
+        }
+
+        private void lblAlerta_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

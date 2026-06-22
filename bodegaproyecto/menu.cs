@@ -113,5 +113,26 @@ namespace bodegaproyecto
                 this.Close();
             }
         }
+
+        private void btninventario_Click(object sender, EventArgs e)
+        {
+            menuinventario.Visible = true;
+        }
+
+        private void btncategorias_Click(object sender, EventArgs e)
+        {
+            menuinventario.Visible = false;
+            AbrirFormulario(new FrmCategoria());
+        }
+
+        private void menuinventario_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void menuadmin_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

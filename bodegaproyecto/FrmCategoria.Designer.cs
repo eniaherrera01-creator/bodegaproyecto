@@ -27,8 +27,6 @@
             lblContadorCaracteres = new Label();
             lblDescripcion = new Label();
             txtDescripcion = new TextBox();
-            lblEstado = new Label();
-            cmbEstado = new ComboBox();
             btnGuardar = new Button();
             btnCancelar = new Button();
             btnEliminar = new Button();
@@ -43,13 +41,14 @@
             // 
             // panelHeader
             // 
-            panelHeader.BackColor = Color.FromArgb(128, 128, 255);
+            panelHeader.BackColor = Color.SteelBlue;
             panelHeader.Controls.Add(lblTitulo);
             panelHeader.Controls.Add(lblRegistros);
             panelHeader.Controls.Add(lblActivas);
+            panelHeader.Dock = DockStyle.Top;
             panelHeader.Location = new Point(0, 0);
             panelHeader.Name = "panelHeader";
-            panelHeader.Size = new Size(884, 60);
+            panelHeader.Size = new Size(1193, 60);
             panelHeader.TabIndex = 0;
             // 
             // lblTitulo
@@ -67,7 +66,7 @@
             // 
             lblRegistros.BackColor = Color.FromArgb(60, 140, 210);
             lblRegistros.ForeColor = Color.White;
-            lblRegistros.Location = new Point(550, 18);
+            lblRegistros.Location = new Point(919, 22);
             lblRegistros.Name = "lblRegistros";
             lblRegistros.Size = new Size(90, 25);
             lblRegistros.TabIndex = 1;
@@ -78,7 +77,7 @@
             // 
             lblActivas.BackColor = Color.FromArgb(60, 140, 210);
             lblActivas.ForeColor = Color.White;
-            lblActivas.Location = new Point(650, 18);
+            lblActivas.Location = new Point(1019, 22);
             lblActivas.Name = "lblActivas";
             lblActivas.Size = new Size(90, 25);
             lblActivas.TabIndex = 2;
@@ -154,30 +153,12 @@
             txtDescripcion.TabIndex = 8;
             txtDescripcion.Text = "Descripción detallada de la categoría...";
             // 
-            // lblEstado
-            // 
-            lblEstado.AutoSize = true;
-            lblEstado.Location = new Point(20, 360);
-            lblEstado.Name = "lblEstado";
-            lblEstado.Size = new Size(89, 23);
-            lblEstado.TabIndex = 9;
-            lblEstado.Text = "👁 Estado";
-            // 
-            // cmbEstado
-            // 
-            cmbEstado.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbEstado.Items.AddRange(new object[] { "Activo", "Inactivo" });
-            cmbEstado.Location = new Point(20, 380);
-            cmbEstado.Name = "cmbEstado";
-            cmbEstado.Size = new Size(280, 31);
-            cmbEstado.TabIndex = 10;
-            // 
             // btnGuardar
             // 
             btnGuardar.BackColor = Color.White;
             btnGuardar.Enabled = false;
             btnGuardar.FlatStyle = FlatStyle.Flat;
-            btnGuardar.Location = new Point(20, 425);
+            btnGuardar.Location = new Point(20, 382);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(280, 35);
             btnGuardar.TabIndex = 11;
@@ -188,7 +169,7 @@
             // 
             btnCancelar.BackColor = Color.White;
             btnCancelar.FlatStyle = FlatStyle.Flat;
-            btnCancelar.Location = new Point(20, 470);
+            btnCancelar.Location = new Point(20, 438);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(280, 35);
             btnCancelar.TabIndex = 12;
@@ -200,7 +181,7 @@
             btnEliminar.BackColor = Color.FromArgb(40, 40, 40);
             btnEliminar.FlatStyle = FlatStyle.Flat;
             btnEliminar.ForeColor = Color.White;
-            btnEliminar.Location = new Point(20, 515);
+            btnEliminar.Location = new Point(20, 488);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(280, 35);
             btnEliminar.TabIndex = 13;
@@ -211,13 +192,14 @@
             // 
             lblAlerta.BackColor = Color.FromArgb(210, 45, 45);
             lblAlerta.ForeColor = Color.White;
-            lblAlerta.Location = new Point(20, 560);
+            lblAlerta.Location = new Point(15, 545);
             lblAlerta.Name = "lblAlerta";
             lblAlerta.Size = new Size(280, 30);
             lblAlerta.TabIndex = 14;
             lblAlerta.Text = "Selecciona una fila primero";
             lblAlerta.TextAlign = ContentAlignment.MiddleCenter;
             lblAlerta.Visible = false;
+            lblAlerta.Click += lblAlerta_Click;
             // 
             // lblListaTitulo
             // 
@@ -235,7 +217,7 @@
             txtBuscar.ForeColor = Color.Gray;
             txtBuscar.Location = new Point(340, 115);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(520, 30);
+            txtBuscar.Size = new Size(745, 30);
             txtBuscar.TabIndex = 16;
             txtBuscar.Text = "🔍 Buscar...";
             // 
@@ -252,7 +234,7 @@
             dgvCategorias.RowHeadersVisible = false;
             dgvCategorias.RowHeadersWidth = 51;
             dgvCategorias.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvCategorias.Size = new Size(520, 400);
+            dgvCategorias.Size = new Size(745, 425);
             dgvCategorias.TabIndex = 17;
             // 
             // lblSeccion
@@ -269,7 +251,7 @@
             // FrmCategoria
             // 
             BackColor = Color.White;
-            ClientSize = new Size(882, 573);
+            ClientSize = new Size(1193, 653);
             Controls.Add(panelHeader);
             Controls.Add(lblSeccion);
             Controls.Add(lblId);
@@ -279,8 +261,6 @@
             Controls.Add(lblContadorCaracteres);
             Controls.Add(lblDescripcion);
             Controls.Add(txtDescripcion);
-            Controls.Add(lblEstado);
-            Controls.Add(cmbEstado);
             Controls.Add(btnGuardar);
             Controls.Add(btnCancelar);
             Controls.Add(btnEliminar);
@@ -312,8 +292,6 @@
         private System.Windows.Forms.Label lblContadorCaracteres;
         private System.Windows.Forms.Label lblDescripcion;
         private System.Windows.Forms.TextBox txtDescripcion;
-        private System.Windows.Forms.Label lblEstado;
-        private System.Windows.Forms.ComboBox cmbEstado;
         private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Button btnEliminar;
