@@ -266,7 +266,6 @@
 
         private void FrmCategoria_Load(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
         }
 
         private System.Windows.Forms.Panel panelHeader;
