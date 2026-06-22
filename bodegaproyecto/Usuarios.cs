@@ -82,7 +82,6 @@ namespace bodegaproyecto
             LimpiarFormulario();
             txtNombre.Focus();
         }
-
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtNombre.Text) ||
@@ -94,6 +93,17 @@ namespace bodegaproyecto
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
+            // VALIDAR CONTRASEÑA
+            if (selectedUserId == -1 || txtContrasena.Text != contrasenaOriginal)
+            {
+                if (!ValidarContrasena(txtContrasena.Text))
+                {
+                    MessageBox.Show("La contraseña debe tener mínimo 8 caracteres, una mayúscula, un número y un símbolo.");
+                    return;
+                }
+            }
+
             try
             {
                 using (SqlConnection conn = ConexionBD.ObtenerConexion())
@@ -124,8 +134,10 @@ namespace bodegaproyecto
                 MessageBox.Show("Error al guardar: " + ex.Message, "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
 
+        }
+       
+        private string contrasenaOriginal = ""; // Validacion
         private void btnEditar_Click(object sender, EventArgs e)
         {
             if (dgvUsuarios.SelectedRows.Count == 0)
@@ -140,6 +152,7 @@ namespace bodegaproyecto
             txtNombre.Text = row.Cells["Nombre"].Value.ToString();
             txtUsuario.Text = row.Cells["usuario"].Value.ToString();
             txtContrasena.Text = row.Cells["Contraseña"].Value.ToString();
+            contrasenaOriginal = txtContrasena.Text;
             cmbRol.SelectedItem = row.Cells["rol"].Value.ToString();
         }
 
@@ -191,6 +204,24 @@ namespace bodegaproyecto
 
                 return builder.ToString();
             }
+        }
+
+        // Validacion contraseña
+        private bool ValidarContrasena(string contrasena)
+        {
+            if (contrasena.Length < 8)
+                return false;
+
+            if (!contrasena.Any(char.IsUpper))
+                return false;
+
+            if (!contrasena.Any(char.IsDigit))
+                return false;
+
+            if (contrasena.All(char.IsLetterOrDigit))
+                return false;
+
+            return true;
         }
 
         private void btnActualizar_Click(object sender, EventArgs e) { CargarUsuarios(); LimpiarFormulario(); }
