@@ -134,5 +134,10 @@ namespace bodegaproyecto
         {
 
         }
+
+        private void panelcontenedor_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

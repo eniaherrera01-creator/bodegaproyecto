@@ -39,12 +39,13 @@
             // 
             // panelHeader
             // 
-            panelHeader.BackColor = Color.FromArgb(28, 114, 187);
+            panelHeader.BackColor = Color.SteelBlue;
             panelHeader.Controls.Add(lblTitulo);
             panelHeader.Controls.Add(lblRegistros);
+            panelHeader.Dock = DockStyle.Top;
             panelHeader.Location = new Point(0, 0);
             panelHeader.Name = "panelHeader";
-            panelHeader.Size = new Size(884, 60);
+            panelHeader.Size = new Size(882, 60);
             panelHeader.TabIndex = 0;
             // 
             // lblTitulo
@@ -253,8 +254,8 @@
             Controls.Add(txtBuscar);
             Controls.Add(dgvCategorias);
             Font = new Font("Segoe UI", 10F);
+            FormBorderStyle = FormBorderStyle.None;
             Name = "FrmCategoria";
-            StartPosition = FormStartPosition.CenterScreen;
             Text = "Formulario de categoría";
             Load += FrmCategoria_Load;
             panelHeader.ResumeLayout(false);
