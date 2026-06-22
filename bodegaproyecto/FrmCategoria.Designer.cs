@@ -13,13 +13,11 @@
             base.Dispose(disposing);
         }
 
-        // El diseñador de Visual Studio lee obligatoriamente este método
         private void InitializeComponent()
         {
             panelHeader = new Panel();
             lblTitulo = new Label();
             lblRegistros = new Label();
-            lblActivas = new Label();
             lblId = new Label();
             txtId = new TextBox();
             lblNombre = new Label();
@@ -41,14 +39,12 @@
             // 
             // panelHeader
             // 
-            panelHeader.BackColor = Color.SteelBlue;
+            panelHeader.BackColor = Color.FromArgb(28, 114, 187);
             panelHeader.Controls.Add(lblTitulo);
             panelHeader.Controls.Add(lblRegistros);
-            panelHeader.Controls.Add(lblActivas);
-            panelHeader.Dock = DockStyle.Top;
             panelHeader.Location = new Point(0, 0);
             panelHeader.Name = "panelHeader";
-            panelHeader.Size = new Size(1193, 60);
+            panelHeader.Size = new Size(884, 60);
             panelHeader.TabIndex = 0;
             // 
             // lblTitulo
@@ -66,23 +62,12 @@
             // 
             lblRegistros.BackColor = Color.FromArgb(60, 140, 210);
             lblRegistros.ForeColor = Color.White;
-            lblRegistros.Location = new Point(919, 22);
+            lblRegistros.Location = new Point(750, 18);
             lblRegistros.Name = "lblRegistros";
-            lblRegistros.Size = new Size(90, 25);
+            lblRegistros.Size = new Size(110, 25);
             lblRegistros.TabIndex = 1;
             lblRegistros.Text = "0 registros";
             lblRegistros.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // lblActivas
-            // 
-            lblActivas.BackColor = Color.FromArgb(60, 140, 210);
-            lblActivas.ForeColor = Color.White;
-            lblActivas.Location = new Point(1019, 22);
-            lblActivas.Name = "lblActivas";
-            lblActivas.Size = new Size(90, 25);
-            lblActivas.TabIndex = 2;
-            lblActivas.Text = "✓ 0 activas";
-            lblActivas.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // lblId
             // 
@@ -158,10 +143,10 @@
             btnGuardar.BackColor = Color.White;
             btnGuardar.Enabled = false;
             btnGuardar.FlatStyle = FlatStyle.Flat;
-            btnGuardar.Location = new Point(20, 382);
+            btnGuardar.Location = new Point(20, 370);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(280, 35);
-            btnGuardar.TabIndex = 11;
+            btnGuardar.TabIndex = 9;
             btnGuardar.Text = "💾 Guardar";
             btnGuardar.UseVisualStyleBackColor = false;
             // 
@@ -169,10 +154,10 @@
             // 
             btnCancelar.BackColor = Color.White;
             btnCancelar.FlatStyle = FlatStyle.Flat;
-            btnCancelar.Location = new Point(20, 438);
+            btnCancelar.Location = new Point(20, 415);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(280, 35);
-            btnCancelar.TabIndex = 12;
+            btnCancelar.TabIndex = 10;
             btnCancelar.Text = "✕ Cancelar";
             btnCancelar.UseVisualStyleBackColor = false;
             // 
@@ -181,10 +166,10 @@
             btnEliminar.BackColor = Color.FromArgb(40, 40, 40);
             btnEliminar.FlatStyle = FlatStyle.Flat;
             btnEliminar.ForeColor = Color.White;
-            btnEliminar.Location = new Point(20, 488);
+            btnEliminar.Location = new Point(20, 460);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(280, 35);
-            btnEliminar.TabIndex = 13;
+            btnEliminar.TabIndex = 11;
             btnEliminar.Text = "🗑 Eliminar seleccionado";
             btnEliminar.UseVisualStyleBackColor = false;
             // 
@@ -192,14 +177,13 @@
             // 
             lblAlerta.BackColor = Color.FromArgb(210, 45, 45);
             lblAlerta.ForeColor = Color.White;
-            lblAlerta.Location = new Point(15, 545);
+            lblAlerta.Location = new Point(20, 510);
             lblAlerta.Name = "lblAlerta";
             lblAlerta.Size = new Size(280, 30);
-            lblAlerta.TabIndex = 14;
+            lblAlerta.TabIndex = 12;
             lblAlerta.Text = "Selecciona una fila primero";
             lblAlerta.TextAlign = ContentAlignment.MiddleCenter;
             lblAlerta.Visible = false;
-            lblAlerta.Click += lblAlerta_Click;
             // 
             // lblListaTitulo
             // 
@@ -209,7 +193,7 @@
             lblListaTitulo.Location = new Point(340, 80);
             lblListaTitulo.Name = "lblListaTitulo";
             lblListaTitulo.Size = new Size(189, 28);
-            lblListaTitulo.TabIndex = 15;
+            lblListaTitulo.TabIndex = 13;
             lblListaTitulo.Text = "Lista de categorías";
             // 
             // txtBuscar
@@ -217,8 +201,8 @@
             txtBuscar.ForeColor = Color.Gray;
             txtBuscar.Location = new Point(340, 115);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(745, 30);
-            txtBuscar.TabIndex = 16;
+            txtBuscar.Size = new Size(520, 30);
+            txtBuscar.TabIndex = 14;
             txtBuscar.Text = "🔍 Buscar...";
             // 
             // dgvCategorias
@@ -234,8 +218,8 @@
             dgvCategorias.RowHeadersVisible = false;
             dgvCategorias.RowHeadersWidth = 51;
             dgvCategorias.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvCategorias.Size = new Size(745, 425);
-            dgvCategorias.TabIndex = 17;
+            dgvCategorias.Size = new Size(520, 395);
+            dgvCategorias.TabIndex = 15;
             // 
             // lblSeccion
             // 
@@ -251,7 +235,7 @@
             // FrmCategoria
             // 
             BackColor = Color.White;
-            ClientSize = new Size(1193, 653);
+            ClientSize = new Size(882, 553);
             Controls.Add(panelHeader);
             Controls.Add(lblSeccion);
             Controls.Add(lblId);
@@ -269,10 +253,10 @@
             Controls.Add(txtBuscar);
             Controls.Add(dgvCategorias);
             Font = new Font("Segoe UI", 10F);
-            FormBorderStyle = FormBorderStyle.None;
             Name = "FrmCategoria";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Formulario de categoría";
+            Load += FrmCategoria_Load;
             panelHeader.ResumeLayout(false);
             panelHeader.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvCategorias).EndInit();
@@ -280,11 +264,14 @@
             PerformLayout();
         }
 
-        // Definición de controles accesibles por el diseñador
+        private void FrmCategoria_Load(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         private System.Windows.Forms.Panel panelHeader;
         private System.Windows.Forms.Label lblTitulo;
         private System.Windows.Forms.Label lblRegistros;
-        private System.Windows.Forms.Label lblActivas;
         private System.Windows.Forms.Label lblId;
         private System.Windows.Forms.TextBox txtId;
         private System.Windows.Forms.Label lblNombre;
