@@ -65,16 +65,42 @@ namespace bodegaproyecto
             }
         }
 
-        private void BtnGuardar_Click(object sender, EventArgs e)
+        private bool ValidarCategoria()
         {
             string nombre = txtNombre.Text.Trim();
-            string desc = txtDescripcion.Text == "Descripción detallada de la categoría..." ? "" : txtDescripcion.Text.Trim();
+            string desc = txtDescripcion.Text.Trim();
 
-            if (string.IsNullOrEmpty(nombre) || nombre == "Ej: Medicamentos...")
+            if (string.IsNullOrWhiteSpace(nombre) || nombre == "Ej: Medicamentos...")
             {
-                MessageBox.Show("El nombre de la categoría es obligatorio.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                MessageBox.Show("El nombre de la categoría es obligatorio.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNombre.Focus();
+                return false;
             }
+
+            if (string.IsNullOrWhiteSpace(desc) || desc == "Descripción detallada de la categoría...")
+            {
+                MessageBox.Show("La descripción de la categoría es obligatoria.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtDescripcion.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+
+
+
+
+
+        private void BtnGuardar_Click(object sender, EventArgs e)
+        {
+            if (!ValidarCategoria())
+                return;
+
+            string nombre = txtNombre.Text.Trim();
+            string desc = txtDescripcion.Text.Trim();
 
             try
             {
@@ -98,7 +124,8 @@ namespace bodegaproyecto
                     cmd.Parameters.AddWithValue("@desc", desc);
 
                     cmd.ExecuteNonQuery();
-                    MessageBox.Show("¡Registro guardado con éxito!", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("¡Registro guardado con éxito!", "Información",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     LimpiarFormulario();
                     ListarCategorias();
@@ -106,7 +133,8 @@ namespace bodegaproyecto
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al guardar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al guardar: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

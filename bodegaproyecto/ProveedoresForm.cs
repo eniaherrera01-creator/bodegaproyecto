@@ -77,18 +77,62 @@ namespace bodegaproyecto
             }
         }
 
-        private void BtnGuardar_Click(object sender, EventArgs e)
+
+        private bool ValidarProveedor()
         {
             string nombre = txtNombre.Text.Trim();
             string telefono = txtTelefono.Text.Trim();
             string correo = txtCorreo.Text.Trim();
             string direccion = txtDireccion.Text.Trim();
 
+            // Validar nombre
             if (string.IsNullOrWhiteSpace(nombre) || nombre == "Ej: Distribuidora Norte...")
             {
-                MessageBox.Show("El nombre del proveedor es obligatorio.");
-                return;
+                MessageBox.Show("El nombre del proveedor es obligatorio.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNombre.Focus();
+                return false;
             }
+
+            // Validar teléfono
+            if (string.IsNullOrWhiteSpace(telefono) || telefono == "Ej: 9999-1111")
+            {
+                MessageBox.Show("El teléfono del proveedor es obligatorio.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTelefono.Focus();
+                return false;
+            }
+
+            // Validar correo
+            if (string.IsNullOrWhiteSpace(correo) || correo == "Ej: proveedor@gmail.com")
+            {
+                MessageBox.Show("El correo del proveedor es obligatorio.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtCorreo.Focus();
+                return false;
+            }
+
+            // Validar dirección
+            if (string.IsNullOrWhiteSpace(direccion) || direccion == "Ej: Tegucigalpa...")
+            {
+                MessageBox.Show("La dirección del proveedor es obligatoria.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtDireccion.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        private void BtnGuardar_Click(object sender, EventArgs e)
+        {
+            if (!ValidarProveedor())
+                return;
+
+            string nombre = txtNombre.Text.Trim();
+            string telefono = txtTelefono.Text.Trim();
+            string correo = txtCorreo.Text.Trim();
+            string direccion = txtDireccion.Text.Trim();
 
             try
             {
@@ -104,20 +148,20 @@ namespace bodegaproyecto
                     if (txtId.Text == "ID: Automático")
                     {
                         string query = @"INSERT INTO Proveedor
-                                        (Nombre, Telefono, Correo, Direccion)
-                                        VALUES
-                                        (@nombre, @telefono, @correo, @direccion)";
+                                (Nombre, Telefono, Correo, Direccion)
+                                VALUES
+                                (@nombre, @telefono, @correo, @direccion)";
 
                         cmd = new SqlCommand(query, con);
                     }
                     else
                     {
                         string query = @"UPDATE Proveedor SET
-                                            Nombre = @nombre,
-                                            Telefono = @telefono,
-                                            Correo = @correo,
-                                            Direccion = @direccion
-                                        WHERE id_proveedor = @id";
+                                    Nombre = @nombre,
+                                    Telefono = @telefono,
+                                    Correo = @correo,
+                                    Direccion = @direccion
+                                WHERE id_proveedor = @id";
 
                         cmd = new SqlCommand(query, con);
                         cmd.Parameters.AddWithValue("@id", Convert.ToInt32(txtId.Text));
@@ -130,7 +174,8 @@ namespace bodegaproyecto
 
                     cmd.ExecuteNonQuery();
 
-                    MessageBox.Show("Proveedor guardado correctamente.");
+                    MessageBox.Show("Proveedor guardado correctamente.", "Información",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     LimpiarFormulario();
                     ListarProveedores();
@@ -138,7 +183,8 @@ namespace bodegaproyecto
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al guardar proveedor: " + ex.Message);
+                MessageBox.Show("Error al guardar proveedor: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
