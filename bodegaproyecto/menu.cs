@@ -1,147 +1,177 @@
-﻿using System;
+﻿using DevExpress.XtraBars;
+using DevExpress.XtraBars.Ribbon;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
 
 namespace bodegaproyecto
 {
-    public partial class menu : Form
+    public partial class menu : DevExpress.XtraBars.Ribbon.RibbonForm
     {
-
         public static string RolUsuario = "";
         public static string UsuarioActual = "";
 
         public menu()
         {
             InitializeComponent();
-            btnproveedores.Click += btnproveedores_Click;
+
         }
 
 
 
         private void menu_Load(object sender, EventArgs e)
         {
-            btncerrar.Text = "✕";
-            btnmaximizar.Text = "☐";
-            btnminimizar.Text = "─";
 
-            btncerrar.ForeColor = Color.White;
-            btnmaximizar.ForeColor = Color.White;
-            btnminimizar.ForeColor = Color.White;
+            barStaticItemusuarios.Caption =
+        "Usuario: " + UsuarioActual +
+        " | Rol: " + RolUsuario;
 
-            btncerrar.FlatStyle = FlatStyle.Flat;
-            btnmaximizar.FlatStyle = FlatStyle.Flat;
-            btnminimizar.FlatStyle = FlatStyle.Flat;
-
-            btncerrar.FlatAppearance.BorderSize = 0;
-            btnmaximizar.FlatAppearance.BorderSize = 0;
-            btnminimizar.FlatAppearance.BorderSize = 0;
+            AplicarPermisos();
 
 
-            ///Unicamente sera visible para el adminsitrador, el boton de administracion, para que los usuarios normales no puedan acceder a esa seccion.
-            if (RolUsuario != "Administrador")
+            ribbonStatusBar.BackColor = Color.FromArgb(35, 80, 150);
+
+        }
+        private void AplicarPermisos()
+        {
+
+            string rol = RolUsuario.ToLower();
+
+
+            // Bloquear los botones primero
+            barButtonusuarios.Enabled = false;
+            barButtoncategorias.Enabled = false;
+            barButtomproveedores.Enabled = false;
+
+
+
+            switch (rol)
             {
-                btnusuario.Visible = false;
+
+
+                case "administrador":
+                    barButtonusuarios.Enabled = true;
+                    barButtoncategorias.Enabled = true;
+                    barButtomproveedores.Enabled = true;
+
+                    break;
+
+
+
+                case "supervisor":
+                    barButtoncategorias.Enabled = true;
+                    barButtomproveedores.Enabled = true;
+
+                    break;
+
+
+
+                case "bodega":
+
+                    barButtoncategorias.Enabled = true;
+                    barButtomproveedores.Enabled = true;
+
+                    break;
+
+
+
+                case "vendedor":
+
+                    // No tiene acceso todavía
+
+                    break;
+
+
+
+                case "cajero":
+
+                    // No tiene acceso todavía
+
+                    break;
+
+
             }
 
-            Sesion.Text = UsuarioActual + " (" + RolUsuario + ")";
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void barButtonItem1_ItemClick(object sender, ItemClickEventArgs e)
         {
-            Application.Exit();
+            Usuarios frm = new Usuarios();
+
+            frm.TopLevel = false;
+            frm.FormBorderStyle = FormBorderStyle.None;
+            frm.Dock = DockStyle.Fill;
+
+            panelContenedor.Controls.Clear();
+
+            panelContenedor.Controls.Add(frm);
+
+            frm.Show();
+
+
         }
 
-        private void panel2_Paint(object sender, PaintEventArgs e)
+        private void barButtonItem2_ItemClick(object sender, ItemClickEventArgs e)
         {
+            FrmCategoria frm = new FrmCategoria();
+
+            frm.TopLevel = false;
+            frm.FormBorderStyle = FormBorderStyle.None;
+            frm.Dock = DockStyle.Fill;
+
+            panelContenedor.Controls.Clear();
+
+            panelContenedor.Controls.Add(frm);
+
+            frm.Show();
 
         }
 
-        private void btnusuario_Click(object sender, EventArgs e)
+        private void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
         {
-            menuadmin.Visible = true;
-        }
+            ProveedoresForm frm = new ProveedoresForm();
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            menuadmin.Visible = false;
-            AbrirFormulario(new Usuarios());
-        }
+            frm.TopLevel = false;
+            frm.FormBorderStyle = FormBorderStyle.None;
+            frm.Dock = DockStyle.Fill;
 
-        private void AbrirFormulario(Form formulario)
-        {
-            panelcontenedor.Controls.Clear();
+            panelContenedor.Controls.Clear();
 
-            formulario.TopLevel = false;
-            formulario.FormBorderStyle = FormBorderStyle.None;
-            formulario.Dock = DockStyle.Fill;
+            panelContenedor.Controls.Add(frm);
 
-            panelcontenedor.Controls.Add(formulario);
-            panelcontenedor.Tag = formulario;
-            formulario.Show();
-        }
-
-        private void btnmaximizar_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Maximized;
-            btnmaximizar.Visible = false;
-        }
-
-        private void btnminimizar_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Minimized;
-        }
-
-        private void sesionNombreDeUsuarioToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+            frm.Show();
 
         }
 
-        private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show(
-        "¿Seguro que deseas cerrar sesión?",
-        "Cerrar Sesión",
-        MessageBoxButtons.YesNo,
-        MessageBoxIcon.Question);
-
-            if (result == DialogResult.Yes)
-            {
-                this.Close();
-            }
-        }
-
-        private void btninventario_Click(object sender, EventArgs e)
-        {
-            menuinventario.Visible = true;
-        }
-
-        private void btncategorias_Click(object sender, EventArgs e)
-        {
-            menuinventario.Visible = false;
-            AbrirFormulario(new FrmCategoria());
-        }
-        private void btnproveedores_Click(object sender, EventArgs e)
-        {
-            menuinventario.Visible = false;
-            AbrirFormulario(new ProveedoresForm());
-        }
-
-        private void menuinventario_Paint(object sender, PaintEventArgs e)
+        private void panelContenedor_Paint(object sender, PaintEventArgs e)
         {
 
         }
 
-        private void menuadmin_Paint(object sender, PaintEventArgs e)
+        private void barButtoncerrarsesion_ItemClick(object sender, ItemClickEventArgs e)
         {
+
 
         }
 
-        private void panelcontenedor_Paint(object sender, PaintEventArgs e)
+        private void barButtonItem1_ItemClick_1(object sender, ItemClickEventArgs e)
+        {
+            this.Close();
+
+        }
+
+        private void ribbon_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void ribbonStatusBar_Click(object sender, EventArgs e)
         {
 
         }

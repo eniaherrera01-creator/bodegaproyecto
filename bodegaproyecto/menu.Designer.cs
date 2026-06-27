@@ -28,286 +28,219 @@
         /// </summary>
         private void InitializeComponent()
         {
-            btncerrar = new Button();
-            panel1 = new Panel();
-            btnminimizar = new Button();
-            btnmaximizar = new Button();
-            menuStrip1 = new MenuStrip();
-            Sesion = new ToolStripMenuItem();
-            CerrarSesion = new ToolStripMenuItem();
-            panel2 = new Panel();
-            menuinventario = new Panel();
-            btncategorias = new Button();
-            btninventario = new Button();
-            pictureBox1 = new PictureBox();
-            menuadmin = new Panel();
-            btnusuarios = new Button();
-            btnusuario = new Button();
-            panelcontenedor = new Panel();
-            btnproveedores = new Button();
-            panel1.SuspendLayout();
-            menuStrip1.SuspendLayout();
-            panel2.SuspendLayout();
-            menuinventario.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            menuadmin.SuspendLayout();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(menu));
+            ribbonStatusBar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
+            barStaticItemusuarios = new DevExpress.XtraBars.BarStaticItem();
+            barStaticItemrol = new DevExpress.XtraBars.BarStaticItem();
+            barButtoncerrarsesion = new DevExpress.XtraBars.BarButtonItem();
+            ribbon = new DevExpress.XtraBars.Ribbon.RibbonControl();
+            barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
+            barButtonusuarios = new DevExpress.XtraBars.BarButtonItem();
+            barButtoncategorias = new DevExpress.XtraBars.BarButtonItem();
+            barButtomproveedores = new DevExpress.XtraBars.BarButtonItem();
+            barStaticusuario = new DevExpress.XtraBars.BarStaticItem();
+            barStaticrol = new DevExpress.XtraBars.BarStaticItem();
+            barButtonItem4 = new DevExpress.XtraBars.BarButtonItem();
+            ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPage2 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPageGroup3 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            panelContenedor = new DevExpress.XtraEditors.PanelControl();
+            ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            barButtonclientes = new DevExpress.XtraBars.BarButtonItem();
+            ((System.ComponentModel.ISupportInitialize)ribbon).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)panelContenedor).BeginInit();
             SuspendLayout();
             // 
-            // btncerrar
+            // ribbonStatusBar
             // 
-            btncerrar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btncerrar.FlatAppearance.BorderSize = 0;
-            btncerrar.FlatStyle = FlatStyle.Flat;
-            btncerrar.Location = new Point(1357, 12);
-            btncerrar.Name = "btncerrar";
-            btncerrar.Size = new Size(81, 51);
-            btncerrar.TabIndex = 0;
-            btncerrar.UseVisualStyleBackColor = true;
-            btncerrar.Click += button1_Click;
+            ribbonStatusBar.BackColor = Color.SteelBlue;
+            ribbonStatusBar.ForeColor = Color.Silver;
+            ribbonStatusBar.ItemLinks.Add(barStaticItemusuarios);
+            ribbonStatusBar.ItemLinks.Add(barStaticItemrol);
+            ribbonStatusBar.ItemLinks.Add(barButtoncerrarsesion);
+            ribbonStatusBar.Location = new Point(0, 437);
+            ribbonStatusBar.Name = "ribbonStatusBar";
+            ribbonStatusBar.Ribbon = ribbon;
+            ribbonStatusBar.Size = new Size(1013, 30);
+            ribbonStatusBar.Click += ribbonStatusBar_Click;
             // 
-            // panel1
+            // barStaticItemusuarios
             // 
-            panel1.BackColor = Color.FromArgb(128, 196, 233);
-            panel1.Controls.Add(btnminimizar);
-            panel1.Controls.Add(btnmaximizar);
-            panel1.Controls.Add(btncerrar);
-            panel1.Controls.Add(menuStrip1);
-            panel1.Dock = DockStyle.Top;
-            panel1.Location = new Point(0, 0);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(1450, 83);
-            panel1.TabIndex = 1;
+            barStaticItemusuarios.Caption = "Usuario";
+            barStaticItemusuarios.Id = 10;
+            barStaticItemusuarios.Name = "barStaticItemusuarios";
             // 
-            // btnminimizar
+            // barStaticItemrol
             // 
-            btnminimizar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnminimizar.FlatAppearance.BorderSize = 0;
-            btnminimizar.FlatStyle = FlatStyle.Flat;
-            btnminimizar.Location = new Point(1183, 12);
-            btnminimizar.Name = "btnminimizar";
-            btnminimizar.Size = new Size(81, 51);
-            btnminimizar.TabIndex = 2;
-            btnminimizar.UseVisualStyleBackColor = true;
-            btnminimizar.Click += btnminimizar_Click;
+            barStaticItemrol.Id = 11;
+            barStaticItemrol.Name = "barStaticItemrol";
             // 
-            // btnmaximizar
+            // barButtoncerrarsesion
             // 
-            btnmaximizar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnmaximizar.FlatAppearance.BorderSize = 0;
-            btnmaximizar.FlatStyle = FlatStyle.Flat;
-            btnmaximizar.Location = new Point(1270, 12);
-            btnmaximizar.Name = "btnmaximizar";
-            btnmaximizar.Size = new Size(81, 51);
-            btnmaximizar.TabIndex = 1;
-            btnmaximizar.UseVisualStyleBackColor = true;
-            btnmaximizar.Click += btnmaximizar_Click;
+            barButtoncerrarsesion.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
+            barButtoncerrarsesion.Id = 12;
+            barButtoncerrarsesion.Name = "barButtoncerrarsesion";
+            barButtoncerrarsesion.ItemClick += barButtoncerrarsesion_ItemClick;
             // 
-            // menuStrip1
+            // ribbon
             // 
-            menuStrip1.BackColor = Color.FromArgb(128, 196, 233);
-            menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { Sesion });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1450, 39);
-            menuStrip1.TabIndex = 3;
-            menuStrip1.Text = "menuStrip1";
+            ribbon.BackColor = Color.FromArgb(192, 255, 255);
+            ribbon.CaptionBarItemLinks.Add(barButtonItem1);
+            ribbon.ExpandCollapseItem.Id = 0;
+            ribbon.Items.AddRange(new DevExpress.XtraBars.BarItem[] { barButtonItem1, ribbon.ExpandCollapseItem, barButtonusuarios, barButtoncategorias, barButtomproveedores, barStaticusuario, barStaticrol, barButtonItem4, barStaticItemusuarios, barStaticItemrol, barButtoncerrarsesion, barButtonclientes });
+            ribbon.Location = new Point(0, 0);
+            ribbon.MaxItemId = 19;
+            ribbon.Name = "ribbon";
+            ribbon.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1, ribbonPage2 });
+            ribbon.Size = new Size(1013, 183);
+            ribbon.StatusBar = ribbonStatusBar;
+            ribbon.Click += ribbon_Click;
             // 
-            // Sesion
+            // barButtonItem1
             // 
-            Sesion.Checked = true;
-            Sesion.CheckState = CheckState.Checked;
-            Sesion.DropDownItems.AddRange(new ToolStripItem[] { CerrarSesion });
-            Sesion.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Sesion.ForeColor = Color.White;
-            Sesion.Name = "Sesion";
-            Sesion.Size = new Size(135, 35);
-            Sesion.Text = "🔄 Sesion";
-            Sesion.Click += sesionNombreDeUsuarioToolStripMenuItem_Click;
+            barButtonItem1.Id = 15;
+            barButtonItem1.ImageOptions.Image = (Image)resources.GetObject("barButtonItem1.ImageOptions.Image");
+            barButtonItem1.ImageOptions.LargeImage = (Image)resources.GetObject("barButtonItem1.ImageOptions.LargeImage");
+            barButtonItem1.Name = "barButtonItem1";
+            barButtonItem1.ItemClick += barButtonItem1_ItemClick_1;
             // 
-            // CerrarSesion
+            // barButtonusuarios
             // 
-            CerrarSesion.BackColor = Color.SteelBlue;
-            CerrarSesion.ForeColor = Color.White;
-            CerrarSesion.Name = "CerrarSesion";
-            CerrarSesion.Size = new Size(271, 36);
-            CerrarSesion.Text = "🔄Cerrar sesión";
-            CerrarSesion.Click += cerrarSesionToolStripMenuItem_Click;
+            barButtonusuarios.Caption = "Usuarios";
+            barButtonusuarios.Id = 1;
+            barButtonusuarios.ImageOptions.Image = (Image)resources.GetObject("barButtonusuarios.ImageOptions.Image");
+            barButtonusuarios.Name = "barButtonusuarios";
+            barButtonusuarios.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            barButtonusuarios.ItemClick += barButtonItem1_ItemClick;
             // 
-            // panel2
+            // barButtoncategorias
             // 
-            panel2.BackColor = Color.SteelBlue;
-            panel2.Controls.Add(btnproveedores);
-            panel2.Controls.Add(menuinventario);
-            panel2.Controls.Add(btninventario);
-            panel2.Controls.Add(pictureBox1);
-            panel2.Controls.Add(menuadmin);
-            panel2.Controls.Add(btnusuario);
-            panel2.Dock = DockStyle.Left;
-            panel2.Location = new Point(0, 83);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(183, 690);
-            panel2.TabIndex = 2;
-            panel2.Paint += panel2_Paint;
+            barButtoncategorias.Caption = "Categorias";
+            barButtoncategorias.Id = 2;
+            barButtoncategorias.ImageOptions.Image = (Image)resources.GetObject("barButtoncategorias.ImageOptions.Image");
+            barButtoncategorias.Name = "barButtoncategorias";
+            barButtoncategorias.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            barButtoncategorias.ItemClick += barButtonItem2_ItemClick;
             // 
-            // menuinventario
+            // barButtomproveedores
             // 
-            menuinventario.Controls.Add(btncategorias);
-            menuinventario.Location = new Point(42, 206);
-            menuinventario.Name = "menuinventario";
-            menuinventario.Size = new Size(138, 77);
-            menuinventario.TabIndex = 5;
-            menuinventario.Visible = false;
-            menuinventario.Paint += menuinventario_Paint;
+            barButtomproveedores.Caption = "Proveedores";
+            barButtomproveedores.Id = 3;
+            barButtomproveedores.ImageOptions.Image = (Image)resources.GetObject("barButtomproveedores.ImageOptions.Image");
+            barButtomproveedores.Name = "barButtomproveedores";
+            barButtomproveedores.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            barButtomproveedores.ItemClick += barButtonItem3_ItemClick;
             // 
-            // btncategorias
+            // barStaticusuario
             // 
-            btncategorias.FlatAppearance.BorderSize = 0;
-            btncategorias.FlatAppearance.MouseOverBackColor = Color.DarkGray;
-            btncategorias.FlatStyle = FlatStyle.Flat;
-            btncategorias.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btncategorias.ForeColor = Color.White;
-            btncategorias.Location = new Point(5, 3);
-            btncategorias.Name = "btncategorias";
-            btncategorias.Size = new Size(130, 51);
-            btncategorias.TabIndex = 4;
-            btncategorias.Text = "Categorias";
-            btncategorias.UseVisualStyleBackColor = true;
-            btncategorias.Click += btncategorias_Click;
+            barStaticusuario.Caption = "Usuario";
+            barStaticusuario.Id = 5;
+            barStaticusuario.Name = "barStaticusuario";
             // 
-            // btninventario
+            // barStaticrol
             // 
-            btninventario.FlatAppearance.BorderSize = 0;
-            btninventario.FlatAppearance.MouseOverBackColor = Color.DarkGray;
-            btninventario.FlatStyle = FlatStyle.Flat;
-            btninventario.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btninventario.ForeColor = Color.White;
-            btninventario.Location = new Point(0, 149);
-            btninventario.Name = "btninventario";
-            btninventario.Size = new Size(168, 51);
-            btninventario.TabIndex = 4;
-            btninventario.Text = "Inventario";
-            btninventario.UseVisualStyleBackColor = true;
-            btninventario.Click += btninventario_Click;
+            barStaticrol.Caption = "Rol";
+            barStaticrol.Id = 6;
+            barStaticrol.Name = "barStaticrol";
             // 
-            // pictureBox1
+            // barButtonItem4
             // 
-            pictureBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            pictureBox1.Image = Properties.Resources.WhatsApp_Image_2026_06_19_at_1_34_05_PM_removebg_preview;
-            pictureBox1.Location = new Point(14, 533);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(151, 157);
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
+            barButtonItem4.Caption = "barButtonItem4";
+            barButtonItem4.Id = 7;
+            barButtonItem4.Name = "barButtonItem4";
             // 
-            // menuadmin
+            // ribbonPage1
             // 
-            menuadmin.Controls.Add(btnusuarios);
-            menuadmin.Location = new Point(42, 73);
-            menuadmin.Name = "menuadmin";
-            menuadmin.Size = new Size(138, 77);
-            menuadmin.TabIndex = 3;
-            menuadmin.Visible = false;
-            menuadmin.Paint += menuadmin_Paint;
+            ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1, ribbonPageGroup4 });
+            ribbonPage1.Name = "ribbonPage1";
+            ribbonPage1.Text = "Administracion";
             // 
-            // btnusuarios
+            // ribbonPageGroup1
             // 
-            btnusuarios.FlatAppearance.BorderSize = 0;
-            btnusuarios.FlatAppearance.MouseOverBackColor = Color.DarkGray;
-            btnusuarios.FlatStyle = FlatStyle.Flat;
-            btnusuarios.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnusuarios.ForeColor = Color.White;
-            btnusuarios.Location = new Point(3, 13);
-            btnusuarios.Name = "btnusuarios";
-            btnusuarios.Size = new Size(130, 51);
-            btnusuarios.TabIndex = 4;
-            btnusuarios.Text = "Usuarios";
-            btnusuarios.UseVisualStyleBackColor = true;
-            btnusuarios.Click += button2_Click;
+            ribbonPageGroup1.ItemLinks.Add(barButtonusuarios);
+            ribbonPageGroup1.Name = "ribbonPageGroup1";
             // 
-            // btnusuario
+            // ribbonPage2
             // 
-            btnusuario.FlatAppearance.BorderSize = 0;
-            btnusuario.FlatAppearance.MouseOverBackColor = Color.DarkGray;
-            btnusuario.FlatStyle = FlatStyle.Flat;
-            btnusuario.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnusuario.ForeColor = Color.White;
-            btnusuario.Location = new Point(9, 36);
-            btnusuario.Name = "btnusuario";
-            btnusuario.Size = new Size(168, 51);
-            btnusuario.TabIndex = 3;
-            btnusuario.Text = "Administracion";
-            btnusuario.UseVisualStyleBackColor = true;
-            btnusuario.Click += btnusuario_Click;
+            ribbonPage2.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup2, ribbonPageGroup3 });
+            ribbonPage2.Name = "ribbonPage2";
+            ribbonPage2.Text = "Inventario";
             // 
-            // panelcontenedor
+            // ribbonPageGroup2
             // 
-            panelcontenedor.Dock = DockStyle.Fill;
-            panelcontenedor.Location = new Point(183, 83);
-            panelcontenedor.Name = "panelcontenedor";
-            panelcontenedor.Size = new Size(1267, 690);
-            panelcontenedor.TabIndex = 3;
-            panelcontenedor.Paint += panelcontenedor_Paint;
+            ribbonPageGroup2.ItemLinks.Add(barButtoncategorias);
+            ribbonPageGroup2.Name = "ribbonPageGroup2";
             // 
-            // btnproveedores
+            // ribbonPageGroup3
             // 
-            btnproveedores.FlatAppearance.BorderSize = 0;
-            btnproveedores.FlatAppearance.MouseOverBackColor = Color.DarkGray;
-            btnproveedores.FlatStyle = FlatStyle.Flat;
-            btnproveedores.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnproveedores.ForeColor = Color.White;
-            btnproveedores.Location = new Point(32, 289);
-            btnproveedores.Name = "btnproveedores";
-            btnproveedores.Size = new Size(151, 51);
-            btnproveedores.TabIndex = 5;
-            btnproveedores.Text = "Proveedores";
-            btnproveedores.UseVisualStyleBackColor = true;
+            ribbonPageGroup3.ItemLinks.Add(barButtomproveedores);
+            ribbonPageGroup3.Name = "ribbonPageGroup3";
+            // 
+            // panelContenedor
+            // 
+            panelContenedor.Dock = DockStyle.Fill;
+            panelContenedor.Location = new Point(0, 183);
+            panelContenedor.Name = "panelContenedor";
+            panelContenedor.Size = new Size(1013, 254);
+            panelContenedor.TabIndex = 2;
+            panelContenedor.Paint += panelContenedor_Paint;
+            // 
+            // ribbonPageGroup4
+            // 
+            ribbonPageGroup4.ItemLinks.Add(barButtonclientes);
+            ribbonPageGroup4.Name = "ribbonPageGroup4";
+            // 
+            // barButtonclientes
+            // 
+            barButtonclientes.Caption = "Clientes";
+            barButtonclientes.Id = 18;
+            barButtonclientes.ImageOptions.Image = (Image)resources.GetObject("barButtonclientes.ImageOptions.Image");
+            barButtonclientes.Name = "barButtonclientes";
+            barButtonclientes.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
             // 
             // menu
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1450, 773);
-            Controls.Add(panelcontenedor);
-            Controls.Add(panel2);
-            Controls.Add(panel1);
-            FormBorderStyle = FormBorderStyle.None;
-            MainMenuStrip = menuStrip1;
+            ClientSize = new Size(1013, 467);
+            Controls.Add(panelContenedor);
+            Controls.Add(ribbon);
+            Controls.Add(ribbonStatusBar);
             Name = "menu";
+            Ribbon = ribbon;
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "menu";
+            StatusBar = ribbonStatusBar;
+            Text = "Mini Super La Fortaleza";
             WindowState = FormWindowState.Maximized;
             Load += menu_Load;
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
-            panel2.ResumeLayout(false);
-            menuinventario.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            menuadmin.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)ribbon).EndInit();
+            ((System.ComponentModel.ISupportInitialize)panelContenedor).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-
-        private Button btncerrar;
-        private Panel panel1;
-        private Panel panel2;
-        private Button btnusuario;
-        private Panel menuadmin;
-        private Button btnusuarios;
-        private Panel panelcontenedor;
-        private Button btnminimizar;
-        private Button btnmaximizar;
-        private MenuStrip menuStrip1;
-        private ToolStripMenuItem Sesion;
-        private ToolStripMenuItem CerrarSesion;
-        private PictureBox pictureBox1;
-        private Button btninventario;
-        private Panel menuinventario;
-        private Button btncategorias;
-        private Button btnproveedores;
+        private DevExpress.XtraBars.Ribbon.RibbonStatusBar ribbonStatusBar;
+        private DevExpress.XtraEditors.PanelControl panelContenedor;
+        private DevExpress.XtraBars.Ribbon.RibbonControl ribbon;
+        private DevExpress.XtraBars.BarButtonItem barButtonusuarios;
+        private DevExpress.XtraBars.BarButtonItem barButtoncategorias;
+        private DevExpress.XtraBars.BarButtonItem barButtomproveedores;
+        private DevExpress.XtraBars.BarStaticItem barStaticusuario;
+        private DevExpress.XtraBars.BarStaticItem barStaticrol;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem4;
+        private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage1;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup1;
+        private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage2;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup2;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup3;
+        private DevExpress.XtraBars.BarStaticItem barStaticItemusuarios;
+        private DevExpress.XtraBars.BarStaticItem barStaticItemrol;
+        private DevExpress.XtraBars.BarButtonItem barButtoncerrarsesion;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem1;
+        private DevExpress.XtraBars.BarButtonItem barButtonclientes;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup4;
     }
 }

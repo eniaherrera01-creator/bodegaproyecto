@@ -50,7 +50,7 @@
             txtcontra.Location = new Point(476, 259);
             txtcontra.Name = "txtcontra";
             txtcontra.Size = new Size(285, 20);
-            txtcontra.TabIndex = 4;
+            txtcontra.TabIndex = 1;
             txtcontra.UseSystemPasswordChar = true;
             // 
             // panel1
@@ -140,7 +140,7 @@
             txtusuario.Multiline = true;
             txtusuario.Name = "txtusuario";
             txtusuario.Size = new Size(285, 28);
-            txtusuario.TabIndex = 12;
+            txtusuario.TabIndex = 0;
             // 
             // label5
             // 
