@@ -12,6 +12,8 @@ namespace bodegaproyecto
     {
         private int selectedUserId = -1;
         private bool permitirSeleccionGrid = false; 
+        private bool enModoEdicion = false; // Variable para controlar el modo de edición
+        private bool enModoNuevo = false; // Variable para controlar el modo de nuevo
 
         public Usuarios()
         {
@@ -81,7 +83,15 @@ namespace bodegaproyecto
 
         private void btnNuevo_Click(object sender, EventArgs e)
         {
-            // desactiva el boton de inhabilitar/habilitar mientras se esta creando un nuevo usuario
+            
+            if (enModoEdicion)
+            {
+                MessageBox.Show("debe guardar o cancelar la edicion actual antes de crear un nuevo usuario.", "aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            
+            enModoNuevo = true; 
+
             permitirSeleccionGrid = false;
             dgvUsuarios.ClearSelection();
             dgvUsuarios.CurrentCell = null;
@@ -135,6 +145,9 @@ namespace bodegaproyecto
                         "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LimpiarFormulario();
                     CargarUsuarios();
+
+                    enModoEdicion = false; // sale del modo edicion
+                    enModoNuevo = false;
                 }
             }
             catch (Exception ex)
@@ -143,6 +156,7 @@ namespace bodegaproyecto
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
+
         }
 
         private string contrasenaOriginal = ""; // Validacion
@@ -150,7 +164,13 @@ namespace bodegaproyecto
         {
             // Habilita el botón de inhabilitar/habilitar al seleccionar un usuario
             permitirSeleccionGrid = true;
-            btnEstado.Enabled = true; 
+            btnEstado.Enabled = true;
+
+            if (enModoNuevo)
+            {
+                MessageBox.Show("debe guardar o cancelar el nuevo usuario antes de editar otro ", "aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             if (dgvUsuarios.SelectedRows.Count == 0)
             {
@@ -158,6 +178,9 @@ namespace bodegaproyecto
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
+            enModoEdicion = true; // entra en modo edicion
+
             DataGridViewRow row = dgvUsuarios.SelectedRows[0];
             selectedUserId = Convert.ToInt32(row.Cells["id_usuario"].Value);
             txtIDUsuario.Text = selectedUserId.ToString();
@@ -170,19 +193,26 @@ namespace bodegaproyecto
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-
+            // mensaje para confirmar si desea inhabilitar o habilitar el usuario seleccionado
             if (!permitirSeleccionGrid || dgvUsuarios.CurrentRow == null)
             {
-                MessageBox.Show("primero debe pressionar 'editar' y Seleccione un usuario.");
+                MessageBox.Show("Primero debe presionar 'Editar' y seleccione un usuario.");
                 return;
             }
 
-            int idUsuario = Convert.ToInt32(
-                dgvUsuarios.SelectedRows[0].Cells["id_usuario"].Value);
+            string estadoActual = dgvUsuarios.SelectedRows[0].Cells["Estado"].Value.ToString();
 
-            string estadoActual = dgvUsuarios.SelectedRows[0]
-                .Cells["Estado"].Value.ToString();
+            // texto dinamico segun el estado actual del usuario
+            string accion = estadoActual == "Activo" ? "inhabilitar" : "habilitar";
 
+            DialogResult resultado = MessageBox.Show($"¿Desea {accion} este usuario?", "Confirmar acción", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (resultado == DialogResult.No)
+            {
+                return;
+            }
+
+            int idUsuario = Convert.ToInt32(dgvUsuarios.SelectedRows[0].Cells["id_usuario"].Value);
             int nuevoEstado = estadoActual == "Activo" ? 0 : 1;
 
             using (SqlConnection con = ConexionBD.ObtenerConexion())
@@ -190,15 +220,15 @@ namespace bodegaproyecto
                 string sql = @"UPDATE Usuario
                        SET Estado = @Estado
                        WHERE id_usuario = @id";
-
                 SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.Parameters.AddWithValue("@Estado", nuevoEstado);
                 cmd.Parameters.AddWithValue("@id", idUsuario);
-
                 cmd.ExecuteNonQuery();
             }
 
-            MessageBox.Show("Estado actualizado correctamente.");
+            string accionPasada = estadoActual == "Activo" ? "inhabilitado" : "habilitado";
+            MessageBox.Show($"Usuario {accionPasada} correctamente.");
+
             CargarUsuarios();
         }
 
@@ -238,7 +268,13 @@ namespace bodegaproyecto
         }
 
         private void btnActualizar_Click(object sender, EventArgs e) { CargarUsuarios(); LimpiarFormulario(); }
-        private void btnCancelar_Click(object sender, EventArgs e) { LimpiarFormulario(); }
+        private void btnCancelar_Click(object sender, EventArgs e) 
+        { 
+           
+            LimpiarFormulario();
+            enModoEdicion = false; // sale del modo edicion
+            enModoNuevo = false;
+        }
         private void txtBuscar_TextChanged(object sender, EventArgs e) { CargarUsuarios(txtBuscar.Text); }
         private void dgvUsuarios_SelectionChanged(object sender, EventArgs e) { }
 
@@ -311,7 +347,9 @@ namespace bodegaproyecto
         private void frmUsuarios_Load(object sender, EventArgs e)
         {
             btnEstado.Enabled = false;
+
         }
 
+       
     }
 }
