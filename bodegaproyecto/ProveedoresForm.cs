@@ -20,43 +20,11 @@ namespace bodegaproyecto
             btnGuardar.Click += BtnGuardar_Click;
             btnCancelar.Click += BtnCancelar_Click;
             btnEliminar.Click += BtnEliminar_Click;
-
-            txtNombre.TextChanged += TxtNombre_TextChanged;
-            txtBuscar.TextChanged += TxtBuscar_TextChanged;
-
-            // Si usas DataGridView, deja esta línea activa:
             dgvProveedores.CellClick += dgvProveedores_CellClick;
-
-            // Si usas DevExpress, comenta la línea de arriba y usa esta:
-            // gridViewProveedores.RowClick += GridViewProveedores_RowClick;
-
-            ConfigurarPlaceholder(txtNombre, "Ej: Distribuidora Norte...");
-            ConfigurarPlaceholder(txtTelefono, "Ej: 9999-1111");
-            ConfigurarPlaceholder(txtCorreo, "Ej: proveedor@gmail.com");
-            ConfigurarPlaceholder(txtDireccion, "Ej: Tegucigalpa...");
-            ConfigurarPlaceholder(txtBuscar, "🔍 Buscar...");
+            txtBuscar.TextChanged += TxtBuscar_TextChanged;
+            txtNombre.TextChanged += TxtNombre_TextChanged;
         }
 
-        private void ConfigurarPlaceholder(TextBox caja, string textoPlaceholder)
-        {
-            caja.Enter += (s, e) =>
-            {
-                if (caja.Text == textoPlaceholder)
-                {
-                    caja.Text = "";
-                    caja.ForeColor = Color.Black;
-                }
-            };
-
-            caja.Leave += (s, e) =>
-            {
-                if (string.IsNullOrWhiteSpace(caja.Text))
-                {
-                    caja.Text = textoPlaceholder;
-                    caja.ForeColor = Color.Gray;
-                }
-            };
-        }
         private void ListarProveedores(string filtro = "")
         {
             try
