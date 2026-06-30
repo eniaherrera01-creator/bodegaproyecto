@@ -89,7 +89,7 @@
             lblTituloForm.ForeColor = Color.White;
             lblTituloForm.Location = new Point(20, 12);
             lblTituloForm.Name = "lblTituloForm";
-            lblTituloForm.Size = new Size(128, 37);
+            lblTituloForm.Size = new Size(102, 30);
             lblTituloForm.TabIndex = 0;
             lblTituloForm.Text = "Usuarios";
             // 
@@ -130,7 +130,7 @@
             lblIDUsuario.ForeColor = Color.FromArgb(80, 80, 80);
             lblIDUsuario.Location = new Point(15, 55);
             lblIDUsuario.Name = "lblIDUsuario";
-            lblIDUsuario.Size = new Size(78, 20);
+            lblIDUsuario.Size = new Size(61, 15);
             lblIDUsuario.TabIndex = 1;
             lblIDUsuario.Text = "ID Usuario";
             // 
@@ -140,7 +140,7 @@
             txtIDUsuario.Enabled = false;
             txtIDUsuario.Location = new Point(15, 73);
             txtIDUsuario.Name = "txtIDUsuario";
-            txtIDUsuario.Size = new Size(275, 27);
+            txtIDUsuario.Size = new Size(275, 23);
             txtIDUsuario.TabIndex = 2;
             txtIDUsuario.Text = "(Automático)";
             // 
@@ -150,7 +150,7 @@
             lblNombre.ForeColor = Color.FromArgb(80, 80, 80);
             lblNombre.Location = new Point(15, 115);
             lblNombre.Name = "lblNombre";
-            lblNombre.Size = new Size(134, 20);
+            lblNombre.Size = new Size(107, 15);
             lblNombre.TabIndex = 3;
             lblNombre.Text = "Nombre Completo";
             // 
@@ -159,8 +159,9 @@
             txtNombre.Location = new Point(15, 133);
             txtNombre.Name = "txtNombre";
             txtNombre.PlaceholderText = "Ingrese nombre completo";
-            txtNombre.Size = new Size(275, 27);
+            txtNombre.Size = new Size(275, 23);
             txtNombre.TabIndex = 4;
+            txtNombre.TextChanged += txtNombre_TextChanged;
             // 
             // lblUsuario
             // 
@@ -168,7 +169,7 @@
             lblUsuario.ForeColor = Color.FromArgb(80, 80, 80);
             lblUsuario.Location = new Point(15, 175);
             lblUsuario.Name = "lblUsuario";
-            lblUsuario.Size = new Size(139, 20);
+            lblUsuario.Size = new Size(110, 15);
             lblUsuario.TabIndex = 5;
             lblUsuario.Text = "Nombre de Usuario";
             // 
@@ -177,7 +178,7 @@
             txtUsuario.Location = new Point(15, 193);
             txtUsuario.Name = "txtUsuario";
             txtUsuario.PlaceholderText = "Ingrese nombre de usuario";
-            txtUsuario.Size = new Size(275, 27);
+            txtUsuario.Size = new Size(275, 23);
             txtUsuario.TabIndex = 6;
             // 
             // lblContrasena
@@ -186,7 +187,7 @@
             lblContrasena.ForeColor = Color.FromArgb(80, 80, 80);
             lblContrasena.Location = new Point(15, 235);
             lblContrasena.Name = "lblContrasena";
-            lblContrasena.Size = new Size(83, 20);
+            lblContrasena.Size = new Size(67, 15);
             lblContrasena.TabIndex = 7;
             lblContrasena.Text = "Contraseña";
             // 
@@ -196,7 +197,7 @@
             txtContrasena.Name = "txtContrasena";
             txtContrasena.PasswordChar = '●';
             txtContrasena.PlaceholderText = "Ingrese contraseña";
-            txtContrasena.Size = new Size(275, 27);
+            txtContrasena.Size = new Size(275, 23);
             txtContrasena.TabIndex = 8;
             // 
             // lblRol
@@ -205,7 +206,7 @@
             lblRol.ForeColor = Color.FromArgb(80, 80, 80);
             lblRol.Location = new Point(15, 295);
             lblRol.Name = "lblRol";
-            lblRol.Size = new Size(31, 20);
+            lblRol.Size = new Size(24, 15);
             lblRol.TabIndex = 9;
             lblRol.Text = "Rol";
             // 
@@ -215,7 +216,7 @@
             cmbRol.Items.AddRange(new object[] { "Administrador", "Cajero", "Supervisor", "Vendedor", "Bodega" });
             cmbRol.Location = new Point(15, 313);
             cmbRol.Name = "cmbRol";
-            cmbRol.Size = new Size(275, 28);
+            cmbRol.Size = new Size(275, 23);
             cmbRol.TabIndex = 10;
             // 
             // btnGuardar
@@ -273,7 +274,7 @@
             lblTituloLista.ForeColor = Color.FromArgb(26, 42, 74);
             lblTituloLista.Location = new Point(15, 15);
             lblTituloLista.Name = "lblTituloLista";
-            lblTituloLista.Size = new Size(172, 28);
+            lblTituloLista.Size = new Size(138, 21);
             lblTituloLista.TabIndex = 0;
             lblTituloLista.Text = "Lista de Usuarios";
             // 
@@ -343,7 +344,7 @@
             txtBuscar.Location = new Point(490, 53);
             txtBuscar.Name = "txtBuscar";
             txtBuscar.PlaceholderText = "Buscar usuario...";
-            txtBuscar.Size = new Size(240, 27);
+            txtBuscar.Size = new Size(240, 23);
             txtBuscar.TabIndex = 5;
             txtBuscar.TextChanged += txtBuscar_TextChanged;
             // 
@@ -389,7 +390,7 @@
             lblTotal.ForeColor = Color.FromArgb(100, 100, 100);
             lblTotal.Location = new Point(15, 575);
             lblTotal.Name = "lblTotal";
-            lblTotal.Size = new Size(115, 20);
+            lblTotal.Size = new Size(92, 15);
             lblTotal.TabIndex = 7;
             lblTotal.Text = "Total usuarios: 0";
             // 

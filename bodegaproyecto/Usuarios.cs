@@ -11,6 +11,7 @@ namespace bodegaproyecto
     public partial class Usuarios : Form
     {
         private int selectedUserId = -1;
+        private bool permitirSeleccionGrid = false; 
 
         public Usuarios()
         {
@@ -80,6 +81,12 @@ namespace bodegaproyecto
 
         private void btnNuevo_Click(object sender, EventArgs e)
         {
+            // desactiva el boton de inhabilitar/habilitar mientras se esta creando un nuevo usuario
+            permitirSeleccionGrid = false;
+            dgvUsuarios.ClearSelection();
+            dgvUsuarios.CurrentCell = null;
+            btnEstado.Enabled = false;
+
             LimpiarFormulario();
             txtNombre.Focus();
         }
@@ -137,10 +144,14 @@ namespace bodegaproyecto
             }
 
         }
-       
+
         private string contrasenaOriginal = ""; // Validacion
         private void btnEditar_Click(object sender, EventArgs e)
         {
+            // Habilita el botón de inhabilitar/habilitar al seleccionar un usuario
+            permitirSeleccionGrid = true;
+            btnEstado.Enabled = true; 
+
             if (dgvUsuarios.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Seleccione un usuario para editar.", "Aviso",
@@ -159,9 +170,10 @@ namespace bodegaproyecto
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            if (dgvUsuarios.SelectedRows.Count == 0)
+
+            if (!permitirSeleccionGrid || dgvUsuarios.CurrentRow == null)
             {
-                MessageBox.Show("Seleccione un usuario.");
+                MessageBox.Show("primero debe pressionar 'editar' y Seleccione un usuario.");
                 return;
             }
 
@@ -249,5 +261,57 @@ namespace bodegaproyecto
                 }
             }
         }
+
+        private string GenerarNombreUsuario(string nombreCompleto)
+        {
+            if (string.IsNullOrWhiteSpace(nombreCompleto))
+                return string.Empty;
+
+            string[] palabras = nombreCompleto.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            if (palabras.Length < 2)
+                return string.Empty;
+
+            string primerNombre = palabras[0];
+            string ApellidoPaterno;
+
+            if (palabras.Length == 2)
+            {
+                ApellidoPaterno = palabras[palabras.Length - 1];
+            }
+            else
+            {
+                ApellidoPaterno = palabras[palabras.Length - 2];
+            }
+            string usuario = primerNombre.Substring(0, 1) + ApellidoPaterno;
+
+            return quitarTildes(usuario).ToLower();
+        }
+
+        private string quitarTildes(string texto)
+        {
+            string textoNormalizado = texto.Normalize(System.Text.NormalizationForm.FormD);
+            var sb = new System.Text.StringBuilder();
+
+            foreach (char c in textoNormalizado)
+            {
+                var categoria = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c);
+                if (categoria != System.Globalization.UnicodeCategory.NonSpacingMark)
+                    sb.Append(c);
+            }
+
+            return sb.ToString().Normalize(System.Text.NormalizationForm.FormC);
+        }
+
+        private void txtNombre_TextChanged(object sender, EventArgs e)
+        {
+            txtUsuario.Text = GenerarNombreUsuario(txtNombre.Text);
+        }
+
+        private void frmUsuarios_Load(object sender, EventArgs e)
+        {
+            btnEstado.Enabled = false;
+        }
+
     }
 }
