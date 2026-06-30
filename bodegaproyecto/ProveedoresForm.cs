@@ -20,7 +20,9 @@ namespace bodegaproyecto
             btnGuardar.Click += BtnGuardar_Click;
             btnCancelar.Click += BtnCancelar_Click;
             btnEliminar.Click += BtnEliminar_Click;
-
+            txtNombre.KeyPress += SoloLetras_KeyPress;
+            txtTelefono.KeyPress += SoloTelefono_KeyPress;
+            txtDireccion.KeyPress += Direccion_KeyPress;
             txtNombre.TextChanged += TxtNombre_TextChanged;
             txtBuscar.TextChanged += TxtBuscar_TextChanged;
 
@@ -56,6 +58,46 @@ namespace bodegaproyecto
                     caja.ForeColor = Color.Gray;
                 }
             };
+        }
+
+        private void SoloLetras_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Permite letras, espacios, borrar, punto y guion
+            if (!char.IsLetter(e.KeyChar) &&
+                !char.IsWhiteSpace(e.KeyChar) &&
+                e.KeyChar != '.' &&
+                e.KeyChar != '-' &&
+                e.KeyChar != (char)Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void SoloTelefono_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Permite números, guion, espacio y borrar
+            if (!char.IsDigit(e.KeyChar) &&
+                e.KeyChar != '-' &&
+                !char.IsWhiteSpace(e.KeyChar) &&
+                e.KeyChar != (char)Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void Direccion_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Permite letras, números, espacios y símbolos comunes de dirección
+            if (!char.IsLetterOrDigit(e.KeyChar) &&
+                !char.IsWhiteSpace(e.KeyChar) &&
+                e.KeyChar != '.' &&
+                e.KeyChar != ',' &&
+                e.KeyChar != '-' &&
+                e.KeyChar != '#' &&
+                e.KeyChar != (char)Keys.Back)
+            {
+                e.Handled = true;
+            }
         }
 
         private void ListarProveedores(string filtro = "")
@@ -118,7 +160,6 @@ namespace bodegaproyecto
             string correo = txtCorreo.Text.Trim();
             string direccion = txtDireccion.Text.Trim();
 
-            // Validar nombre
             if (string.IsNullOrWhiteSpace(nombre) || nombre == "Ej: Distribuidora Norte...")
             {
                 MessageBox.Show("El nombre del proveedor es obligatorio.", "Validación",
@@ -127,7 +168,17 @@ namespace bodegaproyecto
                 return false;
             }
 
-            // Validar teléfono
+            foreach (char c in nombre)
+            {
+                if (!char.IsLetter(c) && !char.IsWhiteSpace(c) && c != '.' && c != '-')
+                {
+                    MessageBox.Show("El nombre del proveedor solo debe contener letras.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtNombre.Focus();
+                    return false;
+                }
+            }
+
             if (string.IsNullOrWhiteSpace(telefono) || telefono == "Ej: 9999-1111")
             {
                 MessageBox.Show("El teléfono del proveedor es obligatorio.", "Validación",
@@ -136,7 +187,25 @@ namespace bodegaproyecto
                 return false;
             }
 
-            // Validar correo
+            foreach (char c in telefono)
+            {
+                if (!char.IsDigit(c) && c != '-' && !char.IsWhiteSpace(c))
+                {
+                    MessageBox.Show("El teléfono solo debe contener números y guion.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtTelefono.Focus();
+                    return false;
+                }
+            }
+
+            if (telefono.Length < 8)
+            {
+                MessageBox.Show("El teléfono debe tener al menos 8 números.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTelefono.Focus();
+                return false;
+            }
+
             if (string.IsNullOrWhiteSpace(correo) || correo == "Ej: proveedor@gmail.com")
             {
                 MessageBox.Show("El correo del proveedor es obligatorio.", "Validación",
@@ -145,7 +214,14 @@ namespace bodegaproyecto
                 return false;
             }
 
-            // Validar dirección
+            if (!correo.Contains("@") || !correo.Contains("."))
+            {
+                MessageBox.Show("Ingrese un correo válido. Ejemplo: proveedor@gmail.com", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtCorreo.Focus();
+                return false;
+            }
+
             if (string.IsNullOrWhiteSpace(direccion) || direccion == "Ej: Tegucigalpa...")
             {
                 MessageBox.Show("La dirección del proveedor es obligatoria.", "Validación",

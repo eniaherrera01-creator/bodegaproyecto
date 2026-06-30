@@ -23,15 +23,92 @@ namespace bodegaproyecto
             txtNombre.TextChanged += TxtNombre_TextChanged;
             dgvCategorias.CellClick += dgvCategorias_CellClick;
 
-            txtNombre.Enter += (s, e) => { if (txtNombre.Text == "Ej: Medicamentos...") { txtNombre.Text = ""; txtNombre.ForeColor = Color.Black; } };
-            txtNombre.Leave += (s, e) => { if (string.IsNullOrWhiteSpace(txtNombre.Text)) { txtNombre.Text = "Ej: Medicamentos..."; txtNombre.ForeColor = Color.Gray; } };
-            txtDescripcion.Enter += (s, e) => { if (txtDescripcion.Text == "Descripción detallada de la categoría...") { txtDescripcion.Text = ""; txtDescripcion.ForeColor = Color.Black; } };
-            txtDescripcion.Leave += (s, e) => { if (string.IsNullOrWhiteSpace(txtDescripcion.Text)) { txtDescripcion.Text = "Descripción detallada de la categoría..."; txtDescripcion.ForeColor = Color.Gray; } };
-            txtBuscar.Enter += (s, e) => { if (txtBuscar.Text == "🔍 Buscar...") { txtBuscar.Text = ""; txtBuscar.ForeColor = Color.Black; } };
-            txtBuscar.Leave += (s, e) => { if (string.IsNullOrWhiteSpace(txtBuscar.Text)) { txtBuscar.Text = "🔍 Buscar..."; txtBuscar.ForeColor = Color.Gray; } };
+            // VALIDACIONES AL ESCRIBIR
+            txtNombre.KeyPress += SoloLetras_KeyPress;
+            txtDescripcion.KeyPress += SoloLetrasDescripcion_KeyPress;
+            txtBuscar.KeyPress += SoloLetrasDescripcion_KeyPress;
+
+            txtNombre.Enter += (s, e) =>
+            {
+                if (txtNombre.Text == "Ej: Medicamentos...")
+                {
+                    txtNombre.Text = "";
+                    txtNombre.ForeColor = Color.Black;
+                }
+            };
+
+            txtNombre.Leave += (s, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(txtNombre.Text))
+                {
+                    txtNombre.Text = "Ej: Medicamentos...";
+                    txtNombre.ForeColor = Color.Gray;
+                }
+            };
+
+            txtDescripcion.Enter += (s, e) =>
+            {
+                if (txtDescripcion.Text == "Descripción detallada de la categoría...")
+                {
+                    txtDescripcion.Text = "";
+                    txtDescripcion.ForeColor = Color.Black;
+                }
+            };
+
+            txtDescripcion.Leave += (s, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(txtDescripcion.Text))
+                {
+                    txtDescripcion.Text = "Descripción detallada de la categoría...";
+                    txtDescripcion.ForeColor = Color.Gray;
+                }
+            };
+
+            txtBuscar.Enter += (s, e) =>
+            {
+                if (txtBuscar.Text == "🔍 Buscar...")
+                {
+                    txtBuscar.Text = "";
+                    txtBuscar.ForeColor = Color.Black;
+                }
+            };
+
+            txtBuscar.Leave += (s, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(txtBuscar.Text))
+                {
+                    txtBuscar.Text = "🔍 Buscar...";
+                    txtBuscar.ForeColor = Color.Gray;
+                }
+            };
+
             txtBuscar.TextChanged += TxtBuscar_TextChanged;
         }
 
+        private void SoloLetras_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Permite letras, espacios y borrar
+            if (!char.IsLetter(e.KeyChar) &&
+                !char.IsWhiteSpace(e.KeyChar) &&
+                e.KeyChar != (char)Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void SoloLetrasDescripcion_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Permite letras, espacios, borrar, punto, coma y guion
+            if (!char.IsLetter(e.KeyChar) &&
+                !char.IsWhiteSpace(e.KeyChar) &&
+                e.KeyChar != '.' &&
+                e.KeyChar != ',' &&
+                e.KeyChar != '-' &&
+                e.KeyChar != (char)Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
         private void ListarCategorias(string filtro = "")
         {
             try
@@ -78,6 +155,17 @@ namespace bodegaproyecto
                 return false;
             }
 
+            foreach (char c in nombre)
+            {
+                if (!char.IsLetter(c) && !char.IsWhiteSpace(c))
+                {
+                    MessageBox.Show("El nombre de la categoría solo debe contener letras.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtNombre.Focus();
+                    return false;
+                }
+            }
+
             if (string.IsNullOrWhiteSpace(desc) || desc == "Descripción detallada de la categoría...")
             {
                 MessageBox.Show("La descripción de la categoría es obligatoria.", "Validación",
@@ -86,9 +174,23 @@ namespace bodegaproyecto
                 return false;
             }
 
+            foreach (char c in desc)
+            {
+                if (!char.IsLetter(c) &&
+                    !char.IsWhiteSpace(c) &&
+                    c != '.' &&
+                    c != ',' &&
+                    c != '-')
+                {
+                    MessageBox.Show("La descripción solo debe contener letras y signos básicos.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtDescripcion.Focus();
+                    return false;
+                }
+            }
+
             return true;
         }
-
 
 
 

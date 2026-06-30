@@ -36,16 +36,9 @@
             lblListaTitulo = new Label();
             txtBuscar = new TextBox();
             dgvProveedores = new DataGridView();
-            colId = new DataGridViewTextBoxColumn();
-            colNombre = new DataGridViewTextBoxColumn();
-            colTelefono = new DataGridViewTextBoxColumn();
-            colCorreo = new DataGridViewTextBoxColumn();
-            colDireccion = new DataGridViewTextBoxColumn();
-
             panelHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvProveedores).BeginInit();
             SuspendLayout();
-
             // 
             // panelHeader
             // 
@@ -55,9 +48,8 @@
             panelHeader.Dock = DockStyle.Top;
             panelHeader.Location = new Point(0, 0);
             panelHeader.Name = "panelHeader";
-            panelHeader.Size = new Size(882, 60);
+            panelHeader.Size = new Size(1222, 60);
             panelHeader.TabIndex = 0;
-
             // 
             // lblTitulo
             // 
@@ -66,22 +58,20 @@
             lblTitulo.ForeColor = Color.White;
             lblTitulo.Location = new Point(15, 15);
             lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(185, 32);
+            lblTitulo.Size = new Size(198, 32);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "🏷️ Proveedores";
-
             // 
             // lblRegistros
             // 
             lblRegistros.BackColor = Color.FromArgb(60, 140, 210);
             lblRegistros.ForeColor = Color.White;
-            lblRegistros.Location = new Point(750, 18);
+            lblRegistros.Location = new Point(1100, 15);
             lblRegistros.Name = "lblRegistros";
             lblRegistros.Size = new Size(110, 25);
             lblRegistros.TabIndex = 1;
             lblRegistros.Text = "0 registros";
             lblRegistros.TextAlign = ContentAlignment.MiddleCenter;
-
             // 
             // lblSeccion
             // 
@@ -93,7 +83,6 @@
             lblSeccion.Size = new Size(164, 20);
             lblSeccion.TabIndex = 1;
             lblSeccion.Text = "DATOS DEL REGISTRO";
-
             // 
             // lblId
             // 
@@ -103,7 +92,6 @@
             lblId.Size = new Size(27, 23);
             lblId.TabIndex = 2;
             lblId.Text = "ID";
-
             // 
             // txtId
             // 
@@ -115,17 +103,15 @@
             txtId.Size = new Size(280, 30);
             txtId.TabIndex = 3;
             txtId.Text = "ID: Automático";
-
             // 
             // lblNombre
             // 
             lblNombre.AutoSize = true;
             lblNombre.Location = new Point(20, 170);
             lblNombre.Name = "lblNombre";
-            lblNombre.Size = new Size(165, 23);
+            lblNombre.Size = new Size(168, 23);
             lblNombre.TabIndex = 4;
             lblNombre.Text = "Nombre proveedor *";
-
             // 
             // txtNombre
             // 
@@ -136,17 +122,15 @@
             txtNombre.Size = new Size(280, 30);
             txtNombre.TabIndex = 5;
             txtNombre.Text = "Ej: Distribuidora Norte...";
-
             // 
             // lblTelefono
             // 
             lblTelefono.AutoSize = true;
             lblTelefono.Location = new Point(20, 230);
             lblTelefono.Name = "lblTelefono";
-            lblTelefono.Size = new Size(75, 23);
+            lblTelefono.Size = new Size(74, 23);
             lblTelefono.TabIndex = 6;
             lblTelefono.Text = "Teléfono";
-
             // 
             // txtTelefono
             // 
@@ -157,7 +141,6 @@
             txtTelefono.Size = new Size(280, 30);
             txtTelefono.TabIndex = 7;
             txtTelefono.Text = "Ej: 9999-1111";
-
             // 
             // lblCorreo
             // 
@@ -167,7 +150,6 @@
             lblCorreo.Size = new Size(62, 23);
             lblCorreo.TabIndex = 8;
             lblCorreo.Text = "Correo";
-
             // 
             // txtCorreo
             // 
@@ -178,17 +160,15 @@
             txtCorreo.Size = new Size(280, 30);
             txtCorreo.TabIndex = 9;
             txtCorreo.Text = "Ej: proveedor@gmail.com";
-
             // 
             // lblDireccion
             // 
             lblDireccion.AutoSize = true;
             lblDireccion.Location = new Point(20, 350);
             lblDireccion.Name = "lblDireccion";
-            lblDireccion.Size = new Size(78, 23);
+            lblDireccion.Size = new Size(81, 23);
             lblDireccion.TabIndex = 10;
             lblDireccion.Text = "Dirección";
-
             // 
             // txtDireccion
             // 
@@ -199,7 +179,6 @@
             txtDireccion.Size = new Size(280, 65);
             txtDireccion.TabIndex = 11;
             txtDireccion.Text = "Ej: Tegucigalpa...";
-
             // 
             // btnGuardar
             // 
@@ -211,7 +190,6 @@
             btnGuardar.TabIndex = 12;
             btnGuardar.Text = "💾 Guardar";
             btnGuardar.UseVisualStyleBackColor = false;
-
             // 
             // btnCancelar
             // 
@@ -223,7 +201,6 @@
             btnCancelar.TabIndex = 13;
             btnCancelar.Text = "✕ Cancelar";
             btnCancelar.UseVisualStyleBackColor = false;
-
             // 
             // btnEliminar
             // 
@@ -236,7 +213,6 @@
             btnEliminar.TabIndex = 14;
             btnEliminar.Text = "🗑 Eliminar seleccionado";
             btnEliminar.UseVisualStyleBackColor = false;
-
             // 
             // lblAlerta
             // 
@@ -249,7 +225,6 @@
             lblAlerta.Text = "Selecciona una fila primero";
             lblAlerta.TextAlign = ContentAlignment.MiddleCenter;
             lblAlerta.Visible = false;
-
             // 
             // lblListaTitulo
             // 
@@ -258,10 +233,9 @@
             lblListaTitulo.ForeColor = Color.FromArgb(28, 114, 187);
             lblListaTitulo.Location = new Point(340, 80);
             lblListaTitulo.Name = "lblListaTitulo";
-            lblListaTitulo.Size = new Size(204, 28);
+            lblListaTitulo.Size = new Size(208, 28);
             lblListaTitulo.TabIndex = 16;
             lblListaTitulo.Text = "Lista de proveedores";
-
             // 
             // txtBuscar
             // 
@@ -271,83 +245,27 @@
             txtBuscar.Size = new Size(520, 30);
             txtBuscar.TabIndex = 17;
             txtBuscar.Text = "🔍 Buscar...";
-
             // 
             // dgvProveedores
             // 
             dgvProveedores.AllowUserToAddRows = false;
             dgvProveedores.AllowUserToDeleteRows = false;
-            dgvProveedores.AutoGenerateColumns = false;
             dgvProveedores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvProveedores.BackgroundColor = Color.White;
             dgvProveedores.ColumnHeadersHeight = 29;
-            dgvProveedores.Columns.AddRange(new DataGridViewColumn[]
-            {
-                colId,
-                colNombre,
-                colTelefono,
-                colCorreo,
-                colDireccion
-            });
             dgvProveedores.Location = new Point(340, 150);
             dgvProveedores.Name = "dgvProveedores";
             dgvProveedores.ReadOnly = true;
             dgvProveedores.RowHeadersVisible = false;
             dgvProveedores.RowHeadersWidth = 51;
             dgvProveedores.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvProveedores.Size = new Size(520, 465);
+            dgvProveedores.Size = new Size(870, 465);
             dgvProveedores.TabIndex = 18;
-
-            // 
-            // colId
-            // 
-            colId.DataPropertyName = "ID";
-            colId.HeaderText = "ID";
-            colId.MinimumWidth = 6;
-            colId.Name = "colId";
-            colId.ReadOnly = true;
-
-            // 
-            // colNombre
-            // 
-            colNombre.DataPropertyName = "Nombre";
-            colNombre.HeaderText = "Nombre";
-            colNombre.MinimumWidth = 6;
-            colNombre.Name = "colNombre";
-            colNombre.ReadOnly = true;
-
-            // 
-            // colTelefono
-            // 
-            colTelefono.DataPropertyName = "Telefono";
-            colTelefono.HeaderText = "Teléfono";
-            colTelefono.MinimumWidth = 6;
-            colTelefono.Name = "colTelefono";
-            colTelefono.ReadOnly = true;
-
-            // 
-            // colCorreo
-            // 
-            colCorreo.DataPropertyName = "Correo";
-            colCorreo.HeaderText = "Correo";
-            colCorreo.MinimumWidth = 6;
-            colCorreo.Name = "colCorreo";
-            colCorreo.ReadOnly = true;
-
-            // 
-            // colDireccion
-            // 
-            colDireccion.DataPropertyName = "Direccion";
-            colDireccion.HeaderText = "Dirección";
-            colDireccion.MinimumWidth = 6;
-            colDireccion.Name = "colDireccion";
-            colDireccion.ReadOnly = true;
-
             // 
             // ProveedoresForm
             // 
             BackColor = Color.White;
-            ClientSize = new Size(882, 630);
+            ClientSize = new Size(1222, 630);
             Controls.Add(panelHeader);
             Controls.Add(lblSeccion);
             Controls.Add(lblId);
@@ -372,7 +290,6 @@
             Name = "ProveedoresForm";
             Text = "Formulario de proveedores";
             Load += ProveedoresForm_Load;
-
             panelHeader.ResumeLayout(false);
             panelHeader.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvProveedores).EndInit();

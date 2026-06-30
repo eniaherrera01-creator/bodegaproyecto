@@ -45,7 +45,7 @@
             panelHeader.Dock = DockStyle.Top;
             panelHeader.Location = new Point(0, 0);
             panelHeader.Name = "panelHeader";
-            panelHeader.Size = new Size(882, 60);
+            panelHeader.Size = new Size(1347, 60);
             panelHeader.TabIndex = 0;
             panelHeader.Paint += panelHeader_Paint;
             // 
@@ -64,7 +64,7 @@
             // 
             lblRegistros.BackColor = Color.FromArgb(60, 140, 210);
             lblRegistros.ForeColor = Color.White;
-            lblRegistros.Location = new Point(750, 18);
+            lblRegistros.Location = new Point(1225, 21);
             lblRegistros.Name = "lblRegistros";
             lblRegistros.Size = new Size(110, 25);
             lblRegistros.TabIndex = 1;
@@ -221,7 +221,7 @@
             dgvCategorias.RowHeadersVisible = false;
             dgvCategorias.RowHeadersWidth = 51;
             dgvCategorias.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvCategorias.Size = new Size(520, 395);
+            dgvCategorias.Size = new Size(995, 395);
             dgvCategorias.TabIndex = 15;
             // 
             // lblSeccion
@@ -238,7 +238,7 @@
             // FrmCategoria
             // 
             BackColor = Color.White;
-            ClientSize = new Size(882, 553);
+            ClientSize = new Size(1347, 553);
             Controls.Add(panelHeader);
             Controls.Add(lblSeccion);
             Controls.Add(lblId);
