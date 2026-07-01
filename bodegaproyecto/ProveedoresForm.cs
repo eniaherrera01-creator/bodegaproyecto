@@ -1,6 +1,8 @@
-﻿using System;
-using System.Data;
+﻿using DevExpress.CodeParser;
+using DevExpress.DataProcessing.InMemoryDataProcessor;
 using Microsoft.Data.SqlClient;
+using System;
+using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -19,7 +21,7 @@ namespace bodegaproyecto
         {
             btnGuardar.Click += BtnGuardar_Click;
             btnCancelar.Click += BtnCancelar_Click;
-            btnEliminar.Click += BtnEliminar_Click;
+
             txtNombre.KeyPress += SoloLetras_KeyPress;
             txtTelefono.KeyPress += SoloTelefono_KeyPress;
             txtDireccion.KeyPress += Direccion_KeyPress;
@@ -111,13 +113,17 @@ namespace bodegaproyecto
                         con.Open();
                     }
 
-                    string query = @"SELECT 
-                                        id_proveedor AS [ID],
-                                        Nombre AS [Nombre],
-                                        Telefono AS [Teléfono],
-                                        Correo AS [Correo],
-                                        Direccion AS [Dirección]
-                                    FROM Proveedor";
+                    string query = @"SELECT
+                    id_proveedor AS[ID],
+                    Nombre AS[Nombre],
+                    Telefono AS[Teléfono],
+                    Correo AS[Correo],
+                    Direccion AS[Dirección],
+                    CASE
+                        WHEN Estado = 1 THEN 'Activo'
+                        ELSE 'Inactivo'
+                    END AS[Estado]
+                 FROM Proveedor";
 
                     if (!string.IsNullOrWhiteSpace(filtro) && filtro != "🔍 Buscar...")
                     {
@@ -425,5 +431,84 @@ namespace bodegaproyecto
         {
 
         }
+
+
+
+        private void btnEstado_Click(object sender, EventArgs e)
+        {
+            if (dgvProveedores.CurrentRow == null)
+            {
+                MessageBox.Show("Seleccione un proveedor.");
+                return;
+            }
+
+            string estadoActual = dgvProveedores.SelectedRows[0].Cells["Estado"].Value.ToString();
+
+            // Texto dinámico según el estado actual del proveedor
+            string accion = estadoActual == "Activo" ? "inhabilitar" : "habilitar";
+
+            DialogResult resultado = MessageBox.Show(
+                $"¿Desea {accion} este proveedor?",
+                "Confirmar acción",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (resultado == DialogResult.No)
+            {
+                return;
+            }
+            int idProveedor = Convert.ToInt32(dgvProveedores.SelectedRows[0].Cells["ID"].Value);
+            int nuevoEstado = estadoActual == "Activo" ? 0 : 1;
+
+            using (SqlConnection con = ConexionBD.ObtenerConexion())
+            {
+                string sql = @"UPDATE Proveedor
+                   SET Estado = @Estado
+                   WHERE id_proveedor = @id";
+
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@Estado", nuevoEstado);
+                cmd.Parameters.AddWithValue("@id", idProveedor);
+
+                cmd.ExecuteNonQuery();
+            }
+
+            string accionPasada = estadoActual == "Activo" ? "inhabilitado" : "habilitado";
+            MessageBox.Show($"Proveedor {accionPasada} correctamente.");
+
+            ListarProveedores();
+        }
+
+        private void dgvProveedores_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            if (dgvProveedores.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Seleccione un proveedor para editar.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DataGridViewRow fila = dgvProveedores.SelectedRows[0];
+
+            txtId.Text = fila.Cells["ID"].Value.ToString();
+            txtNombre.Text = fila.Cells["Nombre"].Value.ToString();
+            txtTelefono.Text = fila.Cells["Teléfono"].Value.ToString();
+            txtCorreo.Text = fila.Cells["Correo"].Value.ToString();
+            txtDireccion.Text = fila.Cells["Dirección"].Value.ToString();
+
+            txtNombre.ForeColor = Color.Black;
+            txtTelefono.ForeColor = Color.Black;
+            txtCorreo.ForeColor = Color.Black;
+            txtDireccion.ForeColor = Color.Black;
+
+            btnGuardar.Enabled = true;
+        }
     }
+
+
 }

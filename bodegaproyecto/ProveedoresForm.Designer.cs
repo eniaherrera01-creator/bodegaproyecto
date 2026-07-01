@@ -31,11 +31,12 @@
             txtDireccion = new TextBox();
             btnGuardar = new Button();
             btnCancelar = new Button();
-            btnEliminar = new Button();
             lblAlerta = new Label();
             lblListaTitulo = new Label();
             txtBuscar = new TextBox();
             dgvProveedores = new DataGridView();
+            btnEstado = new Button();
+            btnEditar = new Button();
             panelHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvProveedores).BeginInit();
             SuspendLayout();
@@ -48,7 +49,7 @@
             panelHeader.Dock = DockStyle.Top;
             panelHeader.Location = new Point(0, 0);
             panelHeader.Name = "panelHeader";
-            panelHeader.Size = new Size(1222, 60);
+            panelHeader.Size = new Size(1319, 60);
             panelHeader.TabIndex = 0;
             // 
             // lblTitulo
@@ -65,10 +66,11 @@
             // lblRegistros
             // 
             lblRegistros.BackColor = Color.FromArgb(60, 140, 210);
+            lblRegistros.Dock = DockStyle.Right;
             lblRegistros.ForeColor = Color.White;
-            lblRegistros.Location = new Point(1100, 15);
+            lblRegistros.Location = new Point(1209, 0);
             lblRegistros.Name = "lblRegistros";
-            lblRegistros.Size = new Size(110, 25);
+            lblRegistros.Size = new Size(110, 60);
             lblRegistros.TabIndex = 1;
             lblRegistros.Text = "0 registros";
             lblRegistros.TextAlign = ContentAlignment.MiddleCenter;
@@ -195,30 +197,18 @@
             // 
             btnCancelar.BackColor = Color.White;
             btnCancelar.FlatStyle = FlatStyle.Flat;
-            btnCancelar.Location = new Point(20, 495);
+            btnCancelar.Location = new Point(20, 503);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(280, 35);
             btnCancelar.TabIndex = 13;
             btnCancelar.Text = "✕ Cancelar";
             btnCancelar.UseVisualStyleBackColor = false;
             // 
-            // btnEliminar
-            // 
-            btnEliminar.BackColor = Color.FromArgb(40, 40, 40);
-            btnEliminar.FlatStyle = FlatStyle.Flat;
-            btnEliminar.ForeColor = Color.White;
-            btnEliminar.Location = new Point(20, 540);
-            btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(280, 35);
-            btnEliminar.TabIndex = 14;
-            btnEliminar.Text = "🗑 Eliminar seleccionado";
-            btnEliminar.UseVisualStyleBackColor = false;
-            // 
             // lblAlerta
             // 
             lblAlerta.BackColor = Color.FromArgb(210, 45, 45);
             lblAlerta.ForeColor = Color.White;
-            lblAlerta.Location = new Point(20, 585);
+            lblAlerta.Location = new Point(20, 631);
             lblAlerta.Name = "lblAlerta";
             lblAlerta.Size = new Size(280, 30);
             lblAlerta.TabIndex = 15;
@@ -259,13 +249,46 @@
             dgvProveedores.RowHeadersVisible = false;
             dgvProveedores.RowHeadersWidth = 51;
             dgvProveedores.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvProveedores.Size = new Size(870, 465);
+            dgvProveedores.Size = new Size(917, 465);
             dgvProveedores.TabIndex = 18;
+            dgvProveedores.CellContentClick += dgvProveedores_CellContentClick;
+            // 
+            // btnEstado
+            // 
+            btnEstado.BackColor = Color.White;
+            btnEstado.Cursor = Cursors.Hand;
+            btnEstado.FlatAppearance.BorderColor = Color.FromArgb(200, 40, 40);
+            btnEstado.FlatStyle = FlatStyle.Flat;
+            btnEstado.ForeColor = Color.Green;
+            btnEstado.Location = new Point(20, 544);
+            btnEstado.Name = "btnEstado";
+            btnEstado.Size = new Size(280, 34);
+            btnEstado.TabIndex = 19;
+            btnEstado.Text = "👤 Estado";
+            btnEstado.UseVisualStyleBackColor = false;
+            btnEstado.Click += btnEstado_Click;
+            // 
+            // btnEditar
+            // 
+            btnEditar.BackColor = Color.White;
+            btnEditar.Cursor = Cursors.Hand;
+            btnEditar.FlatAppearance.BorderColor = Color.FromArgb(180, 180, 180);
+            btnEditar.FlatStyle = FlatStyle.Flat;
+            btnEditar.ForeColor = Color.FromArgb(60, 60, 60);
+            btnEditar.Location = new Point(20, 584);
+            btnEditar.Name = "btnEditar";
+            btnEditar.Size = new Size(280, 34);
+            btnEditar.TabIndex = 20;
+            btnEditar.Text = "✎ Editar";
+            btnEditar.UseVisualStyleBackColor = false;
+            btnEditar.Click += btnEditar_Click;
             // 
             // ProveedoresForm
             // 
             BackColor = Color.White;
-            ClientSize = new Size(1222, 630);
+            ClientSize = new Size(1319, 696);
+            Controls.Add(btnEditar);
+            Controls.Add(btnEstado);
             Controls.Add(panelHeader);
             Controls.Add(lblSeccion);
             Controls.Add(lblId);
@@ -280,7 +303,6 @@
             Controls.Add(txtDireccion);
             Controls.Add(btnGuardar);
             Controls.Add(btnCancelar);
-            Controls.Add(btnEliminar);
             Controls.Add(lblAlerta);
             Controls.Add(lblListaTitulo);
             Controls.Add(txtBuscar);
@@ -313,7 +335,6 @@
         private System.Windows.Forms.TextBox txtDireccion;
         private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Button btnCancelar;
-        private System.Windows.Forms.Button btnEliminar;
         private System.Windows.Forms.Label lblAlerta;
         private System.Windows.Forms.Label lblListaTitulo;
         private System.Windows.Forms.TextBox txtBuscar;
@@ -323,5 +344,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colTelefono;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCorreo;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDireccion;
+        private Button btnEstado;
+        private Button btnEditar;
     }
 }
