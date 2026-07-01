@@ -205,7 +205,8 @@ CREATE TABLE Usuario (
 CREATE TABLE Categoria (
     id_categoria INT IDENTITY(1,1) PRIMARY KEY,
     Nombre_Categoria VARCHAR(100) NOT NULL,
-    Descripcion VARCHAR(200)
+    Descripcion VARCHAR(200),
+    Estado BIT NOT NULL DEFAULT 1
 );
 
 CREATE TABLE Proveedor (
@@ -213,7 +214,8 @@ CREATE TABLE Proveedor (
     Nombre VARCHAR(100) NOT NULL,
     Telefono VARCHAR(20),
     Correo VARCHAR(100),
-    Direccion VARCHAR(200)
+    Direccion VARCHAR(200),
+    Estado BIT NOT NULL DEFAULT 1
 );
 
 
