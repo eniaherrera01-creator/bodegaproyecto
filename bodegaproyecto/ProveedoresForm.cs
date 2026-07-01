@@ -10,11 +10,16 @@ namespace bodegaproyecto
 {
     public partial class ProveedoresForm : Form
     {
+        private bool permitirSeleccionGrid = false;
+    
+
+
         public ProveedoresForm()
         {
             InitializeComponent();
             AsignarEventosManuales();
             ListarProveedores();
+
         }
 
         private void AsignarEventosManuales()
@@ -436,15 +441,14 @@ namespace bodegaproyecto
 
         private void btnEstado_Click(object sender, EventArgs e)
         {
-            if (dgvProveedores.CurrentRow == null)
+            if (!permitirSeleccionGrid || dgvProveedores.CurrentRow == null)
             {
-                MessageBox.Show("Seleccione un proveedor.");
+                MessageBox.Show("Primero debe presionar 'Editar' y seleccionar un proveedor.");
                 return;
             }
 
             string estadoActual = dgvProveedores.SelectedRows[0].Cells["Estado"].Value.ToString();
 
-            // Texto dinámico según el estado actual del proveedor
             string accion = estadoActual == "Activo" ? "inhabilitar" : "habilitar";
 
             DialogResult resultado = MessageBox.Show(
@@ -454,27 +458,27 @@ namespace bodegaproyecto
                 MessageBoxIcon.Question);
 
             if (resultado == DialogResult.No)
-            {
                 return;
-            }
+
             int idProveedor = Convert.ToInt32(dgvProveedores.SelectedRows[0].Cells["ID"].Value);
             int nuevoEstado = estadoActual == "Activo" ? 0 : 1;
 
             using (SqlConnection con = ConexionBD.ObtenerConexion())
             {
                 string sql = @"UPDATE Proveedor
-                   SET Estado = @Estado
-                   WHERE id_proveedor = @id";
+                       SET Estado = @Estado
+                       WHERE id_proveedor = @id";
 
                 SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.Parameters.AddWithValue("@Estado", nuevoEstado);
                 cmd.Parameters.AddWithValue("@id", idProveedor);
-
                 cmd.ExecuteNonQuery();
             }
 
-            string accionPasada = estadoActual == "Activo" ? "inhabilitado" : "habilitado";
-            MessageBox.Show($"Proveedor {accionPasada} correctamente.");
+            MessageBox.Show($"Proveedor {(estadoActual == "Activo" ? "inhabilitado" : "habilitado")} correctamente.");
+
+            permitirSeleccionGrid = false;
+            btnEstado.Enabled = false;
 
             ListarProveedores();
         }
@@ -493,6 +497,9 @@ namespace bodegaproyecto
                 return;
             }
 
+            permitirSeleccionGrid = true;
+            btnEstado.Enabled = true;
+
             DataGridViewRow fila = dgvProveedores.SelectedRows[0];
 
             txtId.Text = fila.Cells["ID"].Value.ToString();
@@ -507,6 +514,11 @@ namespace bodegaproyecto
             txtDireccion.ForeColor = Color.Black;
 
             btnGuardar.Enabled = true;
+        }
+
+        private void btnCancelar_Click_1(object sender, EventArgs e)
+        {
+         
         }
     }
 

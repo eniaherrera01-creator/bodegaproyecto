@@ -7,7 +7,11 @@ using System.Windows.Forms;
 namespace bodegaproyecto
 {
     public partial class FrmCategoria : Form
+
+
     {
+        private bool permitirCambioEstado = false;
+
         public FrmCategoria()
         {
             InitializeComponent();
@@ -19,7 +23,7 @@ namespace bodegaproyecto
         {
             btnGuardar.Click += BtnGuardar_Click;
             btnCancelar.Click += BtnCancelar_Click;
-            btnEliminar.Click += BtnEliminar_Click;
+
             txtNombre.TextChanged += TxtNombre_TextChanged;
             dgvCategorias.CellClick += dgvCategorias_CellClick;
 
@@ -115,11 +119,20 @@ namespace bodegaproyecto
             {
                 using (SqlConnection con = ConexionBD.ObtenerConexion())
                 {
-                    // Consulta adaptada exactamente a las 3 columnas de tu diagrama
-                    string query = "SELECT id_categoria AS [ID], Nombre_Categoria AS [Nombre Categoria], Descripcion AS [Descripción] FROM Categoria";
+                    string query = @"SELECT
+                            id_categoria AS [ID],
+                            Nombre_Categoria AS [Nombre Categoria],
+                            Descripcion AS [Descripción],
+                            CASE
+                                WHEN Estado = 1 THEN 'Activo'
+                                ELSE 'Inactivo'
+                            END AS [Estado]
+                         FROM Categoria";
+
                     if (!string.IsNullOrEmpty(filtro))
                     {
-                        query += " WHERE Nombre_Categoria LIKE @filtro OR Descripcion LIKE @filtro";
+                        query += @" WHERE Nombre_Categoria LIKE @filtro
+                        OR Descripcion LIKE @filtro";
                     }
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
@@ -130,7 +143,11 @@ namespace bodegaproyecto
                         SqlDataAdapter da = new SqlDataAdapter(cmd);
                         DataTable dt = new DataTable();
                         da.Fill(dt);
+
                         dgvCategorias.DataSource = dt;
+
+                        // Si no quieres mostrar el ID
+                        dgvCategorias.Columns["ID"].Visible = false;
 
                         lblRegistros.Text = $"{dt.Rows.Count} registros";
                     }
@@ -138,7 +155,8 @@ namespace bodegaproyecto
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar datos: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al cargar datos: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -338,6 +356,88 @@ namespace bodegaproyecto
         }
 
         private void btnGuardar_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEstado_Click(object sender, EventArgs e)
+        {
+            if (!permitirCambioEstado)
+            {
+                MessageBox.Show("Primero debe presionar el botón Editar.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (dgvCategorias.CurrentRow == null)
+            {
+                MessageBox.Show("Seleccione una categoría.");
+                return;
+            }
+
+            string estadoActual = dgvCategorias.SelectedRows[0].Cells["Estado"].Value.ToString();
+
+            // Texto dinámico según el estado actual de la categoría
+            string accion = estadoActual == "Activo" ? "inhabilitar" : "habilitar";
+
+            DialogResult resultado = MessageBox.Show(
+                $"¿Desea {accion} esta categoría?",
+                "Confirmar acción",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (resultado == DialogResult.No)
+            {
+                return;
+            }
+
+            int idCategoria = Convert.ToInt32(dgvCategorias.SelectedRows[0].Cells["ID"].Value);
+            int nuevoEstado = estadoActual == "Activo" ? 0 : 1;
+
+            using (SqlConnection con = ConexionBD.ObtenerConexion())
+            {
+                string sql = @"UPDATE Categoria
+                       SET Estado = @Estado
+                       WHERE id_categoria = @id";
+
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@Estado", nuevoEstado);
+                cmd.Parameters.AddWithValue("@id", idCategoria);
+
+                cmd.ExecuteNonQuery();
+            }
+
+            string accionPasada = estadoActual == "Activo" ? "inhabilitada" : "habilitada";
+            MessageBox.Show($"Categoría {accionPasada} correctamente.");
+
+            ListarCategorias();
+
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            permitirCambioEstado = true;
+
+            if (dgvCategorias.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Seleccione una categoría para editar.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DataGridViewRow fila = dgvCategorias.SelectedRows[0];
+
+            txtId.Text = fila.Cells["ID"].Value.ToString();
+            txtNombre.Text = fila.Cells["Nombre Categoria"].Value.ToString();
+            txtDescripcion.Text = fila.Cells["Descripción"].Value.ToString();
+
+            txtNombre.ForeColor = Color.Black;
+            txtDescripcion.ForeColor = Color.Black;
+
+            btnGuardar.Enabled = true;
+        }
+
+        private void btnCancelar_Click_1(object sender, EventArgs e)
         {
 
         }

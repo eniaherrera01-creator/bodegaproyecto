@@ -27,12 +27,13 @@
             txtDescripcion = new TextBox();
             btnGuardar = new Button();
             btnCancelar = new Button();
-            btnEliminar = new Button();
             lblAlerta = new Label();
             lblListaTitulo = new Label();
             txtBuscar = new TextBox();
             dgvCategorias = new DataGridView();
             lblSeccion = new Label();
+            btnEstado = new Button();
+            btnEditar = new Button();
             panelHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvCategorias).BeginInit();
             SuspendLayout();
@@ -45,7 +46,7 @@
             panelHeader.Dock = DockStyle.Top;
             panelHeader.Location = new Point(0, 0);
             panelHeader.Name = "panelHeader";
-            panelHeader.Size = new Size(1347, 60);
+            panelHeader.Size = new Size(1382, 60);
             panelHeader.TabIndex = 0;
             panelHeader.Paint += panelHeader_Paint;
             // 
@@ -63,10 +64,11 @@
             // lblRegistros
             // 
             lblRegistros.BackColor = Color.FromArgb(60, 140, 210);
+            lblRegistros.Dock = DockStyle.Right;
             lblRegistros.ForeColor = Color.White;
-            lblRegistros.Location = new Point(1225, 21);
+            lblRegistros.Location = new Point(1272, 0);
             lblRegistros.Name = "lblRegistros";
-            lblRegistros.Size = new Size(110, 25);
+            lblRegistros.Size = new Size(110, 60);
             lblRegistros.TabIndex = 1;
             lblRegistros.Text = "0 registros";
             lblRegistros.TextAlign = ContentAlignment.MiddleCenter;
@@ -163,24 +165,13 @@
             btnCancelar.TabIndex = 10;
             btnCancelar.Text = "✕ Cancelar";
             btnCancelar.UseVisualStyleBackColor = false;
-            // 
-            // btnEliminar
-            // 
-            btnEliminar.BackColor = Color.FromArgb(40, 40, 40);
-            btnEliminar.FlatStyle = FlatStyle.Flat;
-            btnEliminar.ForeColor = Color.White;
-            btnEliminar.Location = new Point(20, 460);
-            btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(280, 35);
-            btnEliminar.TabIndex = 11;
-            btnEliminar.Text = "🗑 Eliminar seleccionado";
-            btnEliminar.UseVisualStyleBackColor = false;
+            btnCancelar.Click += btnCancelar_Click_1;
             // 
             // lblAlerta
             // 
             lblAlerta.BackColor = Color.FromArgb(210, 45, 45);
             lblAlerta.ForeColor = Color.White;
-            lblAlerta.Location = new Point(20, 510);
+            lblAlerta.Location = new Point(20, 543);
             lblAlerta.Name = "lblAlerta";
             lblAlerta.Size = new Size(280, 30);
             lblAlerta.TabIndex = 12;
@@ -212,8 +203,10 @@
             // 
             dgvCategorias.AllowUserToAddRows = false;
             dgvCategorias.AllowUserToDeleteRows = false;
+            dgvCategorias.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             dgvCategorias.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvCategorias.BackgroundColor = Color.White;
+            dgvCategorias.BorderStyle = BorderStyle.None;
             dgvCategorias.ColumnHeadersHeight = 29;
             dgvCategorias.Location = new Point(340, 150);
             dgvCategorias.Name = "dgvCategorias";
@@ -235,10 +228,42 @@
             lblSeccion.TabIndex = 1;
             lblSeccion.Text = "DATOS DEL REGISTRO";
             // 
+            // btnEstado
+            // 
+            btnEstado.BackColor = Color.White;
+            btnEstado.Cursor = Cursors.Hand;
+            btnEstado.FlatAppearance.BorderColor = Color.FromArgb(200, 40, 40);
+            btnEstado.FlatStyle = FlatStyle.Flat;
+            btnEstado.ForeColor = Color.Green;
+            btnEstado.Location = new Point(20, 456);
+            btnEstado.Name = "btnEstado";
+            btnEstado.Size = new Size(280, 34);
+            btnEstado.TabIndex = 20;
+            btnEstado.Text = "👤 Estado";
+            btnEstado.UseVisualStyleBackColor = false;
+            btnEstado.Click += btnEstado_Click;
+            // 
+            // btnEditar
+            // 
+            btnEditar.BackColor = Color.White;
+            btnEditar.Cursor = Cursors.Hand;
+            btnEditar.FlatAppearance.BorderColor = Color.FromArgb(180, 180, 180);
+            btnEditar.FlatStyle = FlatStyle.Flat;
+            btnEditar.ForeColor = Color.FromArgb(60, 60, 60);
+            btnEditar.Location = new Point(20, 496);
+            btnEditar.Name = "btnEditar";
+            btnEditar.Size = new Size(280, 34);
+            btnEditar.TabIndex = 21;
+            btnEditar.Text = "✎ Editar";
+            btnEditar.UseVisualStyleBackColor = false;
+            btnEditar.Click += btnEditar_Click;
+            // 
             // FrmCategoria
             // 
             BackColor = Color.White;
-            ClientSize = new Size(1347, 553);
+            ClientSize = new Size(1382, 614);
+            Controls.Add(btnEditar);
+            Controls.Add(btnEstado);
             Controls.Add(panelHeader);
             Controls.Add(lblSeccion);
             Controls.Add(lblId);
@@ -250,7 +275,6 @@
             Controls.Add(txtDescripcion);
             Controls.Add(btnGuardar);
             Controls.Add(btnCancelar);
-            Controls.Add(btnEliminar);
             Controls.Add(lblAlerta);
             Controls.Add(lblListaTitulo);
             Controls.Add(txtBuscar);
@@ -258,6 +282,7 @@
             Font = new Font("Segoe UI", 10F);
             FormBorderStyle = FormBorderStyle.None;
             Name = "FrmCategoria";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Formulario de categoría";
             Load += FrmCategoria_Load;
             panelHeader.ResumeLayout(false);
@@ -283,11 +308,12 @@
         private System.Windows.Forms.TextBox txtDescripcion;
         private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Button btnCancelar;
-        private System.Windows.Forms.Button btnEliminar;
         private System.Windows.Forms.Label lblAlerta;
         private System.Windows.Forms.Label lblListaTitulo;
         private System.Windows.Forms.TextBox txtBuscar;
         private System.Windows.Forms.DataGridView dgvCategorias;
         private Label lblSeccion;
+        private Button btnEstado;
+        private Button btnEditar;
     }
 }

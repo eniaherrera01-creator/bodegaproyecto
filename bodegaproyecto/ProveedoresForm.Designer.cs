@@ -203,6 +203,7 @@
             btnCancelar.TabIndex = 13;
             btnCancelar.Text = "✕ Cancelar";
             btnCancelar.UseVisualStyleBackColor = false;
+            btnCancelar.Click += btnCancelar_Click_1;
             // 
             // lblAlerta
             // 
@@ -240,8 +241,10 @@
             // 
             dgvProveedores.AllowUserToAddRows = false;
             dgvProveedores.AllowUserToDeleteRows = false;
+            dgvProveedores.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             dgvProveedores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvProveedores.BackgroundColor = Color.White;
+            dgvProveedores.BorderStyle = BorderStyle.None;
             dgvProveedores.ColumnHeadersHeight = 29;
             dgvProveedores.Location = new Point(340, 150);
             dgvProveedores.Name = "dgvProveedores";
@@ -310,6 +313,7 @@
             Font = new Font("Segoe UI", 10F);
             FormBorderStyle = FormBorderStyle.None;
             Name = "ProveedoresForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Formulario de proveedores";
             Load += ProveedoresForm_Load;
             panelHeader.ResumeLayout(false);
