@@ -112,6 +112,21 @@ namespace bodegaproyecto
                 return;
             }
 
+            // Validar que el nombre solo contenga letras y espacios
+            foreach (char c in txtNombre.Text)
+            {
+                if (!char.IsLetter(c) && c != ' ')
+                {
+                    MessageBox.Show("El nombre solo puede contener letras.",
+                        "Validación",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    txtNombre.Focus();
+                    return;
+                }
+            }
+
             // VALIDAR CONTRASEÑA
             if (selectedUserId == -1 || txtContrasena.Text != contrasenaOriginal)
             {
