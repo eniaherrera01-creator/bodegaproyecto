@@ -173,6 +173,7 @@
             label7.Size = new Size(215, 40);
             label7.TabIndex = 11;
             label7.Text = "Iniciar Sesión";
+        
             // 
             // Form1
             // 
