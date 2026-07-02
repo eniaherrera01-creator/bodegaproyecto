@@ -42,15 +42,15 @@
             barStaticrol = new DevExpress.XtraBars.BarStaticItem();
             barButtonItem4 = new DevExpress.XtraBars.BarButtonItem();
             barButtonclientes = new DevExpress.XtraBars.BarButtonItem();
+            barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPage2 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPageGroup3 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            panelContenedor = new DevExpress.XtraEditors.PanelControl();
             ribbonPageGroup5 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
+            panelContenedor = new DevExpress.XtraEditors.PanelControl();
             ((System.ComponentModel.ISupportInitialize)ribbon).BeginInit();
             ((System.ComponentModel.ISupportInitialize)panelContenedor).BeginInit();
             SuspendLayout();
@@ -160,6 +160,15 @@
             barButtonclientes.ImageOptions.Image = (Image)resources.GetObject("barButtonclientes.ImageOptions.Image");
             barButtonclientes.Name = "barButtonclientes";
             barButtonclientes.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            barButtonclientes.ItemClick += barButtonclientes_ItemClick;
+            // 
+            // barButtonItem2
+            // 
+            barButtonItem2.Caption = "Productos";
+            barButtonItem2.Id = 19;
+            barButtonItem2.ImageOptions.Image = (Image)resources.GetObject("barButtonItem2.ImageOptions.Image");
+            barButtonItem2.Name = "barButtonItem2";
+            barButtonItem2.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
             // 
             // ribbonPage1
             // 
@@ -193,6 +202,11 @@
             ribbonPageGroup3.ItemLinks.Add(barButtomproveedores);
             ribbonPageGroup3.Name = "ribbonPageGroup3";
             // 
+            // ribbonPageGroup5
+            // 
+            ribbonPageGroup5.ItemLinks.Add(barButtonItem2);
+            ribbonPageGroup5.Name = "ribbonPageGroup5";
+            // 
             // panelContenedor
             // 
             panelContenedor.Dock = DockStyle.Fill;
@@ -201,19 +215,6 @@
             panelContenedor.Size = new Size(1013, 244);
             panelContenedor.TabIndex = 2;
             panelContenedor.Paint += panelContenedor_Paint;
-            // 
-            // ribbonPageGroup5
-            // 
-            ribbonPageGroup5.ItemLinks.Add(barButtonItem2);
-            ribbonPageGroup5.Name = "ribbonPageGroup5";
-            // 
-            // barButtonItem2
-            // 
-            barButtonItem2.Caption = "Productos";
-            barButtonItem2.Id = 19;
-            barButtonItem2.ImageOptions.Image = (Image)resources.GetObject("barButtonItem2.ImageOptions.Image");
-            barButtonItem2.Name = "barButtonItem2";
-            barButtonItem2.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
             // 
             // menu
             // 

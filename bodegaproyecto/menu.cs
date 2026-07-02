@@ -168,12 +168,27 @@ namespace bodegaproyecto
 
         private void ribbon_Click(object sender, EventArgs e)
         {
-           
+
         }
 
         private void ribbonStatusBar_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void barButtonclientes_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            Clientes frm = new Clientes();
+
+            frm.TopLevel = false;
+            frm.FormBorderStyle = FormBorderStyle.None;
+            frm.Dock = DockStyle.Fill;
+
+            panelContenedor.Controls.Clear();
+
+            panelContenedor.Controls.Add(frm);
+
+            frm.Show();
         }
     }
 }
