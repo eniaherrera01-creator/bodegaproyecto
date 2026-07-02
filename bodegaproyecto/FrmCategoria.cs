@@ -298,17 +298,7 @@ namespace bodegaproyecto
 
         private void dgvCategorias_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0)
-            {
-                DataGridViewRow fila = dgvCategorias.Rows[e.RowIndex];
-                txtId.Text = fila.Cells["ID"].Value.ToString();
-                txtId.Visible = false;
-                txtNombre.Text = fila.Cells["Nombre Categoria"].Value.ToString();
-                txtNombre.ForeColor = Color.Black;
-                txtDescripcion.Text = fila.Cells["Descripción"].Value.ToString();
-                txtDescripcion.ForeColor = Color.Black;
-                lblAlerta.Visible = false;
-            }
+           
         }
 
         private void TxtNombre_TextChanged(object sender, EventArgs e)

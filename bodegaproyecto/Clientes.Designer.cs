@@ -78,9 +78,9 @@ namespace bodegaproyecto
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             pnlHeader = new Panel();
             lblTituloForm = new Label();
             pnlIzquierdo = new Panel();
@@ -185,6 +185,7 @@ namespace bodegaproyecto
             btnGuardar.TabIndex = 24;
             btnGuardar.Text = "💾  Guardar";
             btnGuardar.UseVisualStyleBackColor = false;
+            btnGuardar.Click += btnGuardar_Click_1;
             // 
             // btnCancelar
             // 
@@ -199,6 +200,7 @@ namespace bodegaproyecto
             btnCancelar.TabIndex = 25;
             btnCancelar.Text = "✖  Cancelar";
             btnCancelar.UseVisualStyleBackColor = false;
+            btnCancelar.Click += btnCancelar_Click;
             // 
             // lblTituloDatos
             // 
@@ -344,6 +346,7 @@ namespace bodegaproyecto
             txtCorreo.PlaceholderText = "Ingrese correo electrónico";
             txtCorreo.Size = new Size(293, 27);
             txtCorreo.TabIndex = 14;
+            txtCorreo.TextChanged += txtCorreo_TextChanged;
             // 
             // lblDireccion
             // 
@@ -427,7 +430,7 @@ namespace bodegaproyecto
             btnNuevo.TabIndex = 1;
             btnNuevo.Text = "+ Nuevo";
             btnNuevo.UseVisualStyleBackColor = false;
-            btnNuevo.Click += btnNuevo_Click;
+            btnNuevo.Click += btnNuevo_Click_1;
             // 
             // btnEditar
             // 
@@ -482,6 +485,7 @@ namespace bodegaproyecto
             txtBuscar.Location = new Point(449, 74);
             txtBuscar.Margin = new Padding(3, 4, 3, 4);
             txtBuscar.Name = "txtBuscar";
+            txtBuscar.PlaceholderText = "Buscar Clientes...";
             txtBuscar.Size = new Size(240, 27);
             txtBuscar.TabIndex = 5;
             txtBuscar.TextChanged += txtBuscar_TextChanged;
@@ -490,22 +494,22 @@ namespace bodegaproyecto
             // 
             dgvClientes.AllowUserToAddRows = false;
             dgvClientes.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle4.BackColor = Color.FromArgb(248, 250, 252);
-            dgvClientes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(248, 250, 252);
+            dgvClientes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dgvClientes.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvClientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvClientes.BackgroundColor = Color.White;
             dgvClientes.BorderStyle = BorderStyle.None;
             dgvClientes.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvClientes.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = Color.FromArgb(26, 42, 74);
-            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            dataGridViewCellStyle5.ForeColor = Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = Color.FromArgb(26, 42, 74);
-            dataGridViewCellStyle5.SelectionForeColor = Color.White;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            dgvClientes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(26, 42, 74);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(26, 42, 74);
+            dataGridViewCellStyle2.SelectionForeColor = Color.White;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dgvClientes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvClientes.ColumnHeadersHeight = 40;
             dgvClientes.EnableHeadersVisualStyles = false;
             dgvClientes.Font = new Font("Segoe UI", 9F);
@@ -517,15 +521,14 @@ namespace bodegaproyecto
             dgvClientes.ReadOnly = true;
             dgvClientes.RowHeadersVisible = false;
             dgvClientes.RowHeadersWidth = 51;
-            dataGridViewCellStyle6.SelectionBackColor = Color.FromArgb(210, 227, 252);
-            dataGridViewCellStyle6.SelectionForeColor = Color.Black;
-            dgvClientes.RowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(210, 227, 252);
+            dataGridViewCellStyle3.SelectionForeColor = Color.Black;
+            dgvClientes.RowsDefaultCellStyle = dataGridViewCellStyle3;
             dgvClientes.RowTemplate.Height = 35;
             dgvClientes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvClientes.Size = new Size(941, 461);
             dgvClientes.TabIndex = 6;
-            dgvClientes.CellContentClick += dgvClientes_CellContentClick;
-            dgvClientes.SelectionChanged += dgvClientes_SelectionChanged;
+            dgvClientes.CellContentClick += dgvClientes_CellContentClick_1;
             // 
             // Clientes
             // 
@@ -542,6 +545,7 @@ namespace bodegaproyecto
             Name = "Clientes";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Clientes";
+            Load += Clientes_Load_1;
             pnlHeader.ResumeLayout(false);
             pnlHeader.PerformLayout();
             pnlIzquierdo.ResumeLayout(false);
@@ -553,50 +557,9 @@ namespace bodegaproyecto
 
         }
 
-        private void btnGuardar_Click(object sender, EventArgs e)
-        {
 
-        }
 
-        private void btnCancelar_Click(object sender, EventArgs e)
-        {
 
-        }
-
-        private void btnNuevo_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnEditar_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnEstado_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnActualizar_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtBuscar_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dgvClientes_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void dgvClientes_SelectionChanged(object sender, EventArgs e)
-        {
-
-        }
 
         #endregion
 

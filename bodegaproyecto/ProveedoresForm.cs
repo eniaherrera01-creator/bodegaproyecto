@@ -362,23 +362,6 @@ namespace bodegaproyecto
 
         private void dgvProveedores_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0)
-            {
-                DataGridViewRow fila = dgvProveedores.Rows[e.RowIndex];
-
-                txtId.Text = fila.Cells["ID"].Value.ToString();
-                txtNombre.Text = fila.Cells["Nombre"].Value.ToString();
-                txtTelefono.Text = fila.Cells["Teléfono"].Value.ToString();
-                txtCorreo.Text = fila.Cells["Correo"].Value.ToString();
-                txtDireccion.Text = fila.Cells["Dirección"].Value.ToString();
-
-                txtNombre.ForeColor = Color.Black;
-                txtTelefono.ForeColor = Color.Black;
-                txtCorreo.ForeColor = Color.Black;
-                txtDireccion.ForeColor = Color.Black;
-
-                lblAlerta.Visible = false;
-            }
         }
 
         private void TxtBuscar_TextChanged(object sender, EventArgs e)
