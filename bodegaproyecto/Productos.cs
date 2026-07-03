@@ -154,7 +154,7 @@ namespace bodegaproyecto
 
                     dgvproductos.DataSource = dt;
 
-                    // Cambiar títulos de las columnas
+                    
                     dgvproductos.Columns["id_producto"].HeaderText = "ID";
                     dgvproductos.Columns["Nombre_Producto"].HeaderText = "Nombre del Producto";
                     dgvproductos.Columns["Descripcion"].HeaderText = "Descripción";
