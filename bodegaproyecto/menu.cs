@@ -190,5 +190,11 @@ namespace bodegaproyecto
 
             frm.Show();
         }
+
+        private void barButtonItem2_ItemClick_1(object sender, ItemClickEventArgs e)
+        {
+            Productos frm = new Productos();
+            frm.ShowDialog();
+        }
     }
 }

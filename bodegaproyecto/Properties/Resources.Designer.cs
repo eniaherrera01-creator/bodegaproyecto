@@ -63,6 +63,16 @@ namespace bodegaproyecto.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_producto_30 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-producto-30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap WhatsApp_Image_2026_06_19_at_1_34_05_PM_removebg_preview {
             get {
                 object obj = ResourceManager.GetObject("WhatsApp_Image_2026-06-19_at_1.34.05_PM-removebg-preview", resourceCulture);

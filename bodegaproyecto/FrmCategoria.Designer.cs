@@ -46,7 +46,7 @@
             panelHeader.Dock = DockStyle.Top;
             panelHeader.Location = new Point(0, 0);
             panelHeader.Name = "panelHeader";
-            panelHeader.Size = new Size(1382, 60);
+            panelHeader.Size = new Size(1370, 60);
             panelHeader.TabIndex = 0;
             panelHeader.Paint += panelHeader_Paint;
             // 
@@ -57,7 +57,7 @@
             lblTitulo.ForeColor = Color.White;
             lblTitulo.Location = new Point(15, 15);
             lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(305, 32);
+            lblTitulo.Size = new Size(233, 25);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "🏷️ Gestión de Categorías";
             // 
@@ -66,7 +66,7 @@
             lblRegistros.BackColor = Color.FromArgb(60, 140, 210);
             lblRegistros.Dock = DockStyle.Right;
             lblRegistros.ForeColor = Color.White;
-            lblRegistros.Location = new Point(1272, 0);
+            lblRegistros.Location = new Point(1260, 0);
             lblRegistros.Name = "lblRegistros";
             lblRegistros.Size = new Size(110, 60);
             lblRegistros.TabIndex = 1;
@@ -78,7 +78,7 @@
             lblId.AutoSize = true;
             lblId.Location = new Point(20, 110);
             lblId.Name = "lblId";
-            lblId.Size = new Size(27, 23);
+            lblId.Size = new Size(23, 19);
             lblId.TabIndex = 2;
             lblId.Text = "ID";
             // 
@@ -89,7 +89,7 @@
             txtId.Location = new Point(20, 130);
             txtId.Name = "txtId";
             txtId.ReadOnly = true;
-            txtId.Size = new Size(280, 30);
+            txtId.Size = new Size(280, 25);
             txtId.TabIndex = 3;
             txtId.Text = "ID: Automático";
             // 
@@ -98,7 +98,7 @@
             lblNombre.AutoSize = true;
             lblNombre.Location = new Point(20, 170);
             lblNombre.Name = "lblNombre";
-            lblNombre.Size = new Size(161, 23);
+            lblNombre.Size = new Size(129, 19);
             lblNombre.TabIndex = 4;
             lblNombre.Text = "Nombre categoría *";
             // 
@@ -119,7 +119,7 @@
             lblContadorCaracteres.ForeColor = Color.Gray;
             lblContadorCaracteres.Location = new Point(275, 225);
             lblContadorCaracteres.Name = "lblContadorCaracteres";
-            lblContadorCaracteres.Size = new Size(38, 19);
+            lblContadorCaracteres.Size = new Size(29, 13);
             lblContadorCaracteres.TabIndex = 6;
             lblContadorCaracteres.Text = "0/80";
             // 
@@ -128,7 +128,7 @@
             lblDescripcion.AutoSize = true;
             lblDescripcion.Location = new Point(20, 245);
             lblDescripcion.Name = "lblDescripcion";
-            lblDescripcion.Size = new Size(98, 23);
+            lblDescripcion.Size = new Size(79, 19);
             lblDescripcion.TabIndex = 7;
             lblDescripcion.Text = "Descripción";
             // 
@@ -186,7 +186,7 @@
             lblListaTitulo.ForeColor = Color.FromArgb(28, 114, 187);
             lblListaTitulo.Location = new Point(340, 80);
             lblListaTitulo.Name = "lblListaTitulo";
-            lblListaTitulo.Size = new Size(189, 28);
+            lblListaTitulo.Size = new Size(151, 21);
             lblListaTitulo.TabIndex = 13;
             lblListaTitulo.Text = "Lista de categorías";
             // 
@@ -195,7 +195,7 @@
             txtBuscar.ForeColor = Color.Gray;
             txtBuscar.Location = new Point(340, 115);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(520, 30);
+            txtBuscar.Size = new Size(520, 25);
             txtBuscar.TabIndex = 14;
             txtBuscar.Text = "🔍 Buscar...";
             // 
@@ -224,7 +224,7 @@
             lblSeccion.ForeColor = Color.FromArgb(70, 130, 180);
             lblSeccion.Location = new Point(20, 80);
             lblSeccion.Name = "lblSeccion";
-            lblSeccion.Size = new Size(164, 20);
+            lblSeccion.Size = new Size(131, 15);
             lblSeccion.TabIndex = 1;
             lblSeccion.Text = "DATOS DEL REGISTRO";
             // 
@@ -261,7 +261,7 @@
             // FrmCategoria
             // 
             BackColor = Color.White;
-            ClientSize = new Size(1382, 614);
+            ClientSize = new Size(1370, 614);
             Controls.Add(btnEditar);
             Controls.Add(btnEstado);
             Controls.Add(panelHeader);
