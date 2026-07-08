@@ -53,7 +53,6 @@
             lblId = new Label();
             lblListaTitulo = new Label();
             panel2 = new Panel();
-            btneliminar = new Button();
             txtbuscar = new TextBox();
             dgvproductos = new DataGridView();
             btnguardar = new Button();
@@ -76,7 +75,7 @@
             pnlHeader.Dock = DockStyle.Top;
             pnlHeader.Location = new Point(0, 0);
             pnlHeader.Name = "pnlHeader";
-            pnlHeader.Size = new Size(1107, 47);
+            pnlHeader.Size = new Size(1271, 47);
             pnlHeader.TabIndex = 1;
             // 
             // label1
@@ -315,7 +314,6 @@
             // panel2
             // 
             panel2.BackColor = SystemColors.ButtonHighlight;
-            panel2.Controls.Add(btneliminar);
             panel2.Controls.Add(txtbuscar);
             panel2.Controls.Add(dgvproductos);
             panel2.Controls.Add(btnguardar);
@@ -326,33 +324,15 @@
             panel2.Controls.Add(btnnuevo);
             panel2.Location = new Point(312, 53);
             panel2.Name = "panel2";
-            panel2.Size = new Size(795, 507);
+            panel2.Size = new Size(959, 507);
             panel2.TabIndex = 3;
-            // 
-            // btneliminar
-            // 
-            btneliminar.BackColor = SystemColors.ButtonHighlight;
-            btneliminar.Cursor = Cursors.Hand;
-            btneliminar.FlatAppearance.BorderColor = Color.FromArgb(180, 180, 180);
-            btneliminar.FlatStyle = FlatStyle.Flat;
-            btneliminar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btneliminar.ForeColor = SystemColors.ControlText;
-            btneliminar.Image = (Image)resources.GetObject("btneliminar.Image");
-            btneliminar.ImageAlign = ContentAlignment.MiddleLeft;
-            btneliminar.Location = new Point(468, 38);
-            btneliminar.Name = "btneliminar";
-            btneliminar.Size = new Size(104, 26);
-            btneliminar.TabIndex = 38;
-            btneliminar.Text = "Eliminar";
-            btneliminar.UseVisualStyleBackColor = false;
-            btneliminar.Click += btneliminar_Click;
             // 
             // txtbuscar
             // 
             txtbuscar.ForeColor = Color.Gray;
             txtbuscar.Location = new Point(14, 78);
             txtbuscar.Name = "txtbuscar";
-            txtbuscar.Size = new Size(715, 23);
+            txtbuscar.Size = new Size(942, 23);
             txtbuscar.TabIndex = 37;
             txtbuscar.Text = "🔍 Buscar...";
             txtbuscar.TextChanged += txtbuscar_TextChanged;
@@ -372,7 +352,7 @@
             dgvproductos.RowHeadersVisible = false;
             dgvproductos.RowHeadersWidth = 51;
             dgvproductos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvproductos.Size = new Size(778, 386);
+            dgvproductos.Size = new Size(942, 386);
             dgvproductos.TabIndex = 36;
             dgvproductos.CellContentClick += dgvproductos_CellContentClick;
             // 
@@ -471,7 +451,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1107, 568);
+            ClientSize = new Size(1271, 568);
             Controls.Add(panel2);
             Controls.Add(panel1);
             Controls.Add(pnlHeader);
@@ -522,6 +502,5 @@
         private DataGridView dgvproductos;
         private TextBox txtbuscar;
         private Button btnestado;
-        private Button btneliminar;
     }
 }

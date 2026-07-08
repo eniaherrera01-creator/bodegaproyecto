@@ -122,6 +122,8 @@ namespace bodegaproyecto
             MostrarProductos();
             CargarCategorias();
 
+            dtpfv.Value = DateTime.Today;
+
         }
 
         private void MostrarProductos()
@@ -396,48 +398,6 @@ namespace bodegaproyecto
             txtnombre.Focus();
         }
 
-        private void btneliminar_Click(object sender, EventArgs e)
-        {
-            if (!int.TryParse(txtId.Text, out int id))
-            {
-                MessageBox.Show("Seleccione un producto válido.",
-                                "Aviso",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
-                return;
-            }
-
-            DialogResult respuesta = MessageBox.Show(
-                "¿Está seguro de eliminar este producto?",
-                "Confirmar eliminación",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
-
-            if (respuesta == DialogResult.Yes)
-            {
-                try
-                {
-                    using (SqlConnection cn = ConexionBD.ObtenerConexion())
-                    {
-                        string consulta = "DELETE FROM Producto WHERE id_producto = @id";
-
-                        SqlCommand cmd = new SqlCommand(consulta, cn);
-                        cmd.Parameters.AddWithValue("@id", id);
-
-                        cmd.ExecuteNonQuery();
-
-                        MessageBox.Show("Producto eliminado correctamente.");
-
-                        MostrarProductos();
-                        btnnuevo.PerformClick();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
-        }
     }
 }
 
