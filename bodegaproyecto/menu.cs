@@ -194,7 +194,16 @@ namespace bodegaproyecto
         private void barButtonItem2_ItemClick_1(object sender, ItemClickEventArgs e)
         {
             Productos frm = new Productos();
-            frm.ShowDialog();
+
+            frm.TopLevel = false;
+            frm.FormBorderStyle = FormBorderStyle.None;
+            frm.Dock = DockStyle.Fill;
+
+            panelContenedor.Controls.Clear();
+
+            panelContenedor.Controls.Add(frm);
+
+            frm.Show();
         }
     }
 }
