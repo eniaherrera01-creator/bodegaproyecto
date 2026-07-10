@@ -23,9 +23,6 @@ namespace bodegaproyecto
         private System.Windows.Forms.Label lblIDCliente;
         private System.Windows.Forms.TextBox txtIDCliente;
 
-        private System.Windows.Forms.Label lblCodigoCliente;
-        private System.Windows.Forms.TextBox txtCodigoCliente;
-
         private System.Windows.Forms.Label lblNombre;
         private System.Windows.Forms.TextBox txtNombre;
 
@@ -89,8 +86,6 @@ namespace bodegaproyecto
             lblTituloDatos = new Label();
             lblIDCliente = new Label();
             txtIDCliente = new TextBox();
-            lblCodigoCliente = new Label();
-            txtCodigoCliente = new TextBox();
             lblNombre = new Label();
             txtNombre = new TextBox();
             lblRTN = new Label();
@@ -149,8 +144,6 @@ namespace bodegaproyecto
             pnlIzquierdo.Controls.Add(lblTituloDatos);
             pnlIzquierdo.Controls.Add(lblIDCliente);
             pnlIzquierdo.Controls.Add(txtIDCliente);
-            pnlIzquierdo.Controls.Add(lblCodigoCliente);
-            pnlIzquierdo.Controls.Add(txtCodigoCliente);
             pnlIzquierdo.Controls.Add(lblNombre);
             pnlIzquierdo.Controls.Add(txtNombre);
             pnlIzquierdo.Controls.Add(lblRTN);
@@ -179,7 +172,7 @@ namespace bodegaproyecto
             btnGuardar.FlatStyle = FlatStyle.Flat;
             btnGuardar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnGuardar.ForeColor = Color.White;
-            btnGuardar.Location = new Point(25, 623);
+            btnGuardar.Location = new Point(33, 571);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(130, 38);
             btnGuardar.TabIndex = 24;
@@ -194,7 +187,7 @@ namespace bodegaproyecto
             btnCancelar.FlatAppearance.BorderSize = 0;
             btnCancelar.FlatStyle = FlatStyle.Flat;
             btnCancelar.ForeColor = Color.FromArgb(60, 60, 60);
-            btnCancelar.Location = new Point(170, 623);
+            btnCancelar.Location = new Point(178, 571);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(130, 38);
             btnCancelar.TabIndex = 25;
@@ -232,25 +225,6 @@ namespace bodegaproyecto
             txtIDCliente.Size = new Size(293, 27);
             txtIDCliente.TabIndex = 2;
             txtIDCliente.Text = "(Automático)";
-            // 
-            // lblCodigoCliente
-            // 
-            lblCodigoCliente.AutoSize = true;
-            lblCodigoCliente.ForeColor = Color.FromArgb(80, 80, 80);
-            lblCodigoCliente.Location = new Point(17, 108);
-            lblCodigoCliente.Name = "lblCodigoCliente";
-            lblCodigoCliente.Size = new Size(58, 20);
-            lblCodigoCliente.TabIndex = 3;
-            lblCodigoCliente.Text = "Código";
-            // 
-            // txtCodigoCliente
-            // 
-            txtCodigoCliente.Location = new Point(17, 132);
-            txtCodigoCliente.Margin = new Padding(3, 4, 3, 4);
-            txtCodigoCliente.Name = "txtCodigoCliente";
-            txtCodigoCliente.PlaceholderText = "Ingrese el codigo del cliente";
-            txtCodigoCliente.Size = new Size(293, 27);
-            txtCodigoCliente.TabIndex = 4;
             // 
             // lblNombre
             // 
@@ -294,7 +268,7 @@ namespace bodegaproyecto
             // 
             lblDNI.AutoSize = true;
             lblDNI.ForeColor = Color.FromArgb(80, 80, 80);
-            lblDNI.Location = new Point(18, 273);
+            lblDNI.Location = new Point(17, 108);
             lblDNI.Name = "lblDNI";
             lblDNI.Size = new Size(35, 20);
             lblDNI.TabIndex = 9;
@@ -302,7 +276,7 @@ namespace bodegaproyecto
             // 
             // txtDNI
             // 
-            txtDNI.Location = new Point(17, 297);
+            txtDNI.Location = new Point(16, 132);
             txtDNI.Margin = new Padding(3, 4, 3, 4);
             txtDNI.Name = "txtDNI";
             txtDNI.PlaceholderText = "Ingrese DNI";
@@ -313,7 +287,7 @@ namespace bodegaproyecto
             // 
             lblTelefono.AutoSize = true;
             lblTelefono.ForeColor = Color.FromArgb(80, 80, 80);
-            lblTelefono.Location = new Point(17, 328);
+            lblTelefono.Location = new Point(15, 287);
             lblTelefono.Name = "lblTelefono";
             lblTelefono.Size = new Size(67, 20);
             lblTelefono.TabIndex = 11;
@@ -321,7 +295,7 @@ namespace bodegaproyecto
             // 
             // txtTelefono
             // 
-            txtTelefono.Location = new Point(17, 352);
+            txtTelefono.Location = new Point(15, 311);
             txtTelefono.Margin = new Padding(3, 4, 3, 4);
             txtTelefono.Name = "txtTelefono";
             txtTelefono.PlaceholderText = "Ingrese telefono";
@@ -332,7 +306,7 @@ namespace bodegaproyecto
             // 
             lblCorreo.AutoSize = true;
             lblCorreo.ForeColor = Color.FromArgb(80, 80, 80);
-            lblCorreo.Location = new Point(19, 383);
+            lblCorreo.Location = new Point(17, 342);
             lblCorreo.Name = "lblCorreo";
             lblCorreo.Size = new Size(54, 20);
             lblCorreo.TabIndex = 13;
@@ -340,7 +314,7 @@ namespace bodegaproyecto
             // 
             // txtCorreo
             // 
-            txtCorreo.Location = new Point(17, 407);
+            txtCorreo.Location = new Point(15, 366);
             txtCorreo.Margin = new Padding(3, 4, 3, 4);
             txtCorreo.Name = "txtCorreo";
             txtCorreo.PlaceholderText = "Ingrese correo electrónico";
@@ -352,7 +326,7 @@ namespace bodegaproyecto
             // 
             lblDireccion.AutoSize = true;
             lblDireccion.ForeColor = Color.FromArgb(80, 80, 80);
-            lblDireccion.Location = new Point(19, 438);
+            lblDireccion.Location = new Point(17, 397);
             lblDireccion.Name = "lblDireccion";
             lblDireccion.Size = new Size(72, 20);
             lblDireccion.TabIndex = 15;
@@ -360,7 +334,7 @@ namespace bodegaproyecto
             // 
             // txtDireccion
             // 
-            txtDireccion.Location = new Point(19, 462);
+            txtDireccion.Location = new Point(17, 421);
             txtDireccion.Margin = new Padding(3, 4, 3, 4);
             txtDireccion.Multiline = true;
             txtDireccion.Name = "txtDireccion";
@@ -372,7 +346,7 @@ namespace bodegaproyecto
             // 
             lblFechaRegistro.AutoSize = true;
             lblFechaRegistro.ForeColor = Color.FromArgb(80, 80, 80);
-            lblFechaRegistro.Location = new Point(19, 531);
+            lblFechaRegistro.Location = new Point(17, 490);
             lblFechaRegistro.Name = "lblFechaRegistro";
             lblFechaRegistro.Size = new Size(106, 20);
             lblFechaRegistro.TabIndex = 18;
@@ -381,7 +355,7 @@ namespace bodegaproyecto
             // dtpFechaRegistro
             // 
             dtpFechaRegistro.Format = DateTimePickerFormat.Short;
-            dtpFechaRegistro.Location = new Point(19, 555);
+            dtpFechaRegistro.Location = new Point(17, 514);
             dtpFechaRegistro.Margin = new Padding(3, 4, 3, 4);
             dtpFechaRegistro.Name = "dtpFechaRegistro";
             dtpFechaRegistro.Size = new Size(293, 27);

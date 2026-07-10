@@ -22,7 +22,7 @@ namespace bodegaproyecto
             CargarClientes();
 
             btnEstado.Enabled = false;
-            dtpFechaRegistro.Value = DateTime.Now;
+            dtpFechaRegistro.Enabled = false;
         }
 
         private void CargarClientes(string filtro = "")
@@ -34,10 +34,9 @@ namespace bodegaproyecto
                     string query = @"
                     SELECT
                         id_cliente,
-                        Codigo_Cliente,
+                        DNI,
                         Nombre,
                         RTN,
-                        DNI,
                         Telefono,
                         Correo,
                         Direccion,
@@ -51,10 +50,9 @@ namespace bodegaproyecto
                     if (!string.IsNullOrWhiteSpace(filtro))
                     {
                         query += @" WHERE
-                                Codigo_Cliente LIKE @filtro OR
+                                DNI LIKE @filtro OR
                                 Nombre LIKE @filtro OR
                                 RTN LIKE @filtro OR
-                                DNI LIKE @filtro OR
                                 Telefono LIKE @filtro";
                     }
 
@@ -73,10 +71,9 @@ namespace bodegaproyecto
 
                     dgvClientes.Columns["id_cliente"].Visible = false;
 
-                    dgvClientes.Columns["Codigo_Cliente"].HeaderText = "Código";
+                    dgvClientes.Columns["DNI"].HeaderText = "DNI";
                     dgvClientes.Columns["Nombre"].HeaderText = "Nombre";
                     dgvClientes.Columns["RTN"].HeaderText = "RTN";
-                    dgvClientes.Columns["DNI"].HeaderText = "DNI";
                     dgvClientes.Columns["Telefono"].HeaderText = "Teléfono";
                     dgvClientes.Columns["Correo"].HeaderText = "Correo";
                     dgvClientes.Columns["Direccion"].HeaderText = "Dirección";
@@ -98,10 +95,9 @@ namespace bodegaproyecto
         private void LimpiarFormulario()
         {
             txtIDCliente.Text = "(Automático)";
-            txtCodigoCliente.Clear();
+            txtDNI.Clear();
             txtNombre.Clear();
             txtRTN.Clear();
-            txtDNI.Clear();
             txtTelefono.Clear();
             txtCorreo.Clear();
             txtDireccion.Clear();
@@ -110,29 +106,6 @@ namespace bodegaproyecto
             dtpFechaRegistro.Value = DateTime.Now;
 
             selectedClienteId = -1;
-        }
-
-
-        //=====================================================
-        // VALIDAR SI EXISTE EL CÓDIGO
-        //=====================================================
-
-        private bool ExisteCodigo(string codigo, int idCliente)
-        {
-            using (SqlConnection conn = ConexionBD.ObtenerConexion())
-            {
-                string sql = @"SELECT COUNT(*)
-                               FROM Cliente
-                               WHERE Codigo_Cliente=@Codigo
-                               AND id_cliente<>@ID";
-
-                SqlCommand cmd = new SqlCommand(sql, conn);
-
-                cmd.Parameters.AddWithValue("@Codigo", codigo);
-                cmd.Parameters.AddWithValue("@ID", idCliente == -1 ? 0 : idCliente);
-
-                return (int)cmd.ExecuteScalar() > 0;
-            }
         }
 
         //=====================================================
@@ -186,10 +159,9 @@ namespace bodegaproyecto
             // VALIDAR CAMPOS VACIOS
             //==============================
 
-            if (string.IsNullOrWhiteSpace(txtCodigoCliente.Text) ||
+            if (string.IsNullOrWhiteSpace(txtDNI.Text) ||
                 string.IsNullOrWhiteSpace(txtNombre.Text) ||
                 string.IsNullOrWhiteSpace(txtRTN.Text) ||
-                string.IsNullOrWhiteSpace(txtDNI.Text) ||
                 string.IsNullOrWhiteSpace(txtTelefono.Text) ||
                 string.IsNullOrWhiteSpace(txtCorreo.Text))
             {
@@ -296,17 +268,6 @@ namespace bodegaproyecto
             // DUPLICADOS
             //==============================
 
-            if (ExisteCodigo(txtCodigoCliente.Text.Trim(), selectedClienteId))
-            {
-                MessageBox.Show(
-                    "El código del cliente ya existe.",
-                    "Validación",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
-                return;
-            }
-
             if (ExisteRTN(txtRTN.Text.Trim(), selectedClienteId))
             {
                 MessageBox.Show(
@@ -345,24 +306,20 @@ namespace bodegaproyecto
                         query = @"
                         INSERT INTO Cliente
                         (
-                            Codigo_Cliente,
+                            DNI,
                             Nombre,
                             RTN,
-                            DNI,
                             Telefono,
                             Correo,
-                            Direccion,
-                            Fecha_Registro)
+                            Direccion)
                         VALUES
                         (
-                            @Codigo,
+                            @DNI,
                             @Nombre,
                             @RTN,
-                            @DNI,
                             @Telefono,
                             @Correo,
-                            @Direccion,
-                            @Fecha)";
+                            @Direccion)";
                     }
                     else
                     {
@@ -370,27 +327,23 @@ namespace bodegaproyecto
                         UPDATE Cliente
                         SET
 
-                            Codigo_Cliente=@Codigo,
+                            DNI=@DNI,
                             Nombre=@Nombre,
                             RTN=@RTN,
-                            DNI=@DNI,
                             Telefono=@Telefono,
                             Correo=@Correo,
-                            Direccion=@Direccion,
-                            Fecha_Registro=@Fecha
+                            Direccion=@Direccion
                         WHERE id_cliente=@ID";
                     }
 
                     SqlCommand cmd = new SqlCommand(query, conn);
 
-                    cmd.Parameters.AddWithValue("@Codigo", txtCodigoCliente.Text.Trim());
+                    cmd.Parameters.AddWithValue("@DNI", txtDNI.Text.Trim());
                     cmd.Parameters.AddWithValue("@Nombre", txtNombre.Text.Trim());
                     cmd.Parameters.AddWithValue("@RTN", txtRTN.Text.Trim());
-                    cmd.Parameters.AddWithValue("@DNI", txtDNI.Text.Trim());
                     cmd.Parameters.AddWithValue("@Telefono", txtTelefono.Text.Trim());
                     cmd.Parameters.AddWithValue("@Correo", txtCorreo.Text.Trim());
                     cmd.Parameters.AddWithValue("@Direccion", txtDireccion.Text.Trim());
-                    cmd.Parameters.AddWithValue("@Fecha", dtpFechaRegistro.Value);
 
                     if (selectedClienteId != -1)
                         cmd.Parameters.AddWithValue("@ID", selectedClienteId);
@@ -448,7 +401,7 @@ namespace bodegaproyecto
 
             LimpiarFormulario();
 
-            txtCodigoCliente.Focus();
+            txtDNI.Focus();
         }
 
         private void btnEditar_Click(object sender, EventArgs e)
@@ -487,13 +440,11 @@ namespace bodegaproyecto
 
             txtIDCliente.Text = selectedClienteId.ToString();
 
-            txtCodigoCliente.Text = row.Cells["Codigo_Cliente"].Value.ToString();
+            txtDNI.Text = row.Cells["DNI"].Value.ToString();
 
             txtNombre.Text = row.Cells["Nombre"].Value.ToString();
 
             txtRTN.Text = row.Cells["RTN"].Value.ToString();
-
-            txtDNI.Text = row.Cells["DNI"].Value.ToString();
 
             txtTelefono.Text = row.Cells["Telefono"].Value.ToString();
 
@@ -682,7 +633,6 @@ namespace bodegaproyecto
             txtDNI.MaxLength = 13;
             txtTelefono.MaxLength = 8;
 
-            txtCodigoCliente.MaxLength = 20;
             txtNombre.MaxLength = 100;
             txtCorreo.MaxLength = 100;
             txtDireccion.MaxLength = 250;

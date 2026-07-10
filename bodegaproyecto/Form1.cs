@@ -227,8 +227,9 @@ CREATE TABLE Producto (
     Precio_Venta DECIMAL(10,2) NOT NULL,
     Stock INT NOT NULL,
     fecha_vencimiento DATE NULL,
-	impuesto DECIMAL(10,2) NOT NULL DEFAULT 0,
+    impuesto DECIMAL(10,2) NOT NULL DEFAULT 0,
     id_categoria INT NOT NULL,
+    Estado BIT NOT NULL DEFAULT 1,
 
     CONSTRAINT FK_Producto_Categoria
     FOREIGN KEY (id_categoria) REFERENCES Categoria(id_categoria)
@@ -262,10 +263,9 @@ CREATE TABLE Detalle_Compra (
 
 CREATE TABLE Cliente (
     id_cliente INT IDENTITY(1,1) PRIMARY KEY,
-    Codigo_Cliente VARCHAR(20) NOT NULL UNIQUE,
+	DNI VARCHAR(20) NOT NULL UNIQUE,
     Nombre VARCHAR(100) NOT NULL,
     RTN VARCHAR(20) NULL,
-    DNI VARCHAR(20) NULL,
     Telefono VARCHAR(20) NULL,
     Correo VARCHAR(100) NULL,
     Direccion VARCHAR(200) NULL,
@@ -274,16 +274,16 @@ CREATE TABLE Cliente (
 );
 
 INSERT INTO Cliente
-(Codigo_Cliente, Nombre, RTN, DNI, Telefono, Correo, Direccion, Estado) VALUES
 (
-    'CL000',
-    'CLIENTE GENERICO',
-    '00000000000000',
-    '0000000000000',
-    'N/A',
-    'N/A',
-    'VENTA AL CONTADO',
-    1
+DNI,Nombre,RTN,Telefono,Correo,Direccion,Estado)VALUES
+(
+'0000000000000',
+'CLIENTE GENERICO',
+'00000000000000',
+'N/A',
+'N/A',
+'VENTA AL CONTADO',
+1
 );
 
 CREATE TABLE Venta (
@@ -359,14 +359,15 @@ VALUES
 ('Distribuidora Sur', '9999-5555', 'sur@gmail.com', 'Comayagua');
 
 
-INSERT INTO Producto 
-(Nombre_Producto, Descripcion, Precio_Compra, Precio_Venta, Stock, fecha_vencimiento, id_categoria)
+INSERT INTO Producto
+(Nombre_Producto, Descripcion, Precio_Compra, Precio_Venta, Stock,
+fecha_vencimiento, impuesto, id_categoria)
 VALUES
-('Coca Cola', 'Bebida gaseosa', 18.00, 25.00, 100, '2026-12-31', 1),
-('Leche Sula', 'Leche entera', 22.00, 30.00, 80, '2026-10-15', 2),
-('Doritos', 'Snack de maiz', 12.00, 18.00, 60, '2026-09-20', 3),
-('Cloro', 'Producto de limpieza', 35.00, 50.00, 40, NULL, 4),
-('Pan Integral', 'Pan saludable', 28.00, 40.00, 30, '2026-08-10', 5);
+('Coca Cola', 'Bebida gaseosa', 18.00, 25.00, 100, '2026-12-31', 0, 1),
+('Leche Sula', 'Leche entera', 22.00, 30.00, 80, '2026-10-15', 0, 2),
+('Doritos', 'Snack de maiz', 12.00, 18.00, 60, '2026-09-20', 0, 3),
+('Cloro', 'Producto de limpieza', 35.00, 50.00, 40, NULL, 0, 4),
+('Pan Integral', 'Pan saludable', 28.00, 40.00, 30, '2026-08-10', 0, 5);
 ";
 
                     // Cambio en el insert de la base de datos
