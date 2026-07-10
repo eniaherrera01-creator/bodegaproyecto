@@ -74,8 +74,9 @@
             pnlHeader.Controls.Add(lblTituloForm);
             pnlHeader.Dock = DockStyle.Top;
             pnlHeader.Location = new Point(0, 0);
+            pnlHeader.Margin = new Padding(3, 4, 3, 4);
             pnlHeader.Name = "pnlHeader";
-            pnlHeader.Size = new Size(1271, 47);
+            pnlHeader.Size = new Size(1453, 63);
             pnlHeader.TabIndex = 1;
             // 
             // label1
@@ -83,9 +84,9 @@
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             label1.ForeColor = SystemColors.ButtonHighlight;
-            label1.Location = new Point(37, 9);
+            label1.Location = new Point(42, 12);
             label1.Name = "label1";
-            label1.Size = new Size(119, 30);
+            label1.Size = new Size(148, 37);
             label1.TabIndex = 1;
             label1.Text = "Productos";
             // 
@@ -95,9 +96,9 @@
             lblTituloForm.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             lblTituloForm.ForeColor = Color.White;
             lblTituloForm.Image = (Image)resources.GetObject("lblTituloForm.Image");
-            lblTituloForm.Location = new Point(12, 9);
+            lblTituloForm.Location = new Point(14, 12);
             lblTituloForm.Name = "lblTituloForm";
-            lblTituloForm.Size = new Size(19, 30);
+            lblTituloForm.Size = new Size(24, 37);
             lblTituloForm.TabIndex = 0;
             lblTituloForm.Text = " ";
             lblTituloForm.Click += lblTituloForm_Click;
@@ -124,9 +125,10 @@
             panel1.Controls.Add(label2);
             panel1.Controls.Add(lblId);
             panel1.Controls.Add(lblListaTitulo);
-            panel1.Location = new Point(0, 53);
+            panel1.Location = new Point(0, 71);
+            panel1.Margin = new Padding(3, 4, 3, 4);
             panel1.Name = "panel1";
-            panel1.Size = new Size(306, 507);
+            panel1.Size = new Size(350, 676);
             panel1.TabIndex = 2;
             // 
             // cbcategoria
@@ -134,169 +136,179 @@
             cbcategoria.DisplayMember = "Snacks";
             cbcategoria.FormattingEnabled = true;
             cbcategoria.Items.AddRange(new object[] { "Bebidas", "Snacks", "Lacteos", "Otro" });
-            cbcategoria.Location = new Point(11, 459);
+            cbcategoria.Location = new Point(13, 612);
+            cbcategoria.Margin = new Padding(3, 4, 3, 4);
             cbcategoria.Name = "cbcategoria";
-            cbcategoria.Size = new Size(280, 23);
+            cbcategoria.Size = new Size(319, 28);
             cbcategoria.TabIndex = 38;
             // 
             // txtstock
             // 
             txtstock.ForeColor = Color.Gray;
-            txtstock.Location = new Point(11, 306);
+            txtstock.Location = new Point(13, 408);
+            txtstock.Margin = new Padding(3, 4, 3, 4);
             txtstock.Multiline = true;
             txtstock.Name = "txtstock";
-            txtstock.Size = new Size(280, 22);
+            txtstock.PlaceholderText = "Ej: 70";
+            txtstock.Size = new Size(319, 28);
             txtstock.TabIndex = 37;
-            txtstock.Text = "Ej: 70";
             // 
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(11, 288);
+            label10.Location = new Point(13, 384);
             label10.Name = "label10";
-            label10.Size = new Size(36, 15);
+            label10.Size = new Size(45, 20);
             label10.TabIndex = 36;
             label10.Text = "Stock";
             // 
             // txtprecioventa
             // 
             txtprecioventa.ForeColor = Color.Gray;
-            txtprecioventa.Location = new Point(12, 257);
+            txtprecioventa.Location = new Point(14, 343);
+            txtprecioventa.Margin = new Padding(3, 4, 3, 4);
             txtprecioventa.Multiline = true;
             txtprecioventa.Name = "txtprecioventa";
-            txtprecioventa.Size = new Size(280, 23);
+            txtprecioventa.PlaceholderText = "Ej: 1000";
+            txtprecioventa.Size = new Size(319, 29);
             txtprecioventa.TabIndex = 35;
-            txtprecioventa.Text = "Ej: 1000";
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(12, 239);
+            label6.Location = new Point(14, 319);
             label6.Name = "label6";
-            label6.Size = new Size(72, 15);
+            label6.Size = new Size(91, 20);
             label6.TabIndex = 34;
             label6.Text = "Precio Venta";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(11, 441);
+            label3.Location = new Point(13, 588);
             label3.Name = "label3";
-            label3.Size = new Size(58, 15);
+            label3.Size = new Size(74, 20);
             label3.TabIndex = 32;
             label3.Text = "Categoria";
             // 
             // txtimpuesto
             // 
             txtimpuesto.ForeColor = Color.Gray;
-            txtimpuesto.Location = new Point(12, 409);
+            txtimpuesto.Location = new Point(14, 545);
+            txtimpuesto.Margin = new Padding(3, 4, 3, 4);
             txtimpuesto.Multiline = true;
             txtimpuesto.Name = "txtimpuesto";
-            txtimpuesto.Size = new Size(280, 22);
+            txtimpuesto.PlaceholderText = "Ej: 49";
+            txtimpuesto.Size = new Size(319, 28);
             txtimpuesto.TabIndex = 31;
-            txtimpuesto.Text = "Ej: 49";
             // 
             // dtpfv
             // 
             dtpfv.Format = DateTimePickerFormat.Short;
-            dtpfv.Location = new Point(12, 357);
+            dtpfv.Location = new Point(14, 476);
+            dtpfv.Margin = new Padding(3, 4, 3, 4);
             dtpfv.Name = "dtpfv";
-            dtpfv.Size = new Size(280, 23);
+            dtpfv.Size = new Size(319, 27);
             dtpfv.TabIndex = 30;
             dtpfv.Value = new DateTime(2027, 7, 7, 21, 37, 0, 0);
             // 
             // txtpreciocompra
             // 
             txtpreciocompra.ForeColor = Color.Gray;
-            txtpreciocompra.Location = new Point(12, 206);
+            txtpreciocompra.Location = new Point(14, 275);
+            txtpreciocompra.Margin = new Padding(3, 4, 3, 4);
             txtpreciocompra.Multiline = true;
             txtpreciocompra.Name = "txtpreciocompra";
-            txtpreciocompra.Size = new Size(280, 23);
+            txtpreciocompra.PlaceholderText = "Ej: 700 ";
+            txtpreciocompra.Size = new Size(319, 29);
             txtpreciocompra.TabIndex = 29;
-            txtpreciocompra.Text = "Ej: 700 ";
             // 
             // txtdescripcion
             // 
             txtdescripcion.ForeColor = Color.Gray;
-            txtdescripcion.Location = new Point(12, 153);
+            txtdescripcion.Location = new Point(14, 204);
+            txtdescripcion.Margin = new Padding(3, 4, 3, 4);
             txtdescripcion.Multiline = true;
             txtdescripcion.Name = "txtdescripcion";
-            txtdescripcion.Size = new Size(280, 24);
+            txtdescripcion.PlaceholderText = "Ej: Galletas Chocolates";
+            txtdescripcion.Size = new Size(319, 31);
             txtdescripcion.TabIndex = 28;
-            txtdescripcion.Text = "Ej: Galletas Chocolates";
             // 
             // txtnombre
             // 
             txtnombre.ForeColor = Color.Gray;
-            txtnombre.Location = new Point(12, 104);
+            txtnombre.Location = new Point(14, 139);
+            txtnombre.Margin = new Padding(3, 4, 3, 4);
             txtnombre.Multiline = true;
             txtnombre.Name = "txtnombre";
-            txtnombre.Size = new Size(280, 22);
+            txtnombre.PlaceholderText = "Ej: Snacks";
+            txtnombre.Size = new Size(319, 28);
             txtnombre.TabIndex = 27;
-            txtnombre.Text = "Ej: Snacks";
             // 
             // txtId
             // 
             txtId.BackColor = Color.FromArgb(235, 245, 255);
+            txtId.Enabled = false;
             txtId.ForeColor = Color.DarkBlue;
-            txtId.Location = new Point(12, 54);
+            txtId.Location = new Point(14, 72);
+            txtId.Margin = new Padding(3, 4, 3, 4);
             txtId.Name = "txtId";
+            txtId.PlaceholderText = "ID: Automático";
             txtId.ReadOnly = true;
-            txtId.Size = new Size(280, 23);
+            txtId.Size = new Size(319, 27);
             txtId.TabIndex = 4;
-            txtId.Text = "ID: Automático";
             // 
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(12, 339);
+            label9.Location = new Point(14, 452);
             label9.Name = "label9";
-            label9.Size = new Size(107, 15);
+            label9.Size = new Size(133, 20);
             label9.TabIndex = 26;
             label9.Text = "Fecha Vencimiento";
             // 
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(12, 391);
+            label8.Location = new Point(14, 521);
             label8.Name = "label8";
-            label8.Size = new Size(57, 15);
+            label8.Size = new Size(71, 20);
             label8.TabIndex = 25;
             label8.Text = "Impuesto";
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(12, 188);
+            label7.Location = new Point(14, 251);
             label7.Name = "label7";
-            label7.Size = new Size(86, 15);
+            label7.Size = new Size(107, 20);
             label7.TabIndex = 24;
             label7.Text = "Precio Compra";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(12, 135);
+            label4.Location = new Point(14, 180);
             label4.Name = "label4";
-            label4.Size = new Size(69, 15);
+            label4.Size = new Size(87, 20);
             label4.TabIndex = 21;
             label4.Text = "Descripcion";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(12, 86);
+            label2.Location = new Point(14, 115);
             label2.Name = "label2";
-            label2.Size = new Size(103, 15);
+            label2.Size = new Size(128, 20);
             label2.TabIndex = 19;
             label2.Text = "Nombre Producto";
             // 
             // lblId
             // 
             lblId.AutoSize = true;
-            lblId.Location = new Point(12, 36);
+            lblId.Location = new Point(14, 48);
             lblId.Name = "lblId";
-            lblId.Size = new Size(70, 15);
+            lblId.Size = new Size(88, 20);
             lblId.TabIndex = 18;
             lblId.Text = "ID Producto";
             // 
@@ -305,9 +317,9 @@
             lblListaTitulo.AutoSize = true;
             lblListaTitulo.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             lblListaTitulo.ForeColor = Color.Black;
-            lblListaTitulo.Location = new Point(12, 10);
+            lblListaTitulo.Location = new Point(14, 13);
             lblListaTitulo.Name = "lblListaTitulo";
-            lblListaTitulo.Size = new Size(156, 21);
+            lblListaTitulo.Size = new Size(194, 28);
             lblListaTitulo.TabIndex = 17;
             lblListaTitulo.Text = "Datos del Producto";
             // 
@@ -322,19 +334,21 @@
             panel2.Controls.Add(btneditar);
             panel2.Controls.Add(btnactualizar);
             panel2.Controls.Add(btnnuevo);
-            panel2.Location = new Point(312, 53);
+            panel2.Location = new Point(357, 71);
+            panel2.Margin = new Padding(3, 4, 3, 4);
             panel2.Name = "panel2";
-            panel2.Size = new Size(959, 507);
+            panel2.Size = new Size(1096, 676);
             panel2.TabIndex = 3;
             // 
             // txtbuscar
             // 
             txtbuscar.ForeColor = Color.Gray;
-            txtbuscar.Location = new Point(14, 78);
+            txtbuscar.Location = new Point(16, 104);
+            txtbuscar.Margin = new Padding(3, 4, 3, 4);
             txtbuscar.Name = "txtbuscar";
-            txtbuscar.Size = new Size(942, 23);
+            txtbuscar.PlaceholderText = "🔍 Buscar...";
+            txtbuscar.Size = new Size(1076, 27);
             txtbuscar.TabIndex = 37;
-            txtbuscar.Text = "🔍 Buscar...";
             txtbuscar.TextChanged += txtbuscar_TextChanged;
             // 
             // dgvproductos
@@ -346,13 +360,14 @@
             dgvproductos.BackgroundColor = Color.White;
             dgvproductos.BorderStyle = BorderStyle.None;
             dgvproductos.ColumnHeadersHeight = 29;
-            dgvproductos.Location = new Point(14, 117);
+            dgvproductos.Location = new Point(16, 156);
+            dgvproductos.Margin = new Padding(3, 4, 3, 4);
             dgvproductos.Name = "dgvproductos";
             dgvproductos.ReadOnly = true;
             dgvproductos.RowHeadersVisible = false;
             dgvproductos.RowHeadersWidth = 51;
             dgvproductos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvproductos.Size = new Size(942, 386);
+            dgvproductos.Size = new Size(1077, 515);
             dgvproductos.TabIndex = 36;
             dgvproductos.CellContentClick += dgvproductos_CellContentClick;
             // 
@@ -364,9 +379,10 @@
             btnguardar.FlatStyle = FlatStyle.Flat;
             btnguardar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnguardar.ForeColor = SystemColors.Window;
-            btnguardar.Location = new Point(14, 38);
+            btnguardar.Location = new Point(16, 51);
+            btnguardar.Margin = new Padding(3, 4, 3, 4);
             btnguardar.Name = "btnguardar";
-            btnguardar.Size = new Size(83, 26);
+            btnguardar.Size = new Size(95, 35);
             btnguardar.TabIndex = 35;
             btnguardar.Text = "💾 Guardar";
             btnguardar.UseVisualStyleBackColor = false;
@@ -380,9 +396,10 @@
             btnestado.FlatStyle = FlatStyle.Flat;
             btnestado.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnestado.ForeColor = SystemColors.Highlight;
-            btnestado.Location = new Point(281, 38);
+            btnestado.Location = new Point(321, 51);
+            btnestado.Margin = new Padding(3, 4, 3, 4);
             btnestado.Name = "btnestado";
-            btnestado.Size = new Size(83, 26);
+            btnestado.Size = new Size(95, 35);
             btnestado.TabIndex = 7;
             btnestado.Text = "👤 Estado";
             btnestado.UseVisualStyleBackColor = false;
@@ -393,9 +410,9 @@
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             label5.ForeColor = Color.Black;
-            label5.Location = new Point(14, 10);
+            label5.Location = new Point(16, 13);
             label5.Name = "label5";
-            label5.Size = new Size(149, 21);
+            label5.Size = new Size(186, 28);
             label5.TabIndex = 34;
             label5.Text = "Lista de Productos";
             // 
@@ -407,9 +424,10 @@
             btneditar.FlatStyle = FlatStyle.Flat;
             btneditar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btneditar.ForeColor = SystemColors.InfoText;
-            btneditar.Location = new Point(192, 38);
+            btneditar.Location = new Point(219, 51);
+            btneditar.Margin = new Padding(3, 4, 3, 4);
             btneditar.Name = "btneditar";
-            btneditar.Size = new Size(83, 26);
+            btneditar.Size = new Size(95, 35);
             btneditar.TabIndex = 6;
             btneditar.Text = "✎ Editar";
             btneditar.UseVisualStyleBackColor = false;
@@ -423,9 +441,10 @@
             btnactualizar.FlatStyle = FlatStyle.Flat;
             btnactualizar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnactualizar.ForeColor = SystemColors.Highlight;
-            btnactualizar.Location = new Point(370, 38);
+            btnactualizar.Location = new Point(423, 51);
+            btnactualizar.Margin = new Padding(3, 4, 3, 4);
             btnactualizar.Name = "btnactualizar";
-            btnactualizar.Size = new Size(92, 26);
+            btnactualizar.Size = new Size(105, 35);
             btnactualizar.TabIndex = 8;
             btnactualizar.Text = "↻ Actualizar";
             btnactualizar.UseVisualStyleBackColor = false;
@@ -439,9 +458,10 @@
             btnnuevo.FlatStyle = FlatStyle.Flat;
             btnnuevo.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnnuevo.ForeColor = Color.White;
-            btnnuevo.Location = new Point(103, 38);
+            btnnuevo.Location = new Point(118, 51);
+            btnnuevo.Margin = new Padding(3, 4, 3, 4);
             btnnuevo.Name = "btnnuevo";
-            btnnuevo.Size = new Size(83, 26);
+            btnnuevo.Size = new Size(95, 35);
             btnnuevo.TabIndex = 5;
             btnnuevo.Text = "+ Nuevo";
             btnnuevo.UseVisualStyleBackColor = false;
@@ -449,12 +469,13 @@
             // 
             // Productos
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1271, 568);
+            ClientSize = new Size(1453, 757);
             Controls.Add(panel2);
             Controls.Add(panel1);
             Controls.Add(pnlHeader);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "Productos";
             Text = "Productos";
             Load += Productos_Load;
