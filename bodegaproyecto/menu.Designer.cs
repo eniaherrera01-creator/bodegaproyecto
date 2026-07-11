@@ -62,11 +62,11 @@
             ribbonStatusBar.ItemLinks.Add(barStaticItemusuarios);
             ribbonStatusBar.ItemLinks.Add(barStaticItemrol);
             ribbonStatusBar.ItemLinks.Add(barButtoncerrarsesion);
-            ribbonStatusBar.Location = new Point(0, 355);
-            ribbonStatusBar.Margin = new Padding(3, 2, 3, 2);
+            ribbonStatusBar.Location = new Point(0, 542);
+            ribbonStatusBar.Margin = new Padding(4, 2, 4, 2);
             ribbonStatusBar.Name = "ribbonStatusBar";
             ribbonStatusBar.Ribbon = ribbon;
-            ribbonStatusBar.Size = new Size(868, 24);
+            ribbonStatusBar.Size = new Size(1054, 30);
             ribbonStatusBar.Click += ribbonStatusBar_Click;
             // 
             // barStaticItemusuarios
@@ -91,16 +91,14 @@
             // 
             ribbon.BackColor = Color.FromArgb(192, 255, 255);
             ribbon.CaptionBarItemLinks.Add(barButtonItem1);
-            ribbon.EmptyAreaImageOptions.ImagePadding = new Padding(26, 24, 26, 24);
             ribbon.ExpandCollapseItem.Id = 0;
             ribbon.Items.AddRange(new DevExpress.XtraBars.BarItem[] { barButtonItem1, ribbon.ExpandCollapseItem, barButtonusuarios, barButtoncategorias, barButtomproveedores, barStaticusuario, barStaticrol, barButtonItem4, barStaticItemusuarios, barStaticItemrol, barButtoncerrarsesion, barButtonclientes, barButtonItem2 });
             ribbon.Location = new Point(0, 0);
-            ribbon.Margin = new Padding(3, 2, 3, 2);
+            ribbon.Margin = new Padding(4, 2, 4, 2);
             ribbon.MaxItemId = 20;
             ribbon.Name = "ribbon";
-            ribbon.OptionsMenuMinWidth = 283;
             ribbon.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1, ribbonPage2 });
-            ribbon.Size = new Size(868, 158);
+            ribbon.Size = new Size(1054, 193);
             ribbon.StatusBar = ribbonStatusBar;
             ribbon.Click += ribbon_Click;
             // 
@@ -215,22 +213,22 @@
             // panelContenedor
             // 
             panelContenedor.Dock = DockStyle.Fill;
-            panelContenedor.Location = new Point(0, 158);
-            panelContenedor.Margin = new Padding(3, 2, 3, 2);
+            panelContenedor.Location = new Point(0, 193);
+            panelContenedor.Margin = new Padding(4, 2, 4, 2);
             panelContenedor.Name = "panelContenedor";
-            panelContenedor.Size = new Size(868, 197);
+            panelContenedor.Size = new Size(1054, 349);
             panelContenedor.TabIndex = 2;
             panelContenedor.Paint += panelContenedor_Paint;
             // 
             // menu
             // 
-            AutoScaleDimensions = new SizeF(6F, 13F);
+            AutoScaleDimensions = new SizeF(7F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(868, 379);
+            ClientSize = new Size(1054, 572);
             Controls.Add(panelContenedor);
             Controls.Add(ribbon);
             Controls.Add(ribbonStatusBar);
-            Margin = new Padding(3, 2, 3, 2);
+            Margin = new Padding(4, 2, 4, 2);
             Name = "menu";
             Ribbon = ribbon;
             StartPosition = FormStartPosition.CenterScreen;

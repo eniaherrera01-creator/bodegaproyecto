@@ -1,85 +1,67 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Text;
+using System.Globalization;
 using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
 
 namespace bodegaproyecto
 {
-
-
-
-
-
     public partial class Productos : Form
     {
-        DataTable tabla = new DataTable();
-
-
         public Productos()
         {
             InitializeComponent();
+            AsignarEventosManuales();
         }
 
-        private bool ValidarCampos()
+        private void Productos_Load(object sender, EventArgs e)
         {
-            if (txtnombre.Text.Trim() == "")
-            {
-                MessageBox.Show("Ingrese el nombre del producto");
-                txtnombre.Focus();
-                return false;
-            }
-
-            if (txtdescripcion.Text.Trim() == "")
-            {
-                MessageBox.Show("Ingrese la descripción");
-                txtdescripcion.Focus();
-                return false;
-            }
-
-            if (txtpreciocompra.Text.Trim() == "")
-            {
-                MessageBox.Show("Ingrese el precio de compra");
-                txtpreciocompra.Focus();
-                return false;
-            }
-
-            if (txtprecioventa.Text.Trim() == "")
-            {
-                MessageBox.Show("Ingrese el precio de venta");
-                txtprecioventa.Focus();
-                return false;
-            }
-
-            if (txtstock.Text.Trim() == "")
-            {
-                MessageBox.Show("Ingrese el stock");
-                txtstock.Focus();
-                return false;
-            }
-
-            if (txtimpuesto.Text.Trim() == "")
-            {
-                MessageBox.Show("Ingrese el impuesto");
-                txtimpuesto.Focus();
-                return false;
-            }
-
-            if (cbcategoria.SelectedIndex == -1)
-            {
-                MessageBox.Show("Seleccione una categoría");
-                return false;
-            }
-
-            return true;
+            CargarCategorias();
+            MostrarProductos();
+            LimpiarFormulario();
+            dtpfv.Value = DateTime.Today;
         }
 
-        private bool EsNumero(string valor)
+        private void AsignarEventosManuales()
         {
-            return decimal.TryParse(valor, out _);
+            // Primero quitamos eventos por si el Designer ya los agregó
+            btnguardar.Click -= btnguardar_Click;
+            btneditar.Click -= btneditar_Click;
+            btnactualizar.Click -= btnactualizar_Click;
+            btnestado.Click -= btnestado_Click;
+            btnnuevo.Click -= btnnuevo_Click;
+
+            // Por si algún botón quedó conectado al evento equivocado
+            btnguardar.Click -= btnactualizar_Click;
+            btnactualizar.Click -= btnguardar_Click;
+
+            txtbuscar.TextChanged -= txtbuscar_TextChanged;
+
+            txtnombre.KeyPress -= TextoProducto_KeyPress;
+            txtdescripcion.KeyPress -= TextoDescripcion_KeyPress;
+            txtpreciocompra.KeyPress -= Decimal_KeyPress;
+            txtprecioventa.KeyPress -= Decimal_KeyPress;
+            txtimpuesto.KeyPress -= Decimal_KeyPress;
+            txtstock.KeyPress -= Entero_KeyPress;
+            txtbuscar.KeyPress -= TextoProducto_KeyPress;
+
+            // Ahora sí agregamos los eventos correctos una sola vez
+            btnguardar.Click += btnguardar_Click;
+            btneditar.Click += btneditar_Click;
+            btnactualizar.Click += btnactualizar_Click;
+            btnestado.Click += btnestado_Click;
+            btnnuevo.Click += btnnuevo_Click;
+
+            txtbuscar.TextChanged += txtbuscar_TextChanged;
+
+            txtnombre.KeyPress += TextoProducto_KeyPress;
+            txtdescripcion.KeyPress += TextoDescripcion_KeyPress;
+            txtpreciocompra.KeyPress += Decimal_KeyPress;
+            txtprecioventa.KeyPress += Decimal_KeyPress;
+            txtimpuesto.KeyPress += Decimal_KeyPress;
+            txtstock.KeyPress += Entero_KeyPress;
+            txtbuscar.KeyPress += TextoProducto_KeyPress;
         }
 
         private void CargarCategorias()
@@ -88,42 +70,26 @@ namespace bodegaproyecto
             {
                 using (SqlConnection cn = ConexionBD.ObtenerConexion())
                 {
-                    SqlDataAdapter da = new SqlDataAdapter(
-                    "SELECT id_categoria, Nombre_Categoria FROM Categoria", cn);
+                    if (cn.State != ConnectionState.Open)
+                        cn.Open();
 
+                    string consulta = "SELECT id_categoria, Nombre_Categoria FROM Categoria ORDER BY Nombre_Categoria";
+
+                    SqlDataAdapter da = new SqlDataAdapter(consulta, cn);
                     DataTable dt = new DataTable();
-
                     da.Fill(dt);
 
                     cbcategoria.DataSource = dt;
-
                     cbcategoria.DisplayMember = "Nombre_Categoria";
-
                     cbcategoria.ValueMember = "id_categoria";
+                    cbcategoria.SelectedIndex = -1;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error al cargar categorías: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-
-
-
-        private void lblTituloForm_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Productos_Load(object sender, EventArgs e)
-        {
-
-            MostrarProductos();
-            CargarCategorias();
-
-            dtpfv.Value = DateTime.Today;
-
         }
 
         private void MostrarProductos()
@@ -132,131 +98,335 @@ namespace bodegaproyecto
             {
                 using (SqlConnection cn = ConexionBD.ObtenerConexion())
                 {
+                    if (cn.State != ConnectionState.Open)
+                        cn.Open();
+
                     string consulta = @"SELECT
-                                p.id_producto,
-                                p.Nombre_Producto,
-                                p.Descripcion,
-                                p.Precio_Compra,
-                                p.Precio_Venta,
-                                p.Stock,
-                                p.fecha_vencimiento,
-                                p.impuesto,
-                                p.id_categoria,
-                                c.Nombre_Categoria,
-                                p.Estado
-                            FROM Producto p
-                            INNER JOIN Categoria c
-                            ON p.id_categoria = c.id_categoria";
+                                            p.id_producto,
+                                            p.Nombre_Producto,
+                                            p.Descripcion,
+                                            p.Precio_Compra,
+                                            p.Precio_Venta,
+                                            p.Stock,
+                                            p.fecha_vencimiento,
+                                            p.impuesto,
+                                            p.id_categoria,
+                                            c.Nombre_Categoria,
+                                            p.Estado
+                                        FROM Producto p
+                                        INNER JOIN Categoria c
+                                        ON p.id_categoria = c.id_categoria
+                                        ORDER BY p.id_producto DESC";
 
                     SqlDataAdapter da = new SqlDataAdapter(consulta, cn);
-
                     DataTable dt = new DataTable();
-
                     da.Fill(dt);
 
                     dgvproductos.DataSource = dt;
-
-                    
-                    dgvproductos.Columns["id_producto"].HeaderText = "ID";
-                    dgvproductos.Columns["Nombre_Producto"].HeaderText = "Nombre del Producto";
-                    dgvproductos.Columns["Descripcion"].HeaderText = "Descripción";
-                    dgvproductos.Columns["Precio_Compra"].HeaderText = "Precio Compra";
-                    dgvproductos.Columns["Precio_Venta"].HeaderText = "Precio Venta";
-                    dgvproductos.Columns["Stock"].HeaderText = "Stock";
-                    dgvproductos.Columns["fecha_vencimiento"].HeaderText = "Fecha de Vencimiento";
-                    dgvproductos.Columns["impuesto"].HeaderText = "Impuesto";
-                    dgvproductos.Columns["Nombre_Categoria"].HeaderText = "Categoría";
-                    dgvproductos.Columns["Estado"].HeaderText = "Estado";
-                    dgvproductos.Columns["id_categoria"].HeaderText = "ID Categoria";
+                    ConfigurarGrid();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error al mostrar productos: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void ConfigurarGrid()
+        {
+            if (dgvproductos.Columns.Count == 0)
+                return;
+
+            dgvproductos.Columns["id_producto"].HeaderText = "ID";
+            dgvproductos.Columns["Nombre_Producto"].HeaderText = "Nombre del Producto";
+            dgvproductos.Columns["Descripcion"].HeaderText = "Descripción";
+            dgvproductos.Columns["Precio_Compra"].HeaderText = "Precio Compra";
+            dgvproductos.Columns["Precio_Venta"].HeaderText = "Precio Venta";
+            dgvproductos.Columns["Stock"].HeaderText = "Stock";
+            dgvproductos.Columns["fecha_vencimiento"].HeaderText = "Fecha de Vencimiento";
+            dgvproductos.Columns["impuesto"].HeaderText = "Impuesto";
+            dgvproductos.Columns["Nombre_Categoria"].HeaderText = "Categoría";
+            dgvproductos.Columns["Estado"].HeaderText = "Estado";
+
+            dgvproductos.Columns["id_categoria"].Visible = false;
+
+            dgvproductos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvproductos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvproductos.ReadOnly = true;
+        }
+
+        private bool ValidarCampos()
+        {
+            string nombre = txtnombre.Text.Trim();
+            string descripcion = txtdescripcion.Text.Trim();
+            string precioCompraTexto = txtpreciocompra.Text.Trim();
+            string precioVentaTexto = txtprecioventa.Text.Trim();
+            string stockTexto = txtstock.Text.Trim();
+            string impuestoTexto = txtimpuesto.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(nombre))
+            {
+                MessageBox.Show("Ingrese el nombre del producto.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtnombre.Focus();
+                return false;
+            }
+
+            if (nombre.Length < 3)
+            {
+                MessageBox.Show("El nombre del producto debe tener al menos 3 caracteres.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtnombre.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(descripcion))
+            {
+                MessageBox.Show("Ingrese la descripción del producto.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtdescripcion.Focus();
+                return false;
+            }
+
+            if (!ObtenerDecimal(precioCompraTexto, out decimal precioCompra) || precioCompra <= 0)
+            {
+                MessageBox.Show("Ingrese un precio de compra válido mayor que 0.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtpreciocompra.Focus();
+                return false;
+            }
+
+            if (!ObtenerDecimal(precioVentaTexto, out decimal precioVenta) || precioVenta <= 0)
+            {
+                MessageBox.Show("Ingrese un precio de venta válido mayor que 0.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtprecioventa.Focus();
+                return false;
+            }
+
+            if (precioVenta < precioCompra)
+            {
+                MessageBox.Show("El precio de venta no puede ser menor que el precio de compra.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtprecioventa.Focus();
+                return false;
+            }
+
+            if (!int.TryParse(stockTexto, out int stock) || stock < 0)
+            {
+                MessageBox.Show("Ingrese un stock válido. Solo números enteros.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtstock.Focus();
+                return false;
+            }
+
+            if (!ObtenerDecimal(impuestoTexto, out decimal impuesto) || impuesto < 0)
+            {
+                MessageBox.Show("Ingrese un impuesto válido.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtimpuesto.Focus();
+                return false;
+            }
+
+            if (impuesto > 100)
+            {
+                MessageBox.Show("El impuesto no puede ser mayor a 100.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtimpuesto.Focus();
+                return false;
+            }
+
+            if (cbcategoria.SelectedIndex == -1 || cbcategoria.SelectedValue == null)
+            {
+                MessageBox.Show("Seleccione una categoría.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cbcategoria.Focus();
+                return false;
+            }
+
+            if (dtpfv.Value.Date < DateTime.Today)
+            {
+                MessageBox.Show("La fecha de vencimiento no puede ser menor a la fecha actual.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                dtpfv.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool ObtenerDecimal(string texto, out decimal numero)
+        {
+            texto = texto.Replace(",", ".");
+
+            return decimal.TryParse(
+                texto,
+                NumberStyles.Number,
+                CultureInfo.InvariantCulture,
+                out numero
+            );
         }
 
         private void btnguardar_Click(object sender, EventArgs e)
         {
+            if (!string.IsNullOrWhiteSpace(txtId.Text))
+            {
+                MessageBox.Show("Este producto ya existe. Use el botón Actualizar para modificarlo.",
+                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             if (!ValidarCampos())
                 return;
+
+            ObtenerDecimal(txtpreciocompra.Text.Trim(), out decimal precioCompra);
+            ObtenerDecimal(txtprecioventa.Text.Trim(), out decimal precioVenta);
+            ObtenerDecimal(txtimpuesto.Text.Trim(), out decimal impuesto);
+
+            int stock = int.Parse(txtstock.Text.Trim());
 
             try
             {
                 using (SqlConnection cn = ConexionBD.ObtenerConexion())
                 {
+                    if (cn.State != ConnectionState.Open)
+                        cn.Open();
+
                     string consulta = @"INSERT INTO Producto
-                                (Nombre_Producto, Descripcion, Precio_Compra, Precio_Venta,
-                                 Stock, fecha_vencimiento, impuesto, id_categoria)
-                                VALUES
-                                (@nombre, @descripcion, @compra, @venta,
-                                 @stock, @fecha, @impuesto, @categoria)";
+                                        (Nombre_Producto, Descripcion, Precio_Compra, Precio_Venta,
+                                         Stock, fecha_vencimiento, impuesto, id_categoria, Estado)
+                                        VALUES
+                                        (@nombre, @descripcion, @compra, @venta,
+                                         @stock, @fecha, @impuesto, @categoria, @estado)";
 
-                    SqlCommand cmd = new SqlCommand(consulta, cn);
+                    using (SqlCommand cmd = new SqlCommand(consulta, cn))
+                    {
+                        cmd.Parameters.AddWithValue("@nombre", txtnombre.Text.Trim());
+                        cmd.Parameters.AddWithValue("@descripcion", txtdescripcion.Text.Trim());
+                        cmd.Parameters.AddWithValue("@compra", precioCompra);
+                        cmd.Parameters.AddWithValue("@venta", precioVenta);
+                        cmd.Parameters.AddWithValue("@stock", stock);
+                        cmd.Parameters.AddWithValue("@fecha", dtpfv.Value.Date);
+                        cmd.Parameters.AddWithValue("@impuesto", impuesto);
+                        cmd.Parameters.AddWithValue("@categoria", cbcategoria.SelectedValue);
+                        cmd.Parameters.AddWithValue("@estado", 1);
 
-                    cmd.Parameters.AddWithValue("@nombre", txtnombre.Text);
-                    cmd.Parameters.AddWithValue("@descripcion", txtdescripcion.Text);
-                    cmd.Parameters.AddWithValue("@compra", decimal.Parse(txtpreciocompra.Text));
-                    cmd.Parameters.AddWithValue("@venta", decimal.Parse(txtprecioventa.Text));
-                    cmd.Parameters.AddWithValue("@stock", int.Parse(txtstock.Text));
-                    cmd.Parameters.AddWithValue("@fecha", dtpfv.Value);
-                    cmd.Parameters.AddWithValue("@impuesto", decimal.Parse(txtimpuesto.Text));
-                    cmd.Parameters.AddWithValue("@categoria", cbcategoria.SelectedValue);
+                        cmd.ExecuteNonQuery();
+                    }
 
-                    cmd.ExecuteNonQuery();
-
-                    MessageBox.Show("Producto guardado correctamente");
+                    MessageBox.Show("Producto guardado correctamente.", "Información",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     MostrarProductos();
-                    btnnuevo.PerformClick();
+                    LimpiarFormulario();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error al guardar producto: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            if (!EsNumero(txtpreciocompra.Text) || !EsNumero(txtprecioventa.Text) || !EsNumero(txtimpuesto.Text))
-            {
-                MessageBox.Show("Ingrese valores numéricos válidos");
-                return;
-            }
-
         }
 
         private void btneditar_Click(object sender, EventArgs e)
         {
-            if (dgvproductos.CurrentRow != null)
+            if (dgvproductos.CurrentRow == null)
             {
-                txtId.Text = dgvproductos.CurrentRow.Cells["id_producto"].Value.ToString();
-                txtnombre.Text = dgvproductos.CurrentRow.Cells["Nombre_Producto"].Value.ToString();
-                txtdescripcion.Text = dgvproductos.CurrentRow.Cells["Descripcion"].Value.ToString();
-                txtpreciocompra.Text = dgvproductos.CurrentRow.Cells["Precio_Compra"].Value.ToString();
-                txtprecioventa.Text = dgvproductos.CurrentRow.Cells["Precio_Venta"].Value.ToString();
-                txtstock.Text = dgvproductos.CurrentRow.Cells["Stock"].Value.ToString();
+                MessageBox.Show("Seleccione un producto para editar.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-                if (dgvproductos.CurrentRow.Cells["fecha_vencimiento"].Value == DBNull.Value)
+            DataGridViewRow fila = dgvproductos.CurrentRow;
+
+            txtId.Text = fila.Cells["id_producto"].Value.ToString();
+            txtnombre.Text = fila.Cells["Nombre_Producto"].Value.ToString();
+            txtdescripcion.Text = fila.Cells["Descripcion"].Value.ToString();
+            txtpreciocompra.Text = fila.Cells["Precio_Compra"].Value.ToString();
+            txtprecioventa.Text = fila.Cells["Precio_Venta"].Value.ToString();
+            txtstock.Text = fila.Cells["Stock"].Value.ToString();
+            txtimpuesto.Text = fila.Cells["impuesto"].Value.ToString();
+
+            if (fila.Cells["fecha_vencimiento"].Value == DBNull.Value)
+                dtpfv.Value = DateTime.Today;
+            else
+                dtpfv.Value = Convert.ToDateTime(fila.Cells["fecha_vencimiento"].Value);
+
+            cbcategoria.SelectedValue = fila.Cells["id_categoria"].Value;
+        }
+
+        private void btnactualizar_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtId.Text))
+            {
+                MessageBox.Show("Seleccione un producto para actualizar.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!ValidarCampos())
+                return;
+
+            ObtenerDecimal(txtpreciocompra.Text.Trim(), out decimal precioCompra);
+            ObtenerDecimal(txtprecioventa.Text.Trim(), out decimal precioVenta);
+            ObtenerDecimal(txtimpuesto.Text.Trim(), out decimal impuesto);
+
+            int stock = int.Parse(txtstock.Text.Trim());
+
+            try
+            {
+                using (SqlConnection cn = ConexionBD.ObtenerConexion())
                 {
-                    dtpfv.Value = DateTime.Now;
-                }
-                else
-                {
-                    dtpfv.Value = Convert.ToDateTime(
-                        dgvproductos.CurrentRow.Cells["fecha_vencimiento"].Value);
-                }
+                    if (cn.State != ConnectionState.Open)
+                        cn.Open();
 
-                txtimpuesto.Text = dgvproductos.CurrentRow.Cells["impuesto"].Value.ToString();
+                    string consulta = @"UPDATE Producto
+                                        SET Nombre_Producto = @nombre,
+                                            Descripcion = @descripcion,
+                                            Precio_Compra = @compra,
+                                            Precio_Venta = @venta,
+                                            Stock = @stock,
+                                            fecha_vencimiento = @fecha,
+                                            impuesto = @impuesto,
+                                            id_categoria = @categoria
+                                        WHERE id_producto = @id";
 
-                cbcategoria.SelectedValue = dgvproductos.CurrentRow.Cells["id_categoria"].Value;
+                    using (SqlCommand cmd = new SqlCommand(consulta, cn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", Convert.ToInt32(txtId.Text));
+                        cmd.Parameters.AddWithValue("@nombre", txtnombre.Text.Trim());
+                        cmd.Parameters.AddWithValue("@descripcion", txtdescripcion.Text.Trim());
+                        cmd.Parameters.AddWithValue("@compra", precioCompra);
+                        cmd.Parameters.AddWithValue("@venta", precioVenta);
+                        cmd.Parameters.AddWithValue("@stock", stock);
+                        cmd.Parameters.AddWithValue("@fecha", dtpfv.Value.Date);
+                        cmd.Parameters.AddWithValue("@impuesto", impuesto);
+                        cmd.Parameters.AddWithValue("@categoria", cbcategoria.SelectedValue);
+
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    MessageBox.Show("Producto actualizado correctamente.", "Información",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    MostrarProductos();
+                    LimpiarFormulario();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al actualizar producto: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnestado_Click(object sender, EventArgs e)
         {
-
-            if (txtId.Text == "")
+            if (string.IsNullOrWhiteSpace(txtId.Text))
             {
-                MessageBox.Show("Seleccione un producto.");
+                MessageBox.Show("Seleccione un producto.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -264,125 +434,97 @@ namespace bodegaproyecto
             {
                 using (SqlConnection cn = ConexionBD.ObtenerConexion())
                 {
+                    if (cn.State != ConnectionState.Open)
+                        cn.Open();
+
                     string consulta = @"UPDATE Producto
-                                SET Estado = CASE
-                                WHEN Estado=1 THEN 0
-                                ELSE 1
-                                END
-                                WHERE id_producto=@id";
+                                        SET Estado = CASE
+                                            WHEN Estado = 1 THEN 0
+                                            ELSE 1
+                                        END
+                                        WHERE id_producto = @id";
 
-                    SqlCommand cmd = new SqlCommand(consulta, cn);
+                    using (SqlCommand cmd = new SqlCommand(consulta, cn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", Convert.ToInt32(txtId.Text));
+                        cmd.ExecuteNonQuery();
+                    }
 
-                    cmd.Parameters.AddWithValue("@id", txtId.Text);
-
-                    cmd.ExecuteNonQuery();
-
-                    MessageBox.Show("Estado actualizado.");
+                    MessageBox.Show("Estado actualizado correctamente.", "Información",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     MostrarProductos();
+                    LimpiarFormulario();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error al cambiar estado: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-        }
-
-        private void dgvproductos_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
 
         private void txtbuscar_TextChanged(object sender, EventArgs e)
         {
-
-            try
-            {
-                using (SqlConnection cn = ConexionBD.ObtenerConexion())
-                {
-                    string consulta = @"SELECT
-                                    p.id_producto,
-                                    p.Nombre_Producto,
-                                    p.Descripcion,
-                                    p.Precio_Compra,
-                                    p.Precio_Venta,
-                                    p.Stock,
-                                    p.fecha_vencimiento,
-                                    p.impuesto,
-                                    p.id_categoria,
-                                    c.Nombre_Categoria,
-                                    p.Estado
-                                FROM Producto p
-                                INNER JOIN Categoria c
-                                ON p.id_categoria = c.id_categoria
-                                WHERE p.Nombre_Producto LIKE @buscar";
-
-                    SqlDataAdapter da = new SqlDataAdapter(consulta, cn);
-
-                    da.SelectCommand.Parameters.AddWithValue("@buscar",
-                        "%" + txtbuscar.Text + "%");
-
-                    DataTable dt = new DataTable();
-
-                    da.Fill(dt);
-
-                    dgvproductos.DataSource = dt;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            BuscarProductos(txtbuscar.Text.Trim());
         }
 
-        private void btnactualizar_Click(object sender, EventArgs e)
+        private void BuscarProductos(string buscar)
         {
-
             try
             {
                 using (SqlConnection cn = ConexionBD.ObtenerConexion())
                 {
-                    string consulta = @"UPDATE Producto
-            SET Nombre_Producto=@nombre,
-                Descripcion=@descripcion,
-                Precio_Compra=@compra,
-                Precio_Venta=@venta,
-                Stock=@stock,
-                fecha_vencimiento=@fecha,
-                impuesto=@impuesto,
-                id_categoria=@categoria
-            WHERE id_producto=@id";
+                    if (cn.State != ConnectionState.Open)
+                        cn.Open();
 
-                    SqlCommand cmd = new SqlCommand(consulta, cn);
+                    string consulta = @"SELECT
+                                            p.id_producto,
+                                            p.Nombre_Producto,
+                                            p.Descripcion,
+                                            p.Precio_Compra,
+                                            p.Precio_Venta,
+                                            p.Stock,
+                                            p.fecha_vencimiento,
+                                            p.impuesto,
+                                            p.id_categoria,
+                                            c.Nombre_Categoria,
+                                            p.Estado
+                                        FROM Producto p
+                                        INNER JOIN Categoria c
+                                        ON p.id_categoria = c.id_categoria
+                                        WHERE p.Nombre_Producto LIKE @buscar
+                                           OR p.Descripcion LIKE @buscar
+                                           OR c.Nombre_Categoria LIKE @buscar
+                                        ORDER BY p.id_producto DESC";
 
-                    cmd.Parameters.AddWithValue("@id", txtId.Text);
-                    cmd.Parameters.AddWithValue("@nombre", txtnombre.Text);
-                    cmd.Parameters.AddWithValue("@descripcion", txtdescripcion.Text);
-                    cmd.Parameters.AddWithValue("@compra", decimal.Parse(txtpreciocompra.Text));
-                    cmd.Parameters.AddWithValue("@venta", decimal.Parse(txtprecioventa.Text));
-                    cmd.Parameters.AddWithValue("@stock", int.Parse(txtstock.Text));
-                    cmd.Parameters.AddWithValue("@fecha", dtpfv.Value);
-                    cmd.Parameters.AddWithValue("@impuesto", decimal.Parse(txtimpuesto.Text));
-                    cmd.Parameters.AddWithValue("@categoria", cbcategoria.SelectedValue);
+                    using (SqlCommand cmd = new SqlCommand(consulta, cn))
+                    {
+                        cmd.Parameters.AddWithValue("@buscar", "%" + buscar + "%");
 
-                    cmd.ExecuteNonQuery();
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
 
-                    MessageBox.Show("Producto actualizado correctamente.");
-
-                    MostrarProductos();
+                        dgvproductos.DataSource = dt;
+                        ConfigurarGrid();
+                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error al buscar producto: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
 
         private void btnnuevo_Click(object sender, EventArgs e)
         {
+            LimpiarFormulario();
+        }
 
+        private void LimpiarFormulario()
+        {
             txtId.Clear();
             txtnombre.Clear();
             txtdescripcion.Clear();
@@ -390,15 +532,89 @@ namespace bodegaproyecto
             txtprecioventa.Clear();
             txtstock.Clear();
             txtimpuesto.Clear();
+            txtbuscar.Clear();
 
-            cbcategoria.SelectedIndex = 0;
+            if (cbcategoria.Items.Count > 0)
+                cbcategoria.SelectedIndex = -1;
 
-            dtpfv.Value = DateTime.Now;
+            dtpfv.Value = DateTime.Today;
 
             txtnombre.Focus();
         }
 
+        private void TextoProducto_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Para nombre de producto y búsqueda:
+            // permite letras, números, espacios y símbolos básicos.
+            if (!char.IsLetterOrDigit(e.KeyChar) &&
+                !char.IsWhiteSpace(e.KeyChar) &&
+                e.KeyChar != '.' &&
+                e.KeyChar != ',' &&
+                e.KeyChar != '-' &&
+                e.KeyChar != '/' &&
+                e.KeyChar != (char)Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void TextoDescripcion_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Para descripción:
+            // permite letras, números, espacios y signos comunes.
+            if (!char.IsLetterOrDigit(e.KeyChar) &&
+                !char.IsWhiteSpace(e.KeyChar) &&
+                e.KeyChar != '.' &&
+                e.KeyChar != ',' &&
+                e.KeyChar != '-' &&
+                e.KeyChar != '/' &&
+                e.KeyChar != '#' &&
+                e.KeyChar != (char)Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void Entero_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Solo números enteros
+            if (!char.IsDigit(e.KeyChar) &&
+                e.KeyChar != (char)Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void Decimal_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            TextBox caja = sender as TextBox;
+
+            // Permitir números, borrar, punto y coma decimal
+            if (!char.IsDigit(e.KeyChar) &&
+                e.KeyChar != '.' &&
+                e.KeyChar != ',' &&
+                e.KeyChar != (char)Keys.Back)
+            {
+                e.Handled = true;
+                return;
+            }
+
+            // Evitar más de un punto o coma decimal
+            if ((e.KeyChar == '.' || e.KeyChar == ',') &&
+                (caja.Text.Contains(".") || caja.Text.Contains(",")))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void dgvproductos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void lblTituloForm_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
-
-

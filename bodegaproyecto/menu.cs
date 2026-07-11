@@ -20,7 +20,20 @@ namespace bodegaproyecto
         public menu()
         {
             InitializeComponent();
+            AbrirFormulario(new DashboardForm());
 
+        }
+
+        private void AbrirFormulario(Form formulario)
+        {
+            panelContenedor.Controls.Clear();
+
+            formulario.TopLevel = false;
+            formulario.FormBorderStyle = FormBorderStyle.None;
+            formulario.Dock = DockStyle.Fill;
+
+            panelContenedor.Controls.Add(formulario);
+            formulario.Show();
         }
 
 
