@@ -20,7 +20,11 @@ namespace bodegaproyecto
             CargarCategorias();
             MostrarProductos();
             LimpiarFormulario();
+
             dtpfv.Value = DateTime.Today;
+
+            dtpfv.Value = DateTime.Today;
+            dtpfv.Enabled = false;
         }
 
         private void AsignarEventosManuales()
