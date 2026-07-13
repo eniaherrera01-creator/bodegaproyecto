@@ -43,6 +43,8 @@
             barButtonItem4 = new DevExpress.XtraBars.BarButtonItem();
             barButtonclientes = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
+            barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
+            barButtonItem5 = new DevExpress.XtraBars.BarButtonItem();
             ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
@@ -50,6 +52,9 @@
             ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPageGroup3 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPageGroup5 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPage3 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPageGroup6 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            ribbonPageGroup7 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             panelContenedor = new DevExpress.XtraEditors.PanelControl();
             ((System.ComponentModel.ISupportInitialize)ribbon).BeginInit();
             ((System.ComponentModel.ISupportInitialize)panelContenedor).BeginInit();
@@ -92,12 +97,12 @@
             ribbon.BackColor = Color.FromArgb(192, 255, 255);
             ribbon.CaptionBarItemLinks.Add(barButtonItem1);
             ribbon.ExpandCollapseItem.Id = 0;
-            ribbon.Items.AddRange(new DevExpress.XtraBars.BarItem[] { barButtonItem1, ribbon.ExpandCollapseItem, barButtonusuarios, barButtoncategorias, barButtomproveedores, barStaticusuario, barStaticrol, barButtonItem4, barStaticItemusuarios, barStaticItemrol, barButtoncerrarsesion, barButtonclientes, barButtonItem2 });
+            ribbon.Items.AddRange(new DevExpress.XtraBars.BarItem[] { barButtonItem1, ribbon.ExpandCollapseItem, barButtonusuarios, barButtoncategorias, barButtomproveedores, barStaticusuario, barStaticrol, barButtonItem4, barStaticItemusuarios, barStaticItemrol, barButtoncerrarsesion, barButtonclientes, barButtonItem2, barButtonItem3, barButtonItem5 });
             ribbon.Location = new Point(0, 0);
             ribbon.Margin = new Padding(4, 2, 4, 2);
-            ribbon.MaxItemId = 20;
+            ribbon.MaxItemId = 22;
             ribbon.Name = "ribbon";
-            ribbon.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1, ribbonPage2 });
+            ribbon.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1, ribbonPage2, ribbonPage3 });
             ribbon.Size = new Size(1054, 193);
             ribbon.StatusBar = ribbonStatusBar;
             ribbon.Click += ribbon_Click;
@@ -173,6 +178,22 @@
             barButtonItem2.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
             barButtonItem2.ItemClick += barButtonItem2_ItemClick_1;
             // 
+            // barButtonItem3
+            // 
+            barButtonItem3.Caption = "Ventas";
+            barButtonItem3.Id = 20;
+            barButtonItem3.ImageOptions.Image = (Image)resources.GetObject("barButtonItem3.ImageOptions.Image");
+            barButtonItem3.Name = "barButtonItem3";
+            barButtonItem3.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            // 
+            // barButtonItem5
+            // 
+            barButtonItem5.Caption = "Detalles de la venta";
+            barButtonItem5.Id = 21;
+            barButtonItem5.ImageOptions.Image = (Image)resources.GetObject("barButtonItem5.ImageOptions.Image");
+            barButtonItem5.Name = "barButtonItem5";
+            barButtonItem5.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large | DevExpress.XtraBars.Ribbon.RibbonItemStyles.SmallWithoutText;
+            // 
             // ribbonPage1
             // 
             ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1, ribbonPageGroup4 });
@@ -209,6 +230,22 @@
             // 
             ribbonPageGroup5.ItemLinks.Add(barButtonItem2);
             ribbonPageGroup5.Name = "ribbonPageGroup5";
+            // 
+            // ribbonPage3
+            // 
+            ribbonPage3.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup6, ribbonPageGroup7 });
+            ribbonPage3.Name = "ribbonPage3";
+            ribbonPage3.Text = "Ventas";
+            // 
+            // ribbonPageGroup6
+            // 
+            ribbonPageGroup6.ItemLinks.Add(barButtonItem3);
+            ribbonPageGroup6.Name = "ribbonPageGroup6";
+            // 
+            // ribbonPageGroup7
+            // 
+            ribbonPageGroup7.ItemLinks.Add(barButtonItem5);
+            ribbonPageGroup7.Name = "ribbonPageGroup7";
             // 
             // panelContenedor
             // 
@@ -265,5 +302,10 @@
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup4;
         private DevExpress.XtraBars.BarButtonItem barButtonItem2;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup5;
+        private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage3;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup6;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem3;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem5;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup7;
     }
 }
