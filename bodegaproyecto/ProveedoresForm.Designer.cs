@@ -37,6 +37,7 @@
             dgvProveedores = new DataGridView();
             btnEstado = new Button();
             btnEditar = new Button();
+            btnNuevo = new Button();
             panelHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvProveedores).BeginInit();
             SuspendLayout();
@@ -231,9 +232,9 @@
             // txtBuscar
             // 
             txtBuscar.ForeColor = Color.Gray;
-            txtBuscar.Location = new Point(340, 115);
+            txtBuscar.Location = new Point(669, 130);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(520, 30);
+            txtBuscar.Size = new Size(317, 30);
             txtBuscar.TabIndex = 17;
             txtBuscar.Text = "🔍 Buscar...";
             // 
@@ -246,13 +247,13 @@
             dgvProveedores.BackgroundColor = Color.White;
             dgvProveedores.BorderStyle = BorderStyle.None;
             dgvProveedores.ColumnHeadersHeight = 29;
-            dgvProveedores.Location = new Point(340, 150);
+            dgvProveedores.Location = new Point(340, 170);
             dgvProveedores.Name = "dgvProveedores";
             dgvProveedores.ReadOnly = true;
             dgvProveedores.RowHeadersVisible = false;
             dgvProveedores.RowHeadersWidth = 51;
             dgvProveedores.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvProveedores.Size = new Size(1068, 641);
+            dgvProveedores.Size = new Size(1068, 606);
             dgvProveedores.TabIndex = 18;
             dgvProveedores.CellContentClick += dgvProveedores_CellContentClick;
             // 
@@ -286,10 +287,22 @@
             btnEditar.UseVisualStyleBackColor = false;
             btnEditar.Click += btnEditar_Click;
             // 
+            // btnNuevo
+            // 
+            btnNuevo.BackColor = Color.White;
+            btnNuevo.FlatStyle = FlatStyle.Flat;
+            btnNuevo.Location = new Point(340, 125);
+            btnNuevo.Name = "btnNuevo";
+            btnNuevo.Size = new Size(280, 35);
+            btnNuevo.TabIndex = 21;
+            btnNuevo.Text = "+ Nuevo";
+            btnNuevo.UseVisualStyleBackColor = false;
+            // 
             // ProveedoresForm
             // 
             BackColor = Color.White;
             ClientSize = new Size(1464, 811);
+            Controls.Add(btnNuevo);
             Controls.Add(btnEditar);
             Controls.Add(btnEstado);
             Controls.Add(panelHeader);
@@ -350,5 +363,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colDireccion;
         private Button btnEstado;
         private Button btnEditar;
+        private Button btnNuevo;
     }
 }

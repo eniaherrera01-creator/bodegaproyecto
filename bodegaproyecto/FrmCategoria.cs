@@ -7,27 +7,28 @@ using System.Windows.Forms;
 namespace bodegaproyecto
 {
     public partial class FrmCategoria : Form
-
-
     {
         private bool permitirCambioEstado = false;
+        private bool esEdicion = false;
 
         public FrmCategoria()
         {
             InitializeComponent();
             AsignarEventosManuales();
             ListarCategorias();
+
+            btnGuardar.Enabled = false;
         }
 
         private void AsignarEventosManuales()
         {
             btnGuardar.Click += BtnGuardar_Click;
             btnCancelar.Click += BtnCancelar_Click;
+            btnNuevo.Click += BtnNuevo_Click;
 
             txtNombre.TextChanged += TxtNombre_TextChanged;
             dgvCategorias.CellClick += dgvCategorias_CellClick;
 
-            // VALIDACIONES AL ESCRIBIR
             txtNombre.KeyPress += SoloLetras_KeyPress;
             txtDescripcion.KeyPress += SoloLetrasDescripcion_KeyPress;
             txtBuscar.KeyPress += SoloLetrasDescripcion_KeyPress;
@@ -36,7 +37,7 @@ namespace bodegaproyecto
             {
                 if (txtNombre.Text == "Ej: Medicamentos...")
                 {
-                    txtNombre.Text = "";
+                    txtNombre.Clear();
                     txtNombre.ForeColor = Color.Black;
                 }
             };
@@ -54,7 +55,7 @@ namespace bodegaproyecto
             {
                 if (txtDescripcion.Text == "Descripción detallada de la categoría...")
                 {
-                    txtDescripcion.Text = "";
+                    txtDescripcion.Clear();
                     txtDescripcion.ForeColor = Color.Black;
                 }
             };
@@ -72,7 +73,7 @@ namespace bodegaproyecto
             {
                 if (txtBuscar.Text == "🔍 Buscar...")
                 {
-                    txtBuscar.Text = "";
+                    txtBuscar.Clear();
                     txtBuscar.ForeColor = Color.Black;
                 }
             };
@@ -89,9 +90,18 @@ namespace bodegaproyecto
             txtBuscar.TextChanged += TxtBuscar_TextChanged;
         }
 
+        private void BtnNuevo_Click(object sender, EventArgs e)
+        {
+            LimpiarFormulario();
+
+            esEdicion = false;
+            permitirCambioEstado = false;
+
+            txtNombre.Focus();
+        }
+
         private void SoloLetras_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Permite letras, espacios y borrar
             if (!char.IsLetter(e.KeyChar) &&
                 !char.IsWhiteSpace(e.KeyChar) &&
                 e.KeyChar != (char)Keys.Back)
@@ -102,7 +112,6 @@ namespace bodegaproyecto
 
         private void SoloLetrasDescripcion_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Permite letras, espacios, borrar, punto, coma y guion
             if (!char.IsLetter(e.KeyChar) &&
                 !char.IsWhiteSpace(e.KeyChar) &&
                 e.KeyChar != '.' &&
@@ -113,6 +122,7 @@ namespace bodegaproyecto
                 e.Handled = true;
             }
         }
+
         private void ListarCategorias(string filtro = "")
         {
             try
@@ -120,33 +130,34 @@ namespace bodegaproyecto
                 using (SqlConnection con = ConexionBD.ObtenerConexion())
                 {
                     string query = @"SELECT
-                            id_categoria AS [ID],
-                            Nombre_Categoria AS [Nombre Categoria],
-                            Descripcion AS [Descripción],
-                            CASE
-                                WHEN Estado = 1 THEN 'Activo'
-                                ELSE 'Inactivo'
-                            END AS [Estado]
-                         FROM Categoria";
+                                    id_categoria AS [ID],
+                                    Nombre_Categoria AS [Nombre Categoria],
+                                    Descripcion AS [Descripción],
+                                    CASE
+                                        WHEN Estado = 1 THEN 'Activo'
+                                        ELSE 'Inactivo'
+                                    END AS [Estado]
+                                    FROM Categoria";
 
-                    if (!string.IsNullOrEmpty(filtro))
+                    if (!string.IsNullOrWhiteSpace(filtro))
                     {
                         query += @" WHERE Nombre_Categoria LIKE @filtro
-                        OR Descripcion LIKE @filtro";
+                                    OR Descripcion LIKE @filtro";
                     }
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
-                        if (!string.IsNullOrEmpty(filtro))
+                        if (!string.IsNullOrWhiteSpace(filtro))
                             cmd.Parameters.AddWithValue("@filtro", "%" + filtro + "%");
 
                         SqlDataAdapter da = new SqlDataAdapter(cmd);
+
                         DataTable dt = new DataTable();
+
                         da.Fill(dt);
 
                         dgvCategorias.DataSource = dt;
 
-                        // Si no quieres mostrar el ID
                         dgvCategorias.Columns["ID"].Visible = false;
 
                         lblRegistros.Text = $"{dt.Rows.Count} registros";
@@ -155,64 +166,83 @@ namespace bodegaproyecto
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar datos: " + ex.Message,
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al cargar categorías.\n\n" + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
         private bool ValidarCategoria()
         {
             string nombre = txtNombre.Text.Trim();
-            string desc = txtDescripcion.Text.Trim();
+            nombre = System.Text.RegularExpressions.Regex.Replace(nombre, @"\s+", " ");
+            nombre = System.Globalization.CultureInfo.CurrentCulture
+                        .TextInfo
+                        .ToTitleCase(nombre.ToLower());
+            string descripcion = txtDescripcion.Text.Trim();
 
-            if (string.IsNullOrWhiteSpace(nombre) || nombre == "Ej: Medicamentos...")
+            if (nombre == "" || nombre == "Ej: Medicamentos...")
             {
-                MessageBox.Show("El nombre de la categoría es obligatorio.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Ingrese el nombre de la categoría.");
+
                 txtNombre.Focus();
+
                 return false;
             }
 
-            foreach (char c in nombre)
+            if (nombre.Length < 3)
             {
-                if (!char.IsLetter(c) && !char.IsWhiteSpace(c))
-                {
-                    MessageBox.Show("El nombre de la categoría solo debe contener letras.", "Validación",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtNombre.Focus();
-                    return false;
-                }
+                MessageBox.Show("El nombre debe contener al menos 3 letras.");
+
+                txtNombre.Focus();
+
+                return false;
             }
 
-            if (string.IsNullOrWhiteSpace(desc) || desc == "Descripción detallada de la categoría...")
+            if (descripcion == "" ||
+                descripcion == "Descripción detallada de la categoría...")
             {
-                MessageBox.Show("La descripción de la categoría es obligatoria.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Ingrese una descripción.");
+
                 txtDescripcion.Focus();
+
                 return false;
             }
 
-            foreach (char c in desc)
+            if (descripcion.Length < 5)
             {
-                if (!char.IsLetter(c) &&
-                    !char.IsWhiteSpace(c) &&
-                    c != '.' &&
-                    c != ',' &&
-                    c != '-')
-                {
-                    MessageBox.Show("La descripción solo debe contener letras y signos básicos.", "Validación",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtDescripcion.Focus();
-                    return false;
-                }
+                MessageBox.Show("La descripción es demasiado corta.");
+
+                txtDescripcion.Focus();
+
+                return false;
             }
 
             return true;
         }
 
+        private bool ExisteCategoria(string nombre)
+        {
+            using (SqlConnection con = ConexionBD.ObtenerConexion())
+            {
+                string sql = @"SELECT COUNT(*)
+                               FROM Categoria
+                               WHERE Nombre_Categoria=@nombre";
 
+                if (esEdicion)
+                    sql += " AND id_categoria<>@id";
 
+                SqlCommand cmd = new SqlCommand(sql, con);
 
+                cmd.Parameters.AddWithValue("@nombre", nombre);
+
+                if (esEdicion)
+                    cmd.Parameters.AddWithValue("@id", txtId.Text);
+
+                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+            }
+        }
 
         private void BtnGuardar_Click(object sender, EventArgs e)
         {
@@ -220,7 +250,25 @@ namespace bodegaproyecto
                 return;
 
             string nombre = txtNombre.Text.Trim();
-            string desc = txtDescripcion.Text.Trim();
+
+            nombre = System.Text.RegularExpressions.Regex.Replace(nombre, @"\s+", " ");
+
+            nombre = System.Globalization.CultureInfo.CurrentCulture
+                        .TextInfo
+                        .ToTitleCase(nombre.ToLower());
+
+
+            if (ExisteCategoria(txtNombre.Text.Trim()))
+            {
+                MessageBox.Show(
+                    "Ya existe una categoría con ese nombre.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                txtNombre.Focus();
+                return;
+            }
 
             try
             {
@@ -228,100 +276,77 @@ namespace bodegaproyecto
                 {
                     SqlCommand cmd;
 
-                    if (txtId.Text == "ID: Automático")
+                    if (!esEdicion)
                     {
-                        string query = "INSERT INTO Categoria (Nombre_Categoria, Descripcion) VALUES (@nombre, @desc)";
-                        cmd = new SqlCommand(query, con);
+                        string sql = @"INSERT INTO Categoria
+                                      (Nombre_Categoria, Descripcion)
+                                      VALUES
+                                      (@Nombre,@Descripcion)";
+
+                        cmd = new SqlCommand(sql, con);
                     }
                     else
                     {
-                        string query = "UPDATE Categoria SET Nombre_Categoria = @nombre, Descripcion = @desc WHERE id_categoria = @id";
-                        cmd = new SqlCommand(query, con);
-                        cmd.Parameters.AddWithValue("@id", Convert.ToInt32(txtId.Text));
+                        string sql = @"UPDATE Categoria
+                                      SET Nombre_Categoria=@Nombre,
+                                          Descripcion=@Descripcion
+                                      WHERE id_categoria=@Id";
+
+                        cmd = new SqlCommand(sql, con);
+                        cmd.Parameters.AddWithValue("@Id", txtId.Text);
                     }
 
-                    cmd.Parameters.AddWithValue("@nombre", nombre);
-                    cmd.Parameters.AddWithValue("@desc", desc);
+                    cmd.Parameters.AddWithValue("@Nombre", nombre);
+                    cmd.Parameters.AddWithValue("@Descripcion", txtDescripcion.Text.Trim());
 
                     cmd.ExecuteNonQuery();
-                    MessageBox.Show("¡Registro guardado con éxito!", "Información",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    MessageBox.Show(
+                        esEdicion
+                        ? "Categoría actualizada correctamente."
+                        : "Categoría registrada correctamente.",
+                        "Éxito",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
 
                     LimpiarFormulario();
+
                     ListarCategorias();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al guardar: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "Error al guardar la categoría.\n\n" + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
-        }
-
-        private void BtnEliminar_Click(object sender, EventArgs e)
-        {
-            if (txtId.Text == "ID: Automático")
-            {
-                lblAlerta.Text = "Selecciona una fila primero";
-                lblAlerta.Visible = true;
-                return;
-            }
-
-            DialogResult result = MessageBox.Show("¿Está seguro de eliminar esta categoría?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (result == DialogResult.Yes)
-            {
-                try
-                {
-                    using (SqlConnection con = ConexionBD.ObtenerConexion())
-                    {
-                        string query = "DELETE FROM Categoria WHERE id_categoria = @id";
-                        using (SqlCommand cmd = new SqlCommand(query, con))
-                        {
-                            cmd.Parameters.AddWithValue("@id", Convert.ToInt32(txtId.Text));
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-                    MessageBox.Show("Categoría eliminada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LimpiarFormulario();
-                    ListarCategorias();
-                }
-                catch (SqlException ex) when (ex.Number == 547) // Código de error de clave foránea en SQL Server
-                {
-                    MessageBox.Show("No se puede eliminar esta categoría porque está siendo utilizada por uno o más productos.", "Restricción de Base de Datos", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al eliminar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        private void dgvCategorias_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-           
         }
 
         private void TxtNombre_TextChanged(object sender, EventArgs e)
         {
-            if (txtNombre.Text != "Ej: Medicamentos..." && !string.IsNullOrWhiteSpace(txtNombre.Text))
+            if (txtNombre.Text != "Ej: Medicamentos..." &&
+                !string.IsNullOrWhiteSpace(txtNombre.Text))
             {
                 lblContadorCaracteres.Text = $"{txtNombre.Text.Length}/80";
+
                 btnGuardar.Enabled = true;
-                btnGuardar.BackColor = Color.FromArgb(40, 167, 69);
-                btnGuardar.ForeColor = Color.White;
             }
             else
             {
                 lblContadorCaracteres.Text = "0/80";
+
                 btnGuardar.Enabled = false;
-                btnGuardar.BackColor = Color.White;
-                btnGuardar.ForeColor = Color.Black;
             }
         }
 
         private void TxtBuscar_TextChanged(object sender, EventArgs e)
         {
-            string filtro = txtBuscar.Text == "🔍 Buscar..." ? "" : txtBuscar.Text.Trim();
+            string filtro = txtBuscar.Text == "🔍 Buscar..."
+                ? ""
+                : txtBuscar.Text.Trim();
+
             ListarCategorias(filtro);
         }
 
@@ -333,11 +358,22 @@ namespace bodegaproyecto
         private void LimpiarFormulario()
         {
             txtId.Text = "ID: Automático";
+
             txtNombre.Text = "Ej: Medicamentos...";
             txtNombre.ForeColor = Color.Gray;
+
             txtDescripcion.Text = "Descripción detallada de la categoría...";
             txtDescripcion.ForeColor = Color.Gray;
+
+            lblContadorCaracteres.Text = "0/80";
+
             lblAlerta.Visible = false;
+
+            btnGuardar.Enabled = false;
+
+            esEdicion = false;
+
+            permitirCambioEstado = false;
         }
 
         private void panelHeader_Paint(object sender, PaintEventArgs e)
@@ -354,82 +390,126 @@ namespace bodegaproyecto
         {
             if (!permitirCambioEstado)
             {
-                MessageBox.Show("Primero debe presionar el botón Editar.", "Aviso",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Primero debe presionar el botón Editar.",
+                    "Aviso",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
                 return;
             }
 
-            if (dgvCategorias.CurrentRow == null)
+            if (dgvCategorias.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Seleccione una categoría.");
+                MessageBox.Show(
+                    "Seleccione una categoría.",
+                    "Aviso",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
                 return;
             }
 
-            string estadoActual = dgvCategorias.SelectedRows[0].Cells["Estado"].Value.ToString();
+            string estadoActual =
+                dgvCategorias.SelectedRows[0].Cells["Estado"].Value.ToString();
 
-            // Texto dinámico según el estado actual de la categoría
-            string accion = estadoActual == "Activo" ? "inhabilitar" : "habilitar";
+            string accion =
+                estadoActual == "Activo"
+                ? "inhabilitar"
+                : "habilitar";
 
-            DialogResult resultado = MessageBox.Show(
+            DialogResult r = MessageBox.Show(
                 $"¿Desea {accion} esta categoría?",
-                "Confirmar acción",
+                "Confirmar",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
-            if (resultado == DialogResult.No)
-            {
+            if (r == DialogResult.No)
                 return;
-            }
 
-            int idCategoria = Convert.ToInt32(dgvCategorias.SelectedRows[0].Cells["ID"].Value);
-            int nuevoEstado = estadoActual == "Activo" ? 0 : 1;
+            int nuevoEstado =
+                estadoActual == "Activo"
+                ? 0
+                : 1;
+
+            int id =
+                Convert.ToInt32(
+                    dgvCategorias.SelectedRows[0].Cells["ID"].Value);
 
             using (SqlConnection con = ConexionBD.ObtenerConexion())
             {
                 string sql = @"UPDATE Categoria
-                       SET Estado = @Estado
-                       WHERE id_categoria = @id";
+                               SET Estado=@Estado
+                               WHERE id_categoria=@Id";
 
                 SqlCommand cmd = new SqlCommand(sql, con);
+
                 cmd.Parameters.AddWithValue("@Estado", nuevoEstado);
-                cmd.Parameters.AddWithValue("@id", idCategoria);
+                cmd.Parameters.AddWithValue("@Id", id);
 
                 cmd.ExecuteNonQuery();
             }
 
-            string accionPasada = estadoActual == "Activo" ? "inhabilitada" : "habilitada";
-            MessageBox.Show($"Categoría {accionPasada} correctamente.");
+            MessageBox.Show(
+                estadoActual == "Activo"
+                ? "Categoría inhabilitada correctamente."
+                : "Categoría habilitada correctamente.",
+                "Información",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
 
             ListarCategorias();
 
+            LimpiarFormulario();
         }
 
+        private void dgvCategorias_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+
+            dgvCategorias.Rows[e.RowIndex].Selected = true;
+        }
         private void btnEditar_Click(object sender, EventArgs e)
         {
-            permitirCambioEstado = true;
-
             if (dgvCategorias.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Seleccione una categoría para editar.", "Aviso",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Seleccione una categoría para editar.",
+                    "Aviso",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
                 return;
             }
+
+            permitirCambioEstado = true;
+            esEdicion = true;
 
             DataGridViewRow fila = dgvCategorias.SelectedRows[0];
 
             txtId.Text = fila.Cells["ID"].Value.ToString();
+
             txtNombre.Text = fila.Cells["Nombre Categoria"].Value.ToString();
+
             txtDescripcion.Text = fila.Cells["Descripción"].Value.ToString();
 
             txtNombre.ForeColor = Color.Black;
             txtDescripcion.ForeColor = Color.Black;
 
             btnGuardar.Enabled = true;
+
+            txtNombre.Focus();
+            txtNombre.SelectionStart = txtNombre.Text.Length;
         }
 
-        private void btnCancelar_Click_1(object sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
 
+            LimpiarFormulario();
+
+            btnGuardar.Enabled = false;
         }
     }
 }

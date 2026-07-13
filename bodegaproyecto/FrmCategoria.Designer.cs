@@ -34,6 +34,7 @@
             lblSeccion = new Label();
             btnEstado = new Button();
             btnEditar = new Button();
+            btnNuevo = new Button();
             panelHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvCategorias).BeginInit();
             SuspendLayout();
@@ -57,7 +58,7 @@
             lblTitulo.ForeColor = Color.White;
             lblTitulo.Location = new Point(15, 15);
             lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(233, 25);
+            lblTitulo.Size = new Size(305, 32);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "🏷️ Gestión de Categorías";
             // 
@@ -78,7 +79,7 @@
             lblId.AutoSize = true;
             lblId.Location = new Point(20, 110);
             lblId.Name = "lblId";
-            lblId.Size = new Size(23, 19);
+            lblId.Size = new Size(27, 23);
             lblId.TabIndex = 2;
             lblId.Text = "ID";
             // 
@@ -89,7 +90,7 @@
             txtId.Location = new Point(20, 130);
             txtId.Name = "txtId";
             txtId.ReadOnly = true;
-            txtId.Size = new Size(280, 25);
+            txtId.Size = new Size(280, 30);
             txtId.TabIndex = 3;
             txtId.Text = "ID: Automático";
             // 
@@ -98,7 +99,7 @@
             lblNombre.AutoSize = true;
             lblNombre.Location = new Point(20, 170);
             lblNombre.Name = "lblNombre";
-            lblNombre.Size = new Size(129, 19);
+            lblNombre.Size = new Size(161, 23);
             lblNombre.TabIndex = 4;
             lblNombre.Text = "Nombre categoría *";
             // 
@@ -119,7 +120,7 @@
             lblContadorCaracteres.ForeColor = Color.Gray;
             lblContadorCaracteres.Location = new Point(275, 225);
             lblContadorCaracteres.Name = "lblContadorCaracteres";
-            lblContadorCaracteres.Size = new Size(29, 13);
+            lblContadorCaracteres.Size = new Size(38, 19);
             lblContadorCaracteres.TabIndex = 6;
             lblContadorCaracteres.Text = "0/80";
             // 
@@ -128,7 +129,7 @@
             lblDescripcion.AutoSize = true;
             lblDescripcion.Location = new Point(20, 245);
             lblDescripcion.Name = "lblDescripcion";
-            lblDescripcion.Size = new Size(79, 19);
+            lblDescripcion.Size = new Size(98, 23);
             lblDescripcion.TabIndex = 7;
             lblDescripcion.Text = "Descripción";
             // 
@@ -165,7 +166,6 @@
             btnCancelar.TabIndex = 10;
             btnCancelar.Text = "✕ Cancelar";
             btnCancelar.UseVisualStyleBackColor = false;
-            btnCancelar.Click += btnCancelar_Click_1;
             // 
             // lblAlerta
             // 
@@ -186,16 +186,16 @@
             lblListaTitulo.ForeColor = Color.FromArgb(28, 114, 187);
             lblListaTitulo.Location = new Point(340, 80);
             lblListaTitulo.Name = "lblListaTitulo";
-            lblListaTitulo.Size = new Size(151, 21);
+            lblListaTitulo.Size = new Size(189, 28);
             lblListaTitulo.TabIndex = 13;
             lblListaTitulo.Text = "Lista de categorías";
             // 
             // txtBuscar
             // 
             txtBuscar.ForeColor = Color.Gray;
-            txtBuscar.Location = new Point(340, 115);
+            txtBuscar.Location = new Point(636, 119);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(520, 25);
+            txtBuscar.Size = new Size(329, 30);
             txtBuscar.TabIndex = 14;
             txtBuscar.Text = "🔍 Buscar...";
             // 
@@ -208,7 +208,7 @@
             dgvCategorias.BackgroundColor = Color.White;
             dgvCategorias.BorderStyle = BorderStyle.None;
             dgvCategorias.ColumnHeadersHeight = 29;
-            dgvCategorias.Location = new Point(340, 150);
+            dgvCategorias.Location = new Point(340, 170);
             dgvCategorias.Name = "dgvCategorias";
             dgvCategorias.ReadOnly = true;
             dgvCategorias.RowHeadersVisible = false;
@@ -224,7 +224,7 @@
             lblSeccion.ForeColor = Color.FromArgb(70, 130, 180);
             lblSeccion.Location = new Point(20, 80);
             lblSeccion.Name = "lblSeccion";
-            lblSeccion.Size = new Size(131, 15);
+            lblSeccion.Size = new Size(164, 20);
             lblSeccion.TabIndex = 1;
             lblSeccion.Text = "DATOS DEL REGISTRO";
             // 
@@ -258,10 +258,22 @@
             btnEditar.UseVisualStyleBackColor = false;
             btnEditar.Click += btnEditar_Click;
             // 
+            // btnNuevo
+            // 
+            btnNuevo.BackColor = Color.White;
+            btnNuevo.FlatStyle = FlatStyle.Flat;
+            btnNuevo.Location = new Point(340, 114);
+            btnNuevo.Name = "btnNuevo";
+            btnNuevo.Size = new Size(262, 35);
+            btnNuevo.TabIndex = 22;
+            btnNuevo.Text = "+ Nuevo";
+            btnNuevo.UseVisualStyleBackColor = false;
+            // 
             // FrmCategoria
             // 
             BackColor = Color.White;
             ClientSize = new Size(1370, 614);
+            Controls.Add(btnNuevo);
             Controls.Add(btnEditar);
             Controls.Add(btnEstado);
             Controls.Add(panelHeader);
@@ -315,5 +327,6 @@
         private Label lblSeccion;
         private Button btnEstado;
         private Button btnEditar;
+        private Button btnNuevo;
     }
 }
