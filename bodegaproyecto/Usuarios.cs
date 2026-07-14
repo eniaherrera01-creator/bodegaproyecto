@@ -11,7 +11,7 @@ namespace bodegaproyecto
     public partial class Usuarios : Form
     {
         private int selectedUserId = -1;
-        private bool permitirSeleccionGrid = false; 
+        private bool permitirSeleccionGrid = false;
         private bool enModoEdicion = false; // Variable para controlar el modo de edición
         private bool enModoNuevo = false; // Variable para controlar el modo de nuevo
 
@@ -83,14 +83,14 @@ namespace bodegaproyecto
 
         private void btnNuevo_Click(object sender, EventArgs e)
         {
-            
+
             if (enModoEdicion)
             {
                 MessageBox.Show("debe guardar o cancelar la edicion actual antes de crear un nuevo usuario.", "aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            
-            enModoNuevo = true; 
+
+            enModoNuevo = true;
 
             permitirSeleccionGrid = false;
             dgvUsuarios.ClearSelection();
@@ -283,9 +283,9 @@ namespace bodegaproyecto
         }
 
         private void btnActualizar_Click(object sender, EventArgs e) { CargarUsuarios(); LimpiarFormulario(); }
-        private void btnCancelar_Click(object sender, EventArgs e) 
-        { 
-           
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+
             LimpiarFormulario();
             enModoEdicion = false; // sale del modo edicion
             enModoNuevo = false;
@@ -365,6 +365,9 @@ namespace bodegaproyecto
 
         }
 
-       
+        private void txtIDUsuario_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
