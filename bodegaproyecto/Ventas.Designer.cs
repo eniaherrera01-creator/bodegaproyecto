@@ -305,7 +305,6 @@
             btnBuscarCliente.TabIndex = 3;
             btnBuscarCliente.Text = "🔍 Buscar";
             btnBuscarCliente.UseVisualStyleBackColor = false;
-            btnBuscarCliente.Click += btnBuscarCliente_Click;
             // 
             // btnNuevoCliente
             // 
@@ -320,7 +319,6 @@
             btnNuevoCliente.TabIndex = 4;
             btnNuevoCliente.Text = "+ Nuevo";
             btnNuevoCliente.UseVisualStyleBackColor = false;
-            btnNuevoCliente.Click += btnNuevoCliente_Click;
             // 
             // lblUsuario
             // 
@@ -398,7 +396,6 @@
             btnBuscarProducto.TabIndex = 8;
             btnBuscarProducto.Text = "🔍";
             btnBuscarProducto.UseVisualStyleBackColor = false;
-            btnBuscarProducto.Click += btnBuscarProducto_Click;
             // 
             // lblProducto
             // 
@@ -490,7 +487,6 @@
             nudCantidad.Size = new Size(145, 27);
             nudCantidad.TabIndex = 13;
             nudCantidad.Value = new decimal(new int[] { 1, 0, 0, 0 });
-            nudCantidad.ValueChanged += nudCantidad_ValueChanged;
             // 
             // btnAgregarProducto
             // 
@@ -506,7 +502,6 @@
             btnAgregarProducto.TabIndex = 14;
             btnAgregarProducto.Text = "+ Agregar Producto";
             btnAgregarProducto.UseVisualStyleBackColor = false;
-            btnAgregarProducto.Click += btnAgregarProducto_Click;
             // 
             // pnlDerecho
             // 
@@ -550,7 +545,6 @@
             btnNuevo.TabIndex = 15;
             btnNuevo.Text = "+ Nuevo";
             btnNuevo.UseVisualStyleBackColor = false;
-            btnNuevo.Click += btnNuevo_Click;
             // 
             // btnEditar
             // 
@@ -564,7 +558,6 @@
             btnEditar.TabIndex = 16;
             btnEditar.Text = "✏ Editar";
             btnEditar.UseVisualStyleBackColor = false;
-            btnEditar.Click += btnEditar_Click;
             // 
             // btnActualizar
             // 
@@ -578,7 +571,6 @@
             btnActualizar.TabIndex = 17;
             btnActualizar.Text = "↻ Actualizar";
             btnActualizar.UseVisualStyleBackColor = false;
-            btnActualizar.Click += btnActualizar_Click;
             // 
             // txtBuscar
             // 
@@ -619,7 +611,6 @@
             dgvVentas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvVentas.Size = new Size(1102, 433);
             dgvVentas.TabIndex = 19;
-            dgvVentas.CellClick += dgvVentas_CellClick;
             // 
             // pnlTotales
             // 
@@ -711,7 +702,6 @@
             btnGuardar.TabIndex = 20;
             btnGuardar.Text = "💾 Guardar";
             btnGuardar.UseVisualStyleBackColor = false;
-            btnGuardar.Click += btnGuardar_Click;
             // 
             // btnCancelar
             // 
@@ -779,59 +769,6 @@
 
         }
 
-
-
-        private void btnGuardar_Click(object sender, EventArgs e)
-        {
-
-        }
-
-    
-
-        private void btnNuevo_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnEditar_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnActualizar_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnBuscarCliente_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnNuevoCliente_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnBuscarProducto_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnAgregarProducto_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dgvVentas_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void nudCantidad_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
 
         #endregion
 
