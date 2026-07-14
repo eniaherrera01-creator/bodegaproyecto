@@ -7,61 +7,136 @@ namespace bodegaproyecto
 {
     public partial class Ventas : Form
     {
+        //=========================================
+        // CONEXIÓN
+        //=========================================
+
+        private SqlConnection conexion = ConexionBD.ObtenerConexion();
+
+        //=========================================
+        // VARIABLES DE CONTROL
+        //=========================================
+
         private int idVentaSeleccionada = 0;
+
         private bool modoNuevo = false;
         private bool modoEditar = false;
+
+        //=========================================
+        // CONSTRUCTOR
+        //=========================================
 
         public Ventas()
         {
             InitializeComponent();
+            AsignarEventosManuales();
         }
+
+        //=========================================
+        // LOAD
+        //=========================================
 
         private void Ventas_Load(object sender, EventArgs e)
         {
             CargarClientes();
             CargarUsuarios();
-            CargarVentas();
+
+            MostrarVentas();
 
             LimpiarFormulario();
+
+            HabilitarControles(false);
+
+            dtpFecha.Value = DateTime.Now;
+            dtpFecha.Enabled = false;
         }
+
+        //=========================================
+        // EVENTOS MANUALES
+        //=========================================
+
+        private void AsignarEventosManuales()
+        {
+            btnNuevo.Click += btnNuevo_Click;
+            btnGuardar.Click += btnGuardar_Click;
+            btnEditar.Click += btnEditar_Click;
+            btnActualizar.Click += btnActualizar_Click;
+            btnCancelar.Click += btnCancelar_Click;
+            btnBuscarProducto.Click += btnBuscarProducto_Click;
+            txtBuscar.TextChanged += txtBuscar_TextChanged;
+            dgvVentas.CellClick += dgvVentas_CellClick;
+            nudCantidad.ValueChanged += nudCantidad_ValueChanged;
+            this.Load += Ventas_Load;
+        }
+        //=========================================
+        // LIMPIAR FORMULARIO
+        //=========================================
 
         private void LimpiarFormulario()
         {
+            txtIDVenta.Clear();
             txtIDVenta.Text = "(Automático)";
 
             dtpFecha.Value = DateTime.Now;
 
             cmbCliente.SelectedIndex = -1;
-            cmbUsuario.SelectedIndex = -1;
             cmbMetodoPago.SelectedIndex = -1;
+
+            txtBuscarProducto.Clear();
+            txtProducto.Clear();
+            txtPrecio.Clear();
+            txtImpuesto.Clear();
+            txtStock.Clear();
+
+            nudCantidad.Value = 1;
+
+            lblSubtotal.Text = "L. 0.00";
+            lblImpuestoValor.Text = "L. 0.00";
+            lblTotalValor.Text = "L. 0.00";
+
+            cmbCliente.Focus();
         }
-        
+
+        //=========================================
+        // HABILITAR CONTROLES
+        //=========================================
 
         private void HabilitarControles(bool estado)
         {
             cmbCliente.Enabled = estado;
-            cmbUsuario.Enabled = estado;
             cmbMetodoPago.Enabled = estado;
-            dtpFecha.Enabled = estado;
 
             btnGuardar.Enabled = estado;
+
+            txtBuscarProducto.Enabled = estado;
+            btnBuscarProducto.Enabled = estado;
+            btnAgregarProducto.Enabled = estado;
+
+            nudCantidad.Enabled = estado;
         }
 
         //=========================================
         // CARGAR CLIENTES
         //=========================================
+
         private void CargarClientes()
         {
             try
             {
-                using (SqlConnection conn = ConexionBD.ObtenerConexion())
+                using (SqlConnection cn = ConexionBD.ObtenerConexion())
                 {
-                    string sql = @"SELECT id_cliente, Nombre
-                           FROM Cliente
-                           WHERE Estado = 1
-                           ORDER BY Nombre";
+                    if (cn.State != ConnectionState.Open)
+                        cn.Open();
 
-                    SqlDataAdapter da = new SqlDataAdapter(sql, conn);
+                    string consulta = @"SELECT
+                                            id_cliente,
+                                            Nombre
+                                        FROM Cliente
+                                        WHERE Estado = 1
+                                        ORDER BY Nombre";
+
+                    SqlDataAdapter da = new SqlDataAdapter(consulta, cn);
+
                     DataTable dt = new DataTable();
 
                     da.Fill(dt);
@@ -74,224 +149,673 @@ namespace bodegaproyecto
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar clientes.\n" + ex.Message);
+                MessageBox.Show(
+                    "Error al cargar clientes: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
         //=========================================
         // CARGAR USUARIOS
         //=========================================
+
         private void CargarUsuarios()
         {
             try
             {
-                using (SqlConnection conn = ConexionBD.ObtenerConexion())
+                using (SqlConnection cn = ConexionBD.ObtenerConexion())
                 {
-                    string sql = @"SELECT id_usuario, Nombre
-                           FROM Usuario
-                           WHERE Estado = 1
-                           ORDER BY Nombre";
+                    if (cn.State != ConnectionState.Open)
+                        cn.Open();
 
-                    SqlDataAdapter da = new SqlDataAdapter(sql, conn);
+                    string consulta = @"SELECT
+                                    id_usuario,
+                                    Nombre
+                                FROM Usuario
+                                WHERE Estado = 1
+                                ORDER BY Nombre";
+
+                    SqlDataAdapter da = new SqlDataAdapter(consulta, cn);
                     DataTable dt = new DataTable();
-
                     da.Fill(dt);
 
+                    // 🔹 Aquí asignamos el resultado al combo del designer
                     cmbUsuario.DataSource = dt;
                     cmbUsuario.DisplayMember = "Nombre";
                     cmbUsuario.ValueMember = "id_usuario";
-                    cmbUsuario.SelectedIndex = -1;
+                    cmbUsuario.SelectedIndex = -1; // Para que aparezca vacío al inicio
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar usuarios.\n" + ex.Message);
+                MessageBox.Show(
+                    "Error al cargar usuarios: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
-        private void CargarVentas()
+        //=========================================
+        // CONTINÚA EN LA PARTE 2...
+        //=========================================
+
+        //=========================================
+        // MOSTRAR VENTAS
+        //=========================================
+
+        private void MostrarVentas()
         {
             try
             {
-                using (SqlConnection conn = ConexionBD.ObtenerConexion())
+                using (SqlConnection cn = ConexionBD.ObtenerConexion())
                 {
-                    string sql = @"
-            SELECT
-                v.id_venta,
-                v.Fecha_Venta,
-                c.Nombre AS Cliente,
-                u.Nombre AS Usuario,
-                v.metodo_pago
-            FROM Venta v
-            INNER JOIN Cliente c
-                ON v.id_cliente = c.id_cliente
-            INNER JOIN Usuario u
-                ON v.id_usuario = u.id_usuario";
+                    if (cn.State != ConnectionState.Open)
+                        cn.Open();
 
-                    SqlDataAdapter da = new SqlDataAdapter(sql, conn);
+                    string consulta = @"SELECT
+                                            v.id_venta,
+                                            v.Fecha_Venta,
+                                            c.Nombre AS Cliente,
+                                            u.Nombre AS Usuario,
+                                            v.metodo_pago
+                                        FROM Venta v
+                                        INNER JOIN Cliente c
+                                            ON v.id_cliente = c.id_cliente
+                                        INNER JOIN Usuario u
+                                            ON v.id_usuario = u.id_usuario
+                                        ORDER BY v.id_venta DESC";
+
+                    SqlDataAdapter da = new SqlDataAdapter(consulta, cn);
+
                     DataTable dt = new DataTable();
 
                     da.Fill(dt);
 
                     dgvVentas.DataSource = dt;
 
-                    dgvVentas.Columns["id_venta"].HeaderText = "ID";
-                    dgvVentas.Columns["Fecha_Venta"].HeaderText = "Fecha";
-                    dgvVentas.Columns["metodo_pago"].HeaderText = "Método de Pago";
+                    ConfigurarGrid();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(
+                    "Error al mostrar ventas: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
+        //=========================================
+        // CONFIGURAR GRID
+        //=========================================
 
-
-        private void btnCancelar_Click(object sender, EventArgs e)
+        private void ConfigurarGrid()
         {
-            LimpiarFormulario();
-
-            HabilitarControles(false);
-        }
-
-        private void dgvVentas_SelectionChanged(object sender, EventArgs e)
-        {
-            if (dgvVentas.CurrentRow == null)
+            if (dgvVentas.Columns.Count == 0)
                 return;
-            txtIDVenta.Text = dgvVentas.CurrentRow.Cells["ID"].Value.ToString();
+
+            dgvVentas.Columns["id_venta"].HeaderText = "ID";
+            dgvVentas.Columns["Fecha_Venta"].HeaderText = "Fecha";
+            dgvVentas.Columns["Cliente"].HeaderText = "Cliente";
+            dgvVentas.Columns["Usuario"].HeaderText = "Usuario";
+            dgvVentas.Columns["metodo_pago"].HeaderText = "Método de Pago";
+
+            dgvVentas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvVentas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvVentas.MultiSelect = false;
+            dgvVentas.ReadOnly = true;
+            dgvVentas.AllowUserToAddRows = false;
+            dgvVentas.AllowUserToDeleteRows = false;
         }
 
+        //=========================================
+        // VALIDAR CAMPOS
+        //=========================================
+
+        private bool ValidarCampos()
+        {
+            if (cmbCliente.SelectedIndex == -1)
+            {
+                MessageBox.Show(
+                    "Seleccione un cliente.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                cmbCliente.Focus();
+                return false;
+            }
+
+            if (cmbMetodoPago.SelectedIndex == -1)
+            {
+                MessageBox.Show(
+                    "Seleccione un método de pago.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                cmbMetodoPago.Focus();
+                return false;
+            }
+
+            if (cmbUsuario.SelectedIndex == -1)
+            {
+                MessageBox.Show(
+                    "Seleccione un usuario.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                cmbUsuario.Focus();
+                return false;
+            }
+
+            return true;
+        }
+        //=========================================
+        // BUSCAR VENTAS
+        //=========================================
+        private void BuscarVentas(string buscar)
+        {
+            try
+            {
+                using (SqlConnection cn = ConexionBD.ObtenerConexion())
+                {
+                    if (cn.State != ConnectionState.Open)
+                        cn.Open();
+
+                    string consulta = @"SELECT
+                                    v.id_venta,
+                                    v.Fecha_Venta,
+                                    c.Nombre AS Cliente,
+                                    u.Nombre AS Usuario,
+                                    v.metodo_pago
+                                FROM Venta v
+                                INNER JOIN Cliente c
+                                    ON v.id_cliente = c.id_cliente
+                                INNER JOIN Usuario u
+                                    ON v.id_usuario = u.id_usuario
+                                WHERE c.Nombre LIKE @buscar
+                                   OR u.Nombre LIKE @buscar
+                                   OR v.metodo_pago LIKE @buscar
+                                ORDER BY v.id_venta DESC";
+
+                    using (SqlCommand cmd = new SqlCommand(consulta, cn))
+                    {
+                        cmd.Parameters.AddWithValue("@buscar", "%" + buscar + "%");
+
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+                        DataTable dt = new DataTable();
+
+                        da.Fill(dt);
+
+                        dgvVentas.DataSource = dt;
+
+                        ConfigurarGrid();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error al buscar ventas.\n" + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+        //=========================================
+        // EVENTO BUSCADOR
+        //=========================================
 
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
-
+            BuscarVentas(txtBuscar.Text.Trim());
         }
 
 
+        //=========================================
+        // NUEVO
+        //=========================================
 
-        private void dgvVentas_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
-        {
-            if (dgvVentas.CurrentRow == null)
-                return;
-
-            idVentaSeleccionada = Convert.ToInt32(dgvVentas.CurrentRow.Cells["ID"].Value);
-
-            txtIDVenta.Text = idVentaSeleccionada.ToString();
-
-            if (DateTime.TryParse(dgvVentas.CurrentRow.Cells["Fecha"].Value.ToString(), out DateTime fecha))
-            {
-                dtpFecha.Value = fecha;
-            }
-
-            cmbMetodoPago.Text =
-                dgvVentas.CurrentRow.Cells["Método de Pago"].Value.ToString();
-        }
-
-        private void btnNuevo_Click_1(object sender, EventArgs e)
+        private void btnNuevo_Click(object sender, EventArgs e)
         {
             modoNuevo = true;
             modoEditar = false;
+
+            idVentaSeleccionada = 0;
 
             LimpiarFormulario();
 
             HabilitarControles(true);
 
-            dtpFecha.Focus();
+            dtpFecha.Enabled = true;
+            dtpFecha.Value = DateTime.Now;
+
+            cmbCliente.Focus();
         }
 
-        private void btnGuardar_Click_1(object sender, EventArgs e)
+        //=========================================
+        // GUARDAR
+        //=========================================
+
+        private void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (cmbCliente.SelectedIndex == -1)
-            {
-                MessageBox.Show("Seleccione un cliente.");
+            if (!ValidarCampos())
                 return;
-            }
-
-            if (cmbUsuario.SelectedIndex == -1)
-            {
-                MessageBox.Show("Seleccione un usuario.");
-                return;
-            }
-
-            if (cmbMetodoPago.SelectedIndex == -1)
-            {
-                MessageBox.Show("Seleccione un método de pago.");
-                return;
-            }
 
             try
             {
-                using (SqlConnection conn = ConexionBD.ObtenerConexion())
+                using (SqlConnection cn = ConexionBD.ObtenerConexion())
                 {
-                    string sql;
+                    if (cn.State != ConnectionState.Open)
+                        cn.Open();
+
+                    string consulta;
 
                     if (modoNuevo)
                     {
-                        sql = @"INSERT INTO Venta
-                        (Fecha_Venta, metodo_pago, id_usuario, id_cliente)
-                        VALUES
-                        (@Fecha,@Metodo,@Usuario,@Cliente)";
+                        consulta = @"INSERT INTO Venta
+                                    (Fecha_Venta, metodo_pago, id_cliente)
+                                    VALUES
+                                    (@fecha,@metodo,@cliente)";
                     }
                     else
                     {
-                        sql = @"UPDATE Venta
-                        SET Fecha_Venta=@Fecha,
-                            metodo_pago=@Metodo,
-                            id_usuario=@Usuario,
-                            id_cliente=@Cliente
-                        WHERE id_venta=@Id";
+                        consulta = @"UPDATE Venta
+                                     SET Fecha_Venta=@fecha,
+                                         metodo_pago=@metodo,
+                                         id_cliente=@cliente
+                                     WHERE id_venta=@id";
                     }
 
-                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    using (SqlCommand cmd = new SqlCommand(consulta, cn))
+                    {
+                        cmd.Parameters.AddWithValue("@fecha", dtpFecha.Value);
+                        cmd.Parameters.AddWithValue("@metodo", cmbMetodoPago.Text);
+                        cmd.Parameters.AddWithValue("@cliente", cmbCliente.SelectedValue);
 
-                    cmd.Parameters.AddWithValue("@Fecha", dtpFecha.Value);
-                    cmd.Parameters.AddWithValue("@Metodo", cmbMetodoPago.Text);
-                    cmd.Parameters.AddWithValue("@Usuario", cmbUsuario.SelectedValue);
-                    cmd.Parameters.AddWithValue("@Cliente", cmbCliente.SelectedValue);
+                        if (!modoNuevo)
+                            cmd.Parameters.AddWithValue("@id", idVentaSeleccionada);
 
-                    if (!modoNuevo)
-                        cmd.Parameters.AddWithValue("@Id", idVentaSeleccionada);
+                        cmd.ExecuteNonQuery();
+                    }
 
-                    cmd.ExecuteNonQuery();
+                    MessageBox.Show(
+                        "Venta guardada correctamente.",
+                        "Información",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
 
-                    MessageBox.Show("Venta guardada correctamente.");
+                    MostrarVentas();
 
-                    CargarVentas();
                     LimpiarFormulario();
+
                     HabilitarControles(false);
 
                     modoNuevo = false;
                     modoEditar = false;
+                    idVentaSeleccionada = 0;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al guardar:\n" + ex.Message);
+                MessageBox.Show(
+                    "Error al guardar la venta: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
-        private void btnEditar_Click_1(object sender, EventArgs e)
+        //=========================================
+        // SELECCIONAR VENTA
+        //=========================================
+        private void dgvVentas_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+
+            DataGridViewRow fila = dgvVentas.Rows[e.RowIndex];
+
+            idVentaSeleccionada = Convert.ToInt32(fila.Cells["id_venta"].Value);
+
+            txtIDVenta.Text = fila.Cells["id_venta"].Value.ToString();
+
+            if (fila.Cells["Fecha_Venta"].Value != DBNull.Value)
+                dtpFecha.Value = Convert.ToDateTime(fila.Cells["Fecha_Venta"].Value);
+
+            cmbCliente.Text = fila.Cells["Cliente"].Value.ToString();
+            cmbMetodoPago.Text = fila.Cells["metodo_pago"].Value.ToString();
+        }
+
+        //=========================================
+        // VARIABLES DEL DETALLE
+        //=========================================
+
+        private DataTable detalleVenta = new DataTable();
+
+        private int idProductoSeleccionado = 0;
+
+        //=========================================
+        // CREAR DETALLE DE LA VENTA
+        //=========================================
+
+        private void CrearDetalleVenta()
+        {
+            detalleVenta = new DataTable();
+
+            detalleVenta.Columns.Add("ID", typeof(int));
+            detalleVenta.Columns.Add("Producto");
+            detalleVenta.Columns.Add("Precio", typeof(decimal));
+            detalleVenta.Columns.Add("ISV", typeof(decimal));
+            detalleVenta.Columns.Add("Cantidad", typeof(int));
+            detalleVenta.Columns.Add("Subtotal", typeof(decimal));
+
+        }
+
+        //=========================================
+        // BUSCAR PRODUCTO
+        //=========================================
+
+        private void btnBuscarProducto_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtBuscarProducto.Text))
+            {
+                MessageBox.Show("Ingrese el nombre del producto.");
+
+                txtBuscarProducto.Focus();
+                return;
+            }
+
+            BuscarProducto(txtBuscarProducto.Text.Trim());
+        }
+
+        //=========================================
+        // CONSULTAR PRODUCTO
+        //=========================================
+
+        private void BuscarProducto(string nombre)
+        {
+            try
+            {
+                using (SqlConnection cn = ConexionBD.ObtenerConexion())
+                {
+                    if (cn.State != ConnectionState.Open)
+                        cn.Open();
+
+                    string consulta = @"
+                        SELECT TOP 1
+                            id_producto,
+                            Nombre_Producto,
+                            Precio_Venta,
+                            impuesto,
+                            Stock
+                        FROM Producto
+                        WHERE Estado = 1
+                        AND Nombre_Producto LIKE @nombre";
+
+                    SqlCommand cmd = new SqlCommand(consulta, cn);
+
+                    cmd.Parameters.AddWithValue("@nombre", "%" + nombre + "%");
+
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    if (dr.Read())
+                    {
+                        idProductoSeleccionado =
+                            Convert.ToInt32(dr["id_producto"]);
+
+                        txtProducto.Text =
+                            dr["Nombre_Producto"].ToString();
+
+                        txtPrecio.Text =
+                            Convert.ToDecimal(dr["Precio_Venta"])
+                            .ToString("N2");
+
+                        txtImpuesto.Text =
+                            Convert.ToDecimal(dr["impuesto"])
+                            .ToString("N2");
+
+                        txtStock.Text =
+                            dr["Stock"].ToString();
+
+                        nudCantidad.Focus();
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                            "Producto no encontrado.",
+                            "Información",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+
+                        idProductoSeleccionado = 0;
+
+                        txtProducto.Clear();
+                        txtPrecio.Clear();
+                        txtImpuesto.Clear();
+                        txtStock.Clear();
+                    }
+
+                    dr.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error al buscar producto: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        //=========================================
+        // LIMPIAR PRODUCTO
+        //=========================================
+
+        private void LimpiarProducto()
+        {
+            idProductoSeleccionado = 0;
+
+            txtBuscarProducto.Clear();
+            txtProducto.Clear();
+            txtPrecio.Clear();
+            txtImpuesto.Clear();
+            txtStock.Clear();
+
+            nudCantidad.Value = 1;
+        }
+
+        //=========================================
+        // CAMBIO DE CANTIDAD
+        //=========================================
+
+        private void nudCantidad_ValueChanged(object sender, EventArgs e)
+        {
+            if (txtStock.Text == "")
+                return;
+
+            int stock = Convert.ToInt32(txtStock.Text);
+
+            if (nudCantidad.Value > stock)
+            {
+                MessageBox.Show(
+                    "No hay suficiente stock disponible.",
+                    "Stock",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                nudCantidad.Value = stock;
+            }
+        }
+
+        //=========================================
+        // EDITAR
+        //=========================================
+        private void btnEditar_Click(object sender, EventArgs e)
         {
             if (idVentaSeleccionada == 0)
             {
-                MessageBox.Show("Seleccione una venta.");
+                MessageBox.Show(
+                    "Seleccione una venta para editar.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
+
+            if (dgvVentas.CurrentRow == null)
+                return;
+
+            DataGridViewRow fila = dgvVentas.CurrentRow;
+
+            txtIDVenta.Text = fila.Cells["id_venta"].Value.ToString();
+
+            if (fila.Cells["Fecha_Venta"].Value != DBNull.Value)
+                dtpFecha.Value = Convert.ToDateTime(fila.Cells["Fecha_Venta"].Value);
+
+            cmbCliente.Text = fila.Cells["Cliente"].Value.ToString();
+            cmbMetodoPago.Text = fila.Cells["metodo_pago"].Value.ToString();
 
             modoNuevo = false;
             modoEditar = true;
 
             HabilitarControles(true);
+
+            dtpFecha.Enabled = true;
         }
 
-        private void btnActualizar_Click_1(object sender, EventArgs e)
+        //=========================================
+        // ACTUALIZAR VENTA
+        //=========================================
+        private void btnActualizar_Click(object sender, EventArgs e)
         {
-            CargarVentas();
-        }
+            if (idVentaSeleccionada == 0)
+            {
+                MessageBox.Show(
+                    "Seleccione una venta para actualizar.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
 
-        private void txtBuscar_TextChanged_1(object sender, EventArgs e)
+            if (!ValidarVenta())
+                return;
+
+            try
+            {
+                using (SqlConnection cn = ConexionBD.ObtenerConexion())
+                {
+                    if (cn.State != ConnectionState.Open)
+                        cn.Open();
+
+                    string consulta = @"UPDATE Venta
+                                SET Fecha_Venta = @fecha,
+                                    metodo_pago = @metodo,
+                                    id_cliente = @cliente,
+                                WHERE id_venta = @id";
+
+                    using (SqlCommand cmd = new SqlCommand(consulta, cn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", idVentaSeleccionada);
+                        cmd.Parameters.AddWithValue("@fecha", dtpFecha.Value.Date);
+                        cmd.Parameters.AddWithValue("@cliente", cmbCliente.SelectedValue);
+                        cmd.Parameters.AddWithValue("@metodo", cmbMetodoPago.Text);
+
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    MessageBox.Show(
+                        "Venta actualizada correctamente.",
+                        "Información",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+
+                    LimpiarFormulario();
+
+                    modoEditar = false;
+                    modoNuevo = false;
+
+                    idVentaSeleccionada = 0;
+
+                    HabilitarControles(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error al actualizar la venta.\n" + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+        //=========================================
+        // CANCELAR
+        //=========================================
+        private void btnCancelar_Click(object sender, EventArgs e)
         {
+            modoNuevo = false;
+            modoEditar = false;
 
+            idVentaSeleccionada = 0;
+
+            LimpiarFormulario();
+
+            HabilitarControles(false);
+
+            dtpFecha.Value = DateTime.Today;
         }
+
+        //=========================================
+        // VALIDACIONES
+        //=========================================
+        private bool ValidarVenta()
+        {
+            if (cmbCliente.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleccione un cliente.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                cmbCliente.Focus();
+                return false;
+            }
+
+
+            if (cmbMetodoPago.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleccione un método de pago.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                cmbMetodoPago.Focus();
+                return false;
+            }
+
+            if (dtpFecha.Value.Date > DateTime.Today)
+            {
+                MessageBox.Show("La fecha de la venta no puede ser mayor que la fecha actual.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                dtpFecha.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
     }
+
 }
