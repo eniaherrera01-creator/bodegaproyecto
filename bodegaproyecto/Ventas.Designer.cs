@@ -2,60 +2,124 @@
 {
     partial class Ventas
     {
+        /// <summary>
+        /// Variable del diseñador.
+        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        //========================
+        #region Windows Form Designer generated code
+
+        //=========================================
         // PANEL SUPERIOR
-        //========================
-        private System.Windows.Forms.Panel pnlHeader;
-        private System.Windows.Forms.Label lblTituloForm;
+        //=========================================
 
-        //========================
+        private Panel pnlHeader;
+        private Label lblTituloForm;
+
+        //=========================================
         // PANEL IZQUIERDO
-        //========================
-        private System.Windows.Forms.Panel pnlIzquierdo;
+        //=========================================
 
-        private System.Windows.Forms.Label lblTituloDatos;
+        private Panel pnlIzquierdo;
 
-        private System.Windows.Forms.Label lblIDVenta;
-        private System.Windows.Forms.TextBox txtIDVenta;
+        private Label lblTituloDatos;
 
-        private System.Windows.Forms.Label lblFecha;
-        private System.Windows.Forms.DateTimePicker dtpFecha;
+        private Label lblIDVenta;
+        private TextBox txtIDVenta;
 
-        private System.Windows.Forms.Label lblCliente;
-        private System.Windows.Forms.ComboBox cmbCliente;
+        private Label lblFecha;
+        private DateTimePicker dtpFecha;
 
-        private System.Windows.Forms.Label lblUsuario;
-        private System.Windows.Forms.ComboBox cmbUsuario;
+        private Label lblCliente;
+        private ComboBox cmbCliente;
 
-        private System.Windows.Forms.Label lblMetodoPago;
-        private System.Windows.Forms.ComboBox cmbMetodoPago;
+        private Button btnBuscarCliente;
+        private Button btnNuevoCliente;
 
-        private System.Windows.Forms.Button btnGuardar;
-        private System.Windows.Forms.Button btnCancelar;
+        private Label lblUsuario;
+        private ComboBox cmbUsuario;
 
-        //========================
+        private Label lblMetodoPago;
+        private ComboBox cmbMetodoPago;
+
+        //=========================================
+        // PRODUCTOS
+        //=========================================
+
+        private Label lblTituloProducto;
+
+        private Label lblBuscarProducto;
+        private TextBox txtBuscarProducto;
+        private Button btnBuscarProducto;
+
+        private Label lblProducto;
+        private TextBox txtProducto;
+
+        private Label lblPrecio;
+        private TextBox txtPrecio;
+
+        private Label lblImpuesto;
+        private TextBox txtImpuesto;
+
+        private Label lblStock;
+        private TextBox txtStock;
+
+        private Label lblCantidad;
+        private NumericUpDown nudCantidad;
+
+        private Button btnAgregarProducto;
+
+        //=========================================
         // PANEL DERECHO
-        //========================
-        private System.Windows.Forms.Panel pnlDerecho;
+        //=========================================
 
-        private System.Windows.Forms.Label lblTituloLista;
+        private Panel pnlDerecho;
 
-        private System.Windows.Forms.Button btnNuevo;
-        private System.Windows.Forms.Button btnEditar;
-        private System.Windows.Forms.Button btnActualizar;
+        private Label lblTituloDetalle;
 
-        private System.Windows.Forms.TextBox txtBuscar;
+        private DataGridView dgvVentas;
 
-        private System.Windows.Forms.DataGridView dgvVentas;
+        //=========================================
+        // TOTALES
+        //=========================================
 
-        private System.Windows.Forms.Label lblTotal;
+        private Panel pnlTotales;
 
+        private Label lblSubtotalTexto;
+        private Label lblSubtotal;
+
+        private Label lblImpuestoTexto;
+        private Label lblImpuestoValor;
+
+        private Label lblTotalTexto;
+        private Label lblTotalValor;
+
+        //=========================================
+        // BOTONES
+        //=========================================
+
+        private Button btnGuardar;
+        private Button btnCancelar;
+        private Button btnNuevo;
+        private Button btnActualizar;
+        private Button btnEditar;
+
+        //=========================================
+        // BUSCADOR
+        //=========================================
+
+        private TextBox txtBuscar;
+
+
+        /// <summary>
+        /// Limpiar recursos.
+        /// </summary>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
+            {
                 components.Dispose();
+            }
 
             base.Dispose(disposing);
         }
@@ -75,24 +139,51 @@
             dtpFecha = new DateTimePicker();
             lblCliente = new Label();
             cmbCliente = new ComboBox();
+            btnBuscarCliente = new Button();
+            btnNuevoCliente = new Button();
             lblUsuario = new Label();
             cmbUsuario = new ComboBox();
             lblMetodoPago = new Label();
             cmbMetodoPago = new ComboBox();
-            btnGuardar = new Button();
-            btnCancelar = new Button();
+            lblTituloProducto = new Label();
+            lblBuscarProducto = new Label();
+            txtBuscarProducto = new TextBox();
+            btnBuscarProducto = new Button();
+            lblProducto = new Label();
+            txtProducto = new TextBox();
+            lblPrecio = new Label();
+            txtPrecio = new TextBox();
+            lblImpuesto = new Label();
+            txtImpuesto = new TextBox();
+            lblStock = new Label();
+            txtStock = new TextBox();
+            lblCantidad = new Label();
+            nudCantidad = new NumericUpDown();
+            btnAgregarProducto = new Button();
             pnlDerecho = new Panel();
-            lblTituloLista = new Label();
+            lblTituloDetalle = new Label();
             btnNuevo = new Button();
             btnEditar = new Button();
             btnActualizar = new Button();
             txtBuscar = new TextBox();
             dgvVentas = new DataGridView();
-            lblTotal = new Label();
+            pnlTotales = new Panel();
+            lblSubtotalTexto = new Label();
+            lblSubtotal = new Label();
+            lblImpuestoTexto = new Label();
+            lblImpuestoValor = new Label();
+            lblTotalTexto = new Label();
+            lblTotalValor = new Label();
+            btnGuardar = new Button();
+            btnCancelar = new Button();
+            panel1 = new Panel();
             pnlHeader.SuspendLayout();
             pnlIzquierdo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)nudCantidad).BeginInit();
             pnlDerecho.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvVentas).BeginInit();
+            pnlTotales.SuspendLayout();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // pnlHeader
@@ -101,9 +192,8 @@
             pnlHeader.Controls.Add(lblTituloForm);
             pnlHeader.Dock = DockStyle.Top;
             pnlHeader.Location = new Point(0, 0);
-            pnlHeader.Margin = new Padding(3, 4, 3, 4);
             pnlHeader.Name = "pnlHeader";
-            pnlHeader.Size = new Size(1371, 73);
+            pnlHeader.Size = new Size(1920, 70);
             pnlHeader.TabIndex = 0;
             // 
             // lblTituloForm
@@ -111,11 +201,11 @@
             lblTituloForm.AutoSize = true;
             lblTituloForm.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             lblTituloForm.ForeColor = Color.White;
-            lblTituloForm.Location = new Point(23, 16);
+            lblTituloForm.Location = new Point(20, 16);
             lblTituloForm.Name = "lblTituloForm";
-            lblTituloForm.Size = new Size(102, 37);
+            lblTituloForm.Size = new Size(118, 37);
             lblTituloForm.TabIndex = 0;
-            lblTituloForm.Text = "Ventas";
+            lblTituloForm.Text = "VENTAS";
             // 
             // pnlIzquierdo
             // 
@@ -127,32 +217,32 @@
             pnlIzquierdo.Controls.Add(dtpFecha);
             pnlIzquierdo.Controls.Add(lblCliente);
             pnlIzquierdo.Controls.Add(cmbCliente);
+            pnlIzquierdo.Controls.Add(btnBuscarCliente);
+            pnlIzquierdo.Controls.Add(btnNuevoCliente);
             pnlIzquierdo.Controls.Add(lblUsuario);
             pnlIzquierdo.Controls.Add(cmbUsuario);
             pnlIzquierdo.Controls.Add(lblMetodoPago);
             pnlIzquierdo.Controls.Add(cmbMetodoPago);
-            pnlIzquierdo.Controls.Add(btnGuardar);
-            pnlIzquierdo.Controls.Add(btnCancelar);
-            pnlIzquierdo.Location = new Point(11, 87);
-            pnlIzquierdo.Margin = new Padding(3, 4, 3, 4);
+            pnlIzquierdo.Location = new Point(12, 82);
             pnlIzquierdo.Name = "pnlIzquierdo";
-            pnlIzquierdo.Size = new Size(354, 820);
-            pnlIzquierdo.TabIndex = 0;
+            pnlIzquierdo.Size = new Size(350, 693);
+            pnlIzquierdo.TabIndex = 1;
             // 
             // lblTituloDatos
             // 
+            lblTituloDatos.AutoSize = true;
             lblTituloDatos.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             lblTituloDatos.ForeColor = Color.FromArgb(26, 42, 74);
-            lblTituloDatos.Location = new Point(17, 20);
+            lblTituloDatos.Location = new Point(18, 18);
             lblTituloDatos.Name = "lblTituloDatos";
-            lblTituloDatos.Size = new Size(320, 33);
+            lblTituloDatos.Size = new Size(179, 28);
             lblTituloDatos.TabIndex = 0;
             lblTituloDatos.Text = "Datos de la Venta";
             // 
             // lblIDVenta
             // 
             lblIDVenta.AutoSize = true;
-            lblIDVenta.Location = new Point(17, 73);
+            lblIDVenta.Location = new Point(18, 65);
             lblIDVenta.Name = "lblIDVenta";
             lblIDVenta.Size = new Size(65, 20);
             lblIDVenta.TabIndex = 1;
@@ -162,142 +252,289 @@
             // 
             txtIDVenta.BackColor = Color.FromArgb(245, 245, 245);
             txtIDVenta.Enabled = false;
-            txtIDVenta.Location = new Point(17, 97);
-            txtIDVenta.Margin = new Padding(3, 4, 3, 4);
+            txtIDVenta.Location = new Point(18, 88);
             txtIDVenta.Name = "txtIDVenta";
-            txtIDVenta.Size = new Size(314, 27);
-            txtIDVenta.TabIndex = 2;
+            txtIDVenta.Size = new Size(310, 27);
+            txtIDVenta.TabIndex = 0;
             txtIDVenta.Text = "(Automático)";
             // 
             // lblFecha
             // 
             lblFecha.AutoSize = true;
-            lblFecha.Location = new Point(17, 153);
+            lblFecha.Location = new Point(18, 128);
             lblFecha.Name = "lblFecha";
             lblFecha.Size = new Size(47, 20);
-            lblFecha.TabIndex = 3;
+            lblFecha.TabIndex = 2;
             lblFecha.Text = "Fecha";
             // 
             // dtpFecha
             // 
             dtpFecha.Format = DateTimePickerFormat.Short;
-            dtpFecha.Location = new Point(17, 177);
-            dtpFecha.Margin = new Padding(3, 4, 3, 4);
+            dtpFecha.Location = new Point(18, 151);
             dtpFecha.Name = "dtpFecha";
-            dtpFecha.Size = new Size(314, 27);
-            dtpFecha.TabIndex = 4;
+            dtpFecha.Size = new Size(310, 27);
+            dtpFecha.TabIndex = 1;
             // 
             // lblCliente
             // 
             lblCliente.AutoSize = true;
-            lblCliente.Location = new Point(17, 233);
+            lblCliente.Location = new Point(18, 192);
             lblCliente.Name = "lblCliente";
             lblCliente.Size = new Size(55, 20);
-            lblCliente.TabIndex = 5;
+            lblCliente.TabIndex = 3;
             lblCliente.Text = "Cliente";
             // 
             // cmbCliente
             // 
             cmbCliente.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbCliente.Location = new Point(17, 257);
-            cmbCliente.Margin = new Padding(3, 4, 3, 4);
+            cmbCliente.Location = new Point(18, 215);
             cmbCliente.Name = "cmbCliente";
-            cmbCliente.Size = new Size(314, 28);
-            cmbCliente.TabIndex = 6;
+            cmbCliente.Size = new Size(310, 28);
+            cmbCliente.TabIndex = 2;
+            // 
+            // btnBuscarCliente
+            // 
+            btnBuscarCliente.BackColor = Color.FromArgb(26, 115, 232);
+            btnBuscarCliente.Cursor = Cursors.Hand;
+            btnBuscarCliente.FlatAppearance.BorderSize = 0;
+            btnBuscarCliente.FlatStyle = FlatStyle.Flat;
+            btnBuscarCliente.ForeColor = Color.White;
+            btnBuscarCliente.Location = new Point(18, 253);
+            btnBuscarCliente.Name = "btnBuscarCliente";
+            btnBuscarCliente.Size = new Size(145, 36);
+            btnBuscarCliente.TabIndex = 3;
+            btnBuscarCliente.Text = "🔍 Buscar";
+            btnBuscarCliente.UseVisualStyleBackColor = false;
+            btnBuscarCliente.Click += btnBuscarCliente_Click;
+            // 
+            // btnNuevoCliente
+            // 
+            btnNuevoCliente.BackColor = Color.SeaGreen;
+            btnNuevoCliente.Cursor = Cursors.Hand;
+            btnNuevoCliente.FlatAppearance.BorderSize = 0;
+            btnNuevoCliente.FlatStyle = FlatStyle.Flat;
+            btnNuevoCliente.ForeColor = Color.White;
+            btnNuevoCliente.Location = new Point(183, 253);
+            btnNuevoCliente.Name = "btnNuevoCliente";
+            btnNuevoCliente.Size = new Size(145, 36);
+            btnNuevoCliente.TabIndex = 4;
+            btnNuevoCliente.Text = "+ Nuevo";
+            btnNuevoCliente.UseVisualStyleBackColor = false;
+            btnNuevoCliente.Click += btnNuevoCliente_Click;
             // 
             // lblUsuario
             // 
             lblUsuario.AutoSize = true;
-            lblUsuario.Location = new Point(17, 313);
+            lblUsuario.Location = new Point(18, 306);
             lblUsuario.Name = "lblUsuario";
             lblUsuario.Size = new Size(59, 20);
-            lblUsuario.TabIndex = 7;
+            lblUsuario.TabIndex = 5;
             lblUsuario.Text = "Usuario";
             // 
             // cmbUsuario
             // 
             cmbUsuario.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbUsuario.Location = new Point(17, 337);
-            cmbUsuario.Margin = new Padding(3, 4, 3, 4);
+            cmbUsuario.Enabled = false;
+            cmbUsuario.Location = new Point(18, 329);
             cmbUsuario.Name = "cmbUsuario";
-            cmbUsuario.Size = new Size(314, 28);
-            cmbUsuario.TabIndex = 8;
+            cmbUsuario.Size = new Size(310, 28);
+            cmbUsuario.TabIndex = 5;
             // 
             // lblMetodoPago
             // 
             lblMetodoPago.AutoSize = true;
-            lblMetodoPago.Location = new Point(17, 393);
+            lblMetodoPago.Location = new Point(18, 370);
             lblMetodoPago.Name = "lblMetodoPago";
             lblMetodoPago.Size = new Size(120, 20);
-            lblMetodoPago.TabIndex = 9;
+            lblMetodoPago.TabIndex = 6;
             lblMetodoPago.Text = "Método de Pago";
             // 
             // cmbMetodoPago
             // 
             cmbMetodoPago.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbMetodoPago.Items.AddRange(new object[] { "Efectivo", "Tarjeta", "Transferencia" });
-            cmbMetodoPago.Location = new Point(17, 417);
-            cmbMetodoPago.Margin = new Padding(3, 4, 3, 4);
+            cmbMetodoPago.Location = new Point(18, 393);
             cmbMetodoPago.Name = "cmbMetodoPago";
-            cmbMetodoPago.Size = new Size(314, 28);
-            cmbMetodoPago.TabIndex = 10;
+            cmbMetodoPago.Size = new Size(310, 28);
+            cmbMetodoPago.TabIndex = 6;
             // 
-            // btnGuardar
+            // lblTituloProducto
             // 
-            btnGuardar.BackColor = Color.FromArgb(26, 115, 232);
-            btnGuardar.FlatAppearance.BorderSize = 0;
-            btnGuardar.FlatStyle = FlatStyle.Flat;
-            btnGuardar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnGuardar.ForeColor = Color.White;
-            btnGuardar.Location = new Point(17, 487);
-            btnGuardar.Margin = new Padding(3, 4, 3, 4);
-            btnGuardar.Name = "btnGuardar";
-            btnGuardar.Size = new Size(149, 51);
-            btnGuardar.TabIndex = 11;
-            btnGuardar.Text = "💾 Guardar";
-            btnGuardar.UseVisualStyleBackColor = false;
-            btnGuardar.Click += btnGuardar_Click_1;
+            lblTituloProducto.AutoSize = true;
+            lblTituloProducto.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblTituloProducto.ForeColor = Color.FromArgb(26, 42, 74);
+            lblTituloProducto.Location = new Point(20, 18);
+            lblTituloProducto.Name = "lblTituloProducto";
+            lblTituloProducto.Size = new Size(180, 28);
+            lblTituloProducto.TabIndex = 7;
+            lblTituloProducto.Text = "Agregar Producto";
             // 
-            // btnCancelar
+            // lblBuscarProducto
             // 
-            btnCancelar.BackColor = Color.FromArgb(200, 200, 200);
-            btnCancelar.FlatAppearance.BorderSize = 0;
-            btnCancelar.FlatStyle = FlatStyle.Flat;
-            btnCancelar.Location = new Point(183, 487);
-            btnCancelar.Margin = new Padding(3, 4, 3, 4);
-            btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(149, 51);
-            btnCancelar.TabIndex = 12;
-            btnCancelar.Text = "✖ Cancelar";
-            btnCancelar.UseVisualStyleBackColor = false;
+            lblBuscarProducto.AutoSize = true;
+            lblBuscarProducto.Location = new Point(20, 53);
+            lblBuscarProducto.Name = "lblBuscarProducto";
+            lblBuscarProducto.Size = new Size(116, 20);
+            lblBuscarProducto.TabIndex = 8;
+            lblBuscarProducto.Text = "Buscar Producto";
+            // 
+            // txtBuscarProducto
+            // 
+            txtBuscarProducto.Location = new Point(20, 76);
+            txtBuscarProducto.Name = "txtBuscarProducto";
+            txtBuscarProducto.Size = new Size(230, 27);
+            txtBuscarProducto.TabIndex = 7;
+            // 
+            // btnBuscarProducto
+            // 
+            btnBuscarProducto.BackColor = Color.FromArgb(26, 115, 232);
+            btnBuscarProducto.Cursor = Cursors.Hand;
+            btnBuscarProducto.FlatAppearance.BorderSize = 0;
+            btnBuscarProducto.FlatStyle = FlatStyle.Flat;
+            btnBuscarProducto.ForeColor = Color.White;
+            btnBuscarProducto.Location = new Point(260, 75);
+            btnBuscarProducto.Name = "btnBuscarProducto";
+            btnBuscarProducto.Size = new Size(70, 29);
+            btnBuscarProducto.TabIndex = 8;
+            btnBuscarProducto.Text = "🔍";
+            btnBuscarProducto.UseVisualStyleBackColor = false;
+            btnBuscarProducto.Click += btnBuscarProducto_Click;
+            // 
+            // lblProducto
+            // 
+            lblProducto.AutoSize = true;
+            lblProducto.Location = new Point(20, 115);
+            lblProducto.Name = "lblProducto";
+            lblProducto.Size = new Size(69, 20);
+            lblProducto.TabIndex = 9;
+            lblProducto.Text = "Producto";
+            // 
+            // txtProducto
+            // 
+            txtProducto.BackColor = Color.WhiteSmoke;
+            txtProducto.Location = new Point(20, 138);
+            txtProducto.Name = "txtProducto";
+            txtProducto.ReadOnly = true;
+            txtProducto.Size = new Size(310, 27);
+            txtProducto.TabIndex = 9;
+            // 
+            // lblPrecio
+            // 
+            lblPrecio.AutoSize = true;
+            lblPrecio.Location = new Point(20, 177);
+            lblPrecio.Name = "lblPrecio";
+            lblPrecio.Size = new Size(50, 20);
+            lblPrecio.TabIndex = 10;
+            lblPrecio.Text = "Precio";
+            // 
+            // txtPrecio
+            // 
+            txtPrecio.BackColor = Color.WhiteSmoke;
+            txtPrecio.Location = new Point(20, 200);
+            txtPrecio.Name = "txtPrecio";
+            txtPrecio.ReadOnly = true;
+            txtPrecio.Size = new Size(145, 27);
+            txtPrecio.TabIndex = 10;
+            // 
+            // lblImpuesto
+            // 
+            lblImpuesto.AutoSize = true;
+            lblImpuesto.Location = new Point(185, 177);
+            lblImpuesto.Name = "lblImpuesto";
+            lblImpuesto.Size = new Size(30, 20);
+            lblImpuesto.TabIndex = 11;
+            lblImpuesto.Text = "ISV";
+            // 
+            // txtImpuesto
+            // 
+            txtImpuesto.BackColor = Color.WhiteSmoke;
+            txtImpuesto.Location = new Point(185, 200);
+            txtImpuesto.Name = "txtImpuesto";
+            txtImpuesto.ReadOnly = true;
+            txtImpuesto.Size = new Size(145, 27);
+            txtImpuesto.TabIndex = 11;
+            // 
+            // lblStock
+            // 
+            lblStock.AutoSize = true;
+            lblStock.Location = new Point(20, 239);
+            lblStock.Name = "lblStock";
+            lblStock.Size = new Size(121, 20);
+            lblStock.TabIndex = 12;
+            lblStock.Text = "Stock Disponible";
+            // 
+            // txtStock
+            // 
+            txtStock.BackColor = Color.WhiteSmoke;
+            txtStock.Location = new Point(20, 262);
+            txtStock.Name = "txtStock";
+            txtStock.ReadOnly = true;
+            txtStock.Size = new Size(145, 27);
+            txtStock.TabIndex = 12;
+            // 
+            // lblCantidad
+            // 
+            lblCantidad.AutoSize = true;
+            lblCantidad.Location = new Point(185, 239);
+            lblCantidad.Name = "lblCantidad";
+            lblCantidad.Size = new Size(69, 20);
+            lblCantidad.TabIndex = 13;
+            lblCantidad.Text = "Cantidad";
+            // 
+            // nudCantidad
+            // 
+            nudCantidad.Location = new Point(185, 262);
+            nudCantidad.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+            nudCantidad.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            nudCantidad.Name = "nudCantidad";
+            nudCantidad.Size = new Size(145, 27);
+            nudCantidad.TabIndex = 13;
+            nudCantidad.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            nudCantidad.ValueChanged += nudCantidad_ValueChanged;
+            // 
+            // btnAgregarProducto
+            // 
+            btnAgregarProducto.BackColor = Color.SeaGreen;
+            btnAgregarProducto.Cursor = Cursors.Hand;
+            btnAgregarProducto.FlatAppearance.BorderSize = 0;
+            btnAgregarProducto.FlatStyle = FlatStyle.Flat;
+            btnAgregarProducto.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnAgregarProducto.ForeColor = Color.White;
+            btnAgregarProducto.Location = new Point(20, 313);
+            btnAgregarProducto.Name = "btnAgregarProducto";
+            btnAgregarProducto.Size = new Size(310, 42);
+            btnAgregarProducto.TabIndex = 14;
+            btnAgregarProducto.Text = "+ Agregar Producto";
+            btnAgregarProducto.UseVisualStyleBackColor = false;
+            btnAgregarProducto.Click += btnAgregarProducto_Click;
             // 
             // pnlDerecho
             // 
-            pnlDerecho.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pnlDerecho.BackColor = Color.White;
-            pnlDerecho.Controls.Add(lblTituloLista);
+            pnlDerecho.Controls.Add(lblTituloDetalle);
             pnlDerecho.Controls.Add(btnNuevo);
             pnlDerecho.Controls.Add(btnEditar);
             pnlDerecho.Controls.Add(btnActualizar);
             pnlDerecho.Controls.Add(txtBuscar);
             pnlDerecho.Controls.Add(dgvVentas);
-            pnlDerecho.Controls.Add(lblTotal);
-            pnlDerecho.Location = new Point(377, 87);
-            pnlDerecho.Margin = new Padding(3, 4, 3, 4);
+            pnlDerecho.Controls.Add(pnlTotales);
+            pnlDerecho.Controls.Add(btnGuardar);
+            pnlDerecho.Controls.Add(btnCancelar);
+            pnlDerecho.Location = new Point(386, 82);
             pnlDerecho.Name = "pnlDerecho";
-            pnlDerecho.Size = new Size(984, 820);
-            pnlDerecho.TabIndex = 0;
+            pnlDerecho.Size = new Size(1150, 693);
+            pnlDerecho.TabIndex = 2;
             // 
-            // lblTituloLista
+            // lblTituloDetalle
             // 
-            lblTituloLista.AutoSize = true;
-            lblTituloLista.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lblTituloLista.ForeColor = Color.FromArgb(26, 42, 74);
-            lblTituloLista.Location = new Point(17, 20);
-            lblTituloLista.Name = "lblTituloLista";
-            lblTituloLista.Size = new Size(154, 28);
-            lblTituloLista.TabIndex = 0;
-            lblTituloLista.Text = "Lista de Ventas";
+            lblTituloDetalle.AutoSize = true;
+            lblTituloDetalle.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblTituloDetalle.ForeColor = Color.FromArgb(26, 42, 74);
+            lblTituloDetalle.Location = new Point(20, 18);
+            lblTituloDetalle.Name = "lblTituloDetalle";
+            lblTituloDetalle.Size = new Size(192, 28);
+            lblTituloDetalle.TabIndex = 0;
+            lblTituloDetalle.Text = "Detalle de la Venta";
             // 
             // btnNuevo
             // 
@@ -307,64 +544,57 @@
             btnNuevo.FlatStyle = FlatStyle.Flat;
             btnNuevo.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnNuevo.ForeColor = Color.White;
-            btnNuevo.Location = new Point(17, 67);
-            btnNuevo.Margin = new Padding(3, 4, 3, 4);
+            btnNuevo.Location = new Point(20, 55);
             btnNuevo.Name = "btnNuevo";
-            btnNuevo.Size = new Size(109, 45);
-            btnNuevo.TabIndex = 1;
+            btnNuevo.Size = new Size(100, 40);
+            btnNuevo.TabIndex = 15;
             btnNuevo.Text = "+ Nuevo";
             btnNuevo.UseVisualStyleBackColor = false;
-            btnNuevo.Click += btnNuevo_Click_1;
+            btnNuevo.Click += btnNuevo_Click;
             // 
             // btnEditar
             // 
             btnEditar.BackColor = Color.White;
             btnEditar.Cursor = Cursors.Hand;
-            btnEditar.FlatAppearance.BorderColor = Color.FromArgb(180, 180, 180);
+            btnEditar.FlatAppearance.BorderColor = Color.Silver;
             btnEditar.FlatStyle = FlatStyle.Flat;
-            btnEditar.ForeColor = Color.FromArgb(60, 60, 60);
-            btnEditar.Location = new Point(137, 67);
-            btnEditar.Margin = new Padding(3, 4, 3, 4);
+            btnEditar.Location = new Point(130, 55);
             btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(109, 45);
-            btnEditar.TabIndex = 2;
-            btnEditar.Text = "✎ Editar";
+            btnEditar.Size = new Size(100, 40);
+            btnEditar.TabIndex = 16;
+            btnEditar.Text = "✏ Editar";
             btnEditar.UseVisualStyleBackColor = false;
-            btnEditar.Click += btnEditar_Click_1;
+            btnEditar.Click += btnEditar_Click;
             // 
             // btnActualizar
             // 
             btnActualizar.BackColor = Color.White;
             btnActualizar.Cursor = Cursors.Hand;
-            btnActualizar.FlatAppearance.BorderColor = Color.FromArgb(180, 180, 180);
+            btnActualizar.FlatAppearance.BorderColor = Color.Silver;
             btnActualizar.FlatStyle = FlatStyle.Flat;
-            btnActualizar.ForeColor = Color.FromArgb(60, 60, 60);
-            btnActualizar.Location = new Point(264, 67);
-            btnActualizar.Margin = new Padding(3, 4, 3, 4);
+            btnActualizar.Location = new Point(240, 55);
             btnActualizar.Name = "btnActualizar";
-            btnActualizar.Size = new Size(120, 45);
-            btnActualizar.TabIndex = 4;
+            btnActualizar.Size = new Size(110, 40);
+            btnActualizar.TabIndex = 17;
             btnActualizar.Text = "↻ Actualizar";
             btnActualizar.UseVisualStyleBackColor = false;
-            btnActualizar.Click += btnActualizar_Click_1;
+            btnActualizar.Click += btnActualizar_Click;
             // 
             // txtBuscar
             // 
-            txtBuscar.Location = new Point(423, 76);
-            txtBuscar.Margin = new Padding(3, 4, 3, 4);
+            txtBuscar.Location = new Point(861, 62);
             txtBuscar.Name = "txtBuscar";
             txtBuscar.PlaceholderText = "Buscar venta...";
-            txtBuscar.Size = new Size(274, 27);
-            txtBuscar.TabIndex = 5;
-            txtBuscar.TextChanged += txtBuscar_TextChanged_1;
+            txtBuscar.Size = new Size(270, 27);
+            txtBuscar.TabIndex = 18;
             // 
             // dgvVentas
             // 
             dgvVentas.AllowUserToAddRows = false;
             dgvVentas.AllowUserToDeleteRows = false;
+            dgvVentas.AllowUserToResizeRows = false;
             dataGridViewCellStyle1.BackColor = Color.FromArgb(248, 250, 252);
             dgvVentas.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            dgvVentas.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvVentas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvVentas.BackgroundColor = Color.White;
             dgvVentas.BorderStyle = BorderStyle.None;
@@ -376,8 +606,7 @@
             dgvVentas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvVentas.ColumnHeadersHeight = 40;
             dgvVentas.EnableHeadersVisualStyles = false;
-            dgvVentas.Location = new Point(17, 133);
-            dgvVentas.Margin = new Padding(3, 4, 3, 4);
+            dgvVentas.Location = new Point(20, 110);
             dgvVentas.MultiSelect = false;
             dgvVentas.Name = "dgvVentas";
             dgvVentas.ReadOnly = true;
@@ -388,44 +617,224 @@
             dgvVentas.RowsDefaultCellStyle = dataGridViewCellStyle3;
             dgvVentas.RowTemplate.Height = 35;
             dgvVentas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvVentas.Size = new Size(897, 620);
-            dgvVentas.TabIndex = 6;
-            dgvVentas.CellContentClick += dgvVentas_CellContentClick_1;
+            dgvVentas.Size = new Size(1102, 433);
+            dgvVentas.TabIndex = 19;
+            dgvVentas.CellClick += dgvVentas_CellClick;
             // 
-            // lblTotal
+            // pnlTotales
             // 
-            lblTotal.AutoSize = true;
-            lblTotal.ForeColor = Color.FromArgb(100, 100, 100);
-            lblTotal.Location = new Point(17, 767);
-            lblTotal.Name = "lblTotal";
-            lblTotal.Size = new Size(103, 20);
-            lblTotal.TabIndex = 7;
-            lblTotal.Text = "Total ventas: 0";
+            pnlTotales.BackColor = Color.FromArgb(248, 250, 252);
+            pnlTotales.BorderStyle = BorderStyle.FixedSingle;
+            pnlTotales.Controls.Add(lblSubtotalTexto);
+            pnlTotales.Controls.Add(lblSubtotal);
+            pnlTotales.Controls.Add(lblImpuestoTexto);
+            pnlTotales.Controls.Add(lblImpuestoValor);
+            pnlTotales.Controls.Add(lblTotalTexto);
+            pnlTotales.Controls.Add(lblTotalValor);
+            pnlTotales.Location = new Point(751, 561);
+            pnlTotales.Name = "pnlTotales";
+            pnlTotales.Size = new Size(380, 115);
+            pnlTotales.TabIndex = 20;
+            // 
+            // lblSubtotalTexto
+            // 
+            lblSubtotalTexto.AutoSize = true;
+            lblSubtotalTexto.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblSubtotalTexto.Location = new Point(18, 15);
+            lblSubtotalTexto.Name = "lblSubtotalTexto";
+            lblSubtotalTexto.Size = new Size(84, 23);
+            lblSubtotalTexto.TabIndex = 0;
+            lblSubtotalTexto.Text = "Subtotal:";
+            // 
+            // lblSubtotal
+            // 
+            lblSubtotal.AutoSize = true;
+            lblSubtotal.Font = new Font("Segoe UI", 10F);
+            lblSubtotal.Location = new Point(140, 15);
+            lblSubtotal.Name = "lblSubtotal";
+            lblSubtotal.Size = new Size(58, 23);
+            lblSubtotal.TabIndex = 1;
+            lblSubtotal.Text = "L. 0.00";
+            // 
+            // lblImpuestoTexto
+            // 
+            lblImpuestoTexto.AutoSize = true;
+            lblImpuestoTexto.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblImpuestoTexto.Location = new Point(18, 45);
+            lblImpuestoTexto.Name = "lblImpuestoTexto";
+            lblImpuestoTexto.Size = new Size(41, 23);
+            lblImpuestoTexto.TabIndex = 2;
+            lblImpuestoTexto.Text = "ISV:";
+            // 
+            // lblImpuestoValor
+            // 
+            lblImpuestoValor.AutoSize = true;
+            lblImpuestoValor.Font = new Font("Segoe UI", 10F);
+            lblImpuestoValor.Location = new Point(140, 45);
+            lblImpuestoValor.Name = "lblImpuestoValor";
+            lblImpuestoValor.Size = new Size(58, 23);
+            lblImpuestoValor.TabIndex = 3;
+            lblImpuestoValor.Text = "L. 0.00";
+            // 
+            // lblTotalTexto
+            // 
+            lblTotalTexto.AutoSize = true;
+            lblTotalTexto.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblTotalTexto.ForeColor = Color.FromArgb(26, 115, 232);
+            lblTotalTexto.Location = new Point(18, 78);
+            lblTotalTexto.Name = "lblTotalTexto";
+            lblTotalTexto.Size = new Size(77, 28);
+            lblTotalTexto.TabIndex = 4;
+            lblTotalTexto.Text = "TOTAL:";
+            // 
+            // lblTotalValor
+            // 
+            lblTotalValor.AutoSize = true;
+            lblTotalValor.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblTotalValor.ForeColor = Color.FromArgb(26, 115, 232);
+            lblTotalValor.Location = new Point(140, 78);
+            lblTotalValor.Name = "lblTotalValor";
+            lblTotalValor.Size = new Size(74, 28);
+            lblTotalValor.TabIndex = 5;
+            lblTotalValor.Text = "L. 0.00";
+            // 
+            // btnGuardar
+            // 
+            btnGuardar.BackColor = Color.FromArgb(26, 115, 232);
+            btnGuardar.FlatAppearance.BorderSize = 0;
+            btnGuardar.FlatStyle = FlatStyle.Flat;
+            btnGuardar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnGuardar.ForeColor = Color.White;
+            btnGuardar.Location = new Point(40, 597);
+            btnGuardar.Name = "btnGuardar";
+            btnGuardar.Size = new Size(150, 45);
+            btnGuardar.TabIndex = 20;
+            btnGuardar.Text = "💾 Guardar";
+            btnGuardar.UseVisualStyleBackColor = false;
+            btnGuardar.Click += btnGuardar_Click;
+            // 
+            // btnCancelar
+            // 
+            btnCancelar.BackColor = Color.FromArgb(220, 220, 220);
+            btnCancelar.FlatAppearance.BorderSize = 0;
+            btnCancelar.FlatStyle = FlatStyle.Flat;
+            btnCancelar.Location = new Point(200, 597);
+            btnCancelar.Name = "btnCancelar";
+            btnCancelar.Size = new Size(150, 45);
+            btnCancelar.TabIndex = 21;
+            btnCancelar.Text = "✖ Cancelar";
+            btnCancelar.UseVisualStyleBackColor = false;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = Color.White;
+            panel1.Controls.Add(lblTituloProducto);
+            panel1.Controls.Add(lblPrecio);
+            panel1.Controls.Add(txtProducto);
+            panel1.Controls.Add(txtPrecio);
+            panel1.Controls.Add(lblProducto);
+            panel1.Controls.Add(lblImpuesto);
+            panel1.Controls.Add(btnBuscarProducto);
+            panel1.Controls.Add(txtImpuesto);
+            panel1.Controls.Add(txtBuscarProducto);
+            panel1.Controls.Add(lblStock);
+            panel1.Controls.Add(btnAgregarProducto);
+            panel1.Controls.Add(lblBuscarProducto);
+            panel1.Controls.Add(nudCantidad);
+            panel1.Controls.Add(txtStock);
+            panel1.Controls.Add(lblCantidad);
+            panel1.Location = new Point(1558, 82);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(350, 693);
+            panel1.TabIndex = 3;
             // 
             // Ventas
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(240, 242, 245);
-            ClientSize = new Size(1371, 933);
+            ClientSize = new Size(1920, 803);
+            Controls.Add(panel1);
             Controls.Add(pnlHeader);
             Controls.Add(pnlIzquierdo);
             Controls.Add(pnlDerecho);
             Font = new Font("Segoe UI", 9F);
             FormBorderStyle = FormBorderStyle.None;
-            Margin = new Padding(3, 4, 3, 4);
             Name = "Ventas";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Ventas";
-            Load += Ventas_Load;
             pnlHeader.ResumeLayout(false);
             pnlHeader.PerformLayout();
             pnlIzquierdo.ResumeLayout(false);
             pnlIzquierdo.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)nudCantidad).EndInit();
             pnlDerecho.ResumeLayout(false);
             pnlDerecho.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvVentas).EndInit();
+            pnlTotales.ResumeLayout(false);
+            pnlTotales.PerformLayout();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
+
         }
+
+
+
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+    
+
+        private void btnNuevo_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnActualizar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnBuscarCliente_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnNuevoCliente_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnBuscarProducto_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAgregarProducto_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgvVentas_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void nudCantidad_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        #endregion
+
+        private Panel panel1;
     }
 }

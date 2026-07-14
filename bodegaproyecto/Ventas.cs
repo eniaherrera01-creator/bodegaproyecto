@@ -137,8 +137,6 @@ namespace bodegaproyecto
                     dgvVentas.Columns["id_venta"].HeaderText = "ID";
                     dgvVentas.Columns["Fecha_Venta"].HeaderText = "Fecha";
                     dgvVentas.Columns["metodo_pago"].HeaderText = "Método de Pago";
-
-                    lblTotal.Text = "Total ventas: " + dt.Rows.Count;
                 }
             }
             catch (Exception ex)
