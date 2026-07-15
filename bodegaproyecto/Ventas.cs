@@ -7,24 +7,13 @@ namespace bodegaproyecto
 {
     public partial class Ventas : Form
     {
-        //=========================================
-        // CONEXIÓN
-        //=========================================
 
         private SqlConnection conexion = ConexionBD.ObtenerConexion();
-
-        //=========================================
-        // VARIABLES DE CONTROL
-        //=========================================
 
         private int idVentaSeleccionada = 0;
 
         private bool modoNuevo = false;
         private bool modoEditar = false;
-
-        //=========================================
-        // CONSTRUCTOR
-        //=========================================
 
         public Ventas()
         {
@@ -32,10 +21,6 @@ namespace bodegaproyecto
             CrearDetalleVenta();
             AsignarEventosManuales();
         }
-
-        //=========================================
-        // LOAD
-        //=========================================
 
         private void Ventas_Load(object sender, EventArgs e)
         {
@@ -52,9 +37,7 @@ namespace bodegaproyecto
             dtpFecha.Enabled = false;
         }
 
-        //=========================================
         // EVENTOS MANUALES
-        //=========================================
 
         private void AsignarEventosManuales()
         {
@@ -70,9 +53,6 @@ namespace bodegaproyecto
             btnAgregarProducto.Click += btnAgregarProducto_Click;
             this.Load += Ventas_Load;
         }
-        //=========================================
-        // LIMPIAR FORMULARIO
-        //=========================================
 
         private void LimpiarFormulario()
         {
@@ -99,9 +79,6 @@ namespace bodegaproyecto
             cmbCliente.Focus();
         }
 
-        //=========================================
-        // HABILITAR CONTROLES
-        //=========================================
 
         private void HabilitarControles(bool estado)
         {
@@ -116,10 +93,6 @@ namespace bodegaproyecto
 
             nudCantidad.Enabled = estado;
         }
-
-        //=========================================
-        // CARGAR CLIENTES
-        //=========================================
 
         private void CargarClientes()
         {
@@ -159,9 +132,6 @@ namespace bodegaproyecto
             }
         }
 
-        //=========================================
-        // CARGAR USUARIOS
-        //=========================================
 
         private void CargarUsuarios()
         {
@@ -199,11 +169,6 @@ namespace bodegaproyecto
                 MessageBox.Show("Error al cargar usuario: " + ex.Message);
             }
         }
-
-
-        //=========================================
-        // MOSTRAR VENTAS
-        //=========================================
 
         private void MostrarVentas()
         {
@@ -248,9 +213,6 @@ namespace bodegaproyecto
             }
         }
 
-        //=========================================
-        // CONFIGURAR GRID
-        //=========================================
 
         private void ConfigurarGrid()
         {
@@ -271,9 +233,7 @@ namespace bodegaproyecto
             dgvVentas.AllowUserToDeleteRows = false;
         }
 
-        //=========================================
-        // VALIDAR CAMPOS
-        //=========================================
+        // VALIDACION
 
         private bool ValidarCampos()
         {
@@ -315,9 +275,7 @@ namespace bodegaproyecto
 
             return true;
         }
-        //=========================================
-        // BUSCAR VENTAS
-        //=========================================
+
         private void BuscarVentas(string buscar)
         {
             try
@@ -367,19 +325,12 @@ namespace bodegaproyecto
                     MessageBoxIcon.Error);
             }
         }
-        //=========================================
-        // EVENTO BUSCADOR
-        //=========================================
 
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             BuscarVentas(txtBuscar.Text.Trim());
         }
 
-
-        //=========================================
-        // NUEVO
-        //=========================================
 
         private void btnNuevo_Click(object sender, EventArgs e)
         {
@@ -398,9 +349,6 @@ namespace bodegaproyecto
             cmbCliente.Focus();
         }
 
-        //=========================================
-        // GUARDAR
-        //=========================================
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
@@ -546,10 +494,8 @@ namespace bodegaproyecto
         }
 
 
-
-        //=========================================
         // SELECCIONAR VENTA
-        //=========================================
+
         private void dgvVentas_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0)
@@ -568,9 +514,6 @@ namespace bodegaproyecto
             cmbMetodoPago.Text = fila.Cells["metodo_pago"].Value.ToString();
         }
 
-        //=========================================
-        // VARIABLES DEL DETALLE
-        //=========================================
 
         private DataTable detalleVenta = new DataTable();
 
@@ -580,10 +523,7 @@ namespace bodegaproyecto
         private decimal impuestoVenta = 0;
         private decimal totalVenta = 0;
 
-        //=========================================
-        // CREAR DETALLE DE LA VENTA
-        //=========================================
-
+        // CREAR DETALLE DE LA VENTA - Cambiar
         private void CrearDetalleVenta()
         {
             detalleVenta = new DataTable();
@@ -600,10 +540,6 @@ namespace bodegaproyecto
 
         }
 
-        //=========================================
-        // BUSCAR PRODUCTO
-        //=========================================
-
         private void btnBuscarProducto_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtBuscarProducto.Text))
@@ -617,9 +553,6 @@ namespace bodegaproyecto
             BuscarProducto(txtBuscarProducto.Text.Trim());
         }
 
-        //=========================================
-        // CONSULTAR PRODUCTO
-        //=========================================
 
         private void BuscarProducto(string nombre)
         {
@@ -697,9 +630,6 @@ namespace bodegaproyecto
             }
         }
 
-        //=========================================
-        // LIMPIAR PRODUCTO
-        //=========================================
 
         private void LimpiarProducto()
         {
@@ -748,9 +678,6 @@ namespace bodegaproyecto
 
             LimpiarProducto();
         }
-        //=========================================
-        // CAMBIO DE CANTIDAD
-        //=========================================
 
         private void nudCantidad_ValueChanged(object sender, EventArgs e)
         {
@@ -771,9 +698,6 @@ namespace bodegaproyecto
             }
         }
 
-        //=========================================
-        // EDITAR
-        //=========================================
         private void btnEditar_Click(object sender, EventArgs e)
         {
             if (idVentaSeleccionada == 0)
@@ -807,9 +731,7 @@ namespace bodegaproyecto
             dtpFecha.Enabled = true;
         }
 
-        //=========================================
-        // ACTUALIZAR VENTA
-        //=========================================
+
         private void btnActualizar_Click(object sender, EventArgs e)
         {
             if (idVentaSeleccionada == 0)
@@ -875,9 +797,7 @@ namespace bodegaproyecto
                     MessageBoxIcon.Error);
             }
         }
-        //=========================================
-        // CANCELAR
-        //=========================================
+
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             modoNuevo = false;
@@ -892,9 +812,7 @@ namespace bodegaproyecto
             dtpFecha.Value = DateTime.Today;
         }
 
-        //=========================================
-        // VALIDACIONES
-        //=========================================
+        // VALIDACION
         private bool ValidarVenta()
         {
             if (cmbCliente.SelectedIndex == -1)
