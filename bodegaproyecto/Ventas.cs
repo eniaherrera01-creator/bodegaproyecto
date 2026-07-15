@@ -29,6 +29,7 @@ namespace bodegaproyecto
         public Ventas()
         {
             InitializeComponent();
+            CrearDetalleVenta();
             AsignarEventosManuales();
         }
 
@@ -66,6 +67,7 @@ namespace bodegaproyecto
             txtBuscar.TextChanged += txtBuscar_TextChanged;
             dgvVentas.CellClick += dgvVentas_CellClick;
             nudCantidad.ValueChanged += nudCantidad_ValueChanged;
+            btnAgregarProducto.Click += btnAgregarProducto_Click;
             this.Load += Ventas_Load;
         }
         //=========================================
@@ -170,36 +172,34 @@ namespace bodegaproyecto
                     if (cn.State != ConnectionState.Open)
                         cn.Open();
 
-                    string consulta = @"SELECT
-                                    id_usuario,
-                                    Nombre
-                                FROM Usuario
-                                WHERE Estado = 1
-                                ORDER BY Nombre";
+                    string consulta = @"
+                SELECT id_usuario, usuario
+                FROM Usuario
+                WHERE usuario = @usuario";
 
-                    SqlDataAdapter da = new SqlDataAdapter(consulta, cn);
+                    SqlCommand cmd = new SqlCommand(consulta, cn);
+                    cmd.Parameters.AddWithValue("@usuario", menu.UsuarioActual);
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
-                    // 🔹 Aquí asignamos el resultado al combo del designer
                     cmbUsuario.DataSource = dt;
-                    cmbUsuario.DisplayMember = "Nombre";
+                    cmbUsuario.DisplayMember = "usuario";
                     cmbUsuario.ValueMember = "id_usuario";
-                    cmbUsuario.SelectedIndex = -1; // Para que aparezca vacío al inicio
+
+                    if (dt.Rows.Count > 0)
+                        cmbUsuario.SelectedIndex = 0;
+
+                    cmbUsuario.Enabled = false;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "Error al cargar usuarios: " + ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageBox.Show("Error al cargar usuario: " + ex.Message);
             }
         }
-        //=========================================
-        // CONTINÚA EN LA PARTE 2...
-        //=========================================
+
 
         //=========================================
         // MOSTRAR VENTAS
@@ -215,11 +215,11 @@ namespace bodegaproyecto
                         cn.Open();
 
                     string consulta = @"SELECT
-                                            v.id_venta,
-                                            v.Fecha_Venta,
-                                            c.Nombre AS Cliente,
-                                            u.Nombre AS Usuario,
-                                            v.metodo_pago
+                                                v.id_venta,
+                                                v.Fecha_Venta,
+                                                c.Nombre AS Cliente,
+                                                u.Nombre AS Usuario,
+                                                v.metodo_pago
                                         FROM Venta v
                                         INNER JOIN Cliente c
                                             ON v.id_cliente = c.id_cliente
@@ -407,21 +407,33 @@ namespace bodegaproyecto
             if (!ValidarCampos())
                 return;
 
+            if (detalleVenta.Rows.Count == 0)
+            {
+                MessageBox.Show(
+                    "Debe agregar al menos un producto.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
             try
             {
                 using (SqlConnection cn = ConexionBD.ObtenerConexion())
                 {
                     if (cn.State != ConnectionState.Open)
                         cn.Open();
+                    SqlTransaction transaccion = cn.BeginTransaction();
 
                     string consulta;
 
                     if (modoNuevo)
                     {
                         consulta = @"INSERT INTO Venta
-                                    (Fecha_Venta, metodo_pago, id_cliente)
-                                    VALUES
-                                    (@fecha,@metodo,@cliente)";
+                        (Fecha_Venta, metodo_pago, id_cliente, id_usuario)
+                        VALUES
+                        (@fecha,@metodo,@cliente,@usuario)";
                     }
                     else
                     {
@@ -432,16 +444,75 @@ namespace bodegaproyecto
                                      WHERE id_venta=@id";
                     }
 
-                    using (SqlCommand cmd = new SqlCommand(consulta, cn))
+                    using (SqlCommand cmd = new SqlCommand(consulta, cn, transaccion))
                     {
                         cmd.Parameters.AddWithValue("@fecha", dtpFecha.Value);
                         cmd.Parameters.AddWithValue("@metodo", cmbMetodoPago.Text);
                         cmd.Parameters.AddWithValue("@cliente", cmbCliente.SelectedValue);
+                        cmd.Parameters.AddWithValue("@usuario", cmbUsuario.SelectedValue);
 
                         if (!modoNuevo)
                             cmd.Parameters.AddWithValue("@id", idVentaSeleccionada);
 
-                        cmd.ExecuteNonQuery();
+                        int idVenta = 0;
+
+                        if (modoNuevo)
+                        {
+                            cmd.CommandText += "; SELECT SCOPE_IDENTITY();";
+
+                            idVenta = Convert.ToInt32(cmd.ExecuteScalar());
+                        }
+                        else
+                        {
+                            cmd.ExecuteNonQuery();
+
+                            idVenta = idVentaSeleccionada;
+                        }
+
+                        foreach (DataRow fila in detalleVenta.Rows)
+                        {
+                            string sqlDetalle = @"INSERT INTO Detalle_Venta
+                        (
+                            Cantidad,
+                            precio_unitario,
+                            id_venta,
+                            id_producto
+                        )
+                        VALUES
+                        (
+                            @cantidad,
+                            @precio,
+                            @venta,
+                            @producto
+                        )";
+
+                            using (SqlCommand detalle =
+                                   new SqlCommand(sqlDetalle, cn, transaccion))
+                            {
+                                detalle.Parameters.AddWithValue("@cantidad", fila["Cantidad"]);
+                                detalle.Parameters.AddWithValue("@precio", fila["Precio"]);
+                                detalle.Parameters.AddWithValue("@venta", idVenta);
+                                detalle.Parameters.AddWithValue("@producto", fila["ID"]);
+
+                                detalle.ExecuteNonQuery();
+
+                                string sqlStock = @"UPDATE Producto
+                                                  SET Stock = Stock - @cantidad
+                                                  WHERE id_producto = @producto";
+
+
+                                using (SqlCommand stock =
+                                       new SqlCommand(sqlStock, cn, transaccion))
+                                {
+                                    stock.Parameters.AddWithValue("@cantidad", fila["Cantidad"]);
+                                    stock.Parameters.AddWithValue("@producto", fila["ID"]);
+
+                                    stock.ExecuteNonQuery();
+                                }
+                            }
+                        }
+
+                        transaccion.Commit();
                     }
 
                     MessageBox.Show(
@@ -460,8 +531,11 @@ namespace bodegaproyecto
                     modoEditar = false;
                     idVentaSeleccionada = 0;
                 }
+
             }
+
             catch (Exception ex)
+
             {
                 MessageBox.Show(
                     "Error al guardar la venta: " + ex.Message,
@@ -470,6 +544,8 @@ namespace bodegaproyecto
                     MessageBoxIcon.Error);
             }
         }
+
+
 
         //=========================================
         // SELECCIONAR VENTA
@@ -500,6 +576,10 @@ namespace bodegaproyecto
 
         private int idProductoSeleccionado = 0;
 
+        private decimal subtotalVenta = 0;
+        private decimal impuestoVenta = 0;
+        private decimal totalVenta = 0;
+
         //=========================================
         // CREAR DETALLE DE LA VENTA
         //=========================================
@@ -514,6 +594,9 @@ namespace bodegaproyecto
             detalleVenta.Columns.Add("ISV", typeof(decimal));
             detalleVenta.Columns.Add("Cantidad", typeof(int));
             detalleVenta.Columns.Add("Subtotal", typeof(decimal));
+            subtotalVenta = 0;
+            impuestoVenta = 0;
+            totalVenta = 0;
 
         }
 
@@ -631,6 +714,40 @@ namespace bodegaproyecto
             nudCantidad.Value = 1;
         }
 
+        private void btnAgregarProducto_Click(object sender, EventArgs e)
+        {
+            decimal precio = Convert.ToDecimal(txtPrecio.Text);
+
+            decimal isv = Convert.ToDecimal(txtImpuesto.Text);
+
+            int cantidad = Convert.ToInt32(nudCantidad.Value);
+
+            decimal subtotal = precio * cantidad;
+
+            decimal impuesto = isv * cantidad;
+
+            decimal total = subtotal + impuesto;
+
+            detalleVenta.Rows.Add(
+                idProductoSeleccionado,
+                txtProducto.Text,
+                precio,
+                isv,
+                cantidad,
+                subtotal);
+
+            subtotalVenta += subtotal;
+            impuestoVenta += impuesto;
+            totalVenta += total;
+
+            lblSubtotal.Text = "L. " + subtotalVenta.ToString("N2");
+            lblImpuestoValor.Text = "L. " + impuestoVenta.ToString("N2");
+            lblTotalValor.Text = "L. " + totalVenta.ToString("N2");
+
+            dgvVentas.DataSource = detalleVenta;
+
+            LimpiarProducto();
+        }
         //=========================================
         // CAMBIO DE CANTIDAD
         //=========================================
@@ -714,6 +831,7 @@ namespace bodegaproyecto
                 {
                     if (cn.State != ConnectionState.Open)
                         cn.Open();
+                    SqlTransaction transaccion = cn.BeginTransaction();
 
                     string consulta = @"UPDATE Venta
                                 SET Fecha_Venta = @fecha,
@@ -721,7 +839,7 @@ namespace bodegaproyecto
                                     id_cliente = @cliente,
                                 WHERE id_venta = @id";
 
-                    using (SqlCommand cmd = new SqlCommand(consulta, cn))
+                    using (SqlCommand cmd = new SqlCommand(consulta, cn, transaccion))
                     {
                         cmd.Parameters.AddWithValue("@id", idVentaSeleccionada);
                         cmd.Parameters.AddWithValue("@fecha", dtpFecha.Value.Date);
