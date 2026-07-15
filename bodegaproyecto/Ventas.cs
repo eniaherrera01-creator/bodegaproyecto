@@ -526,7 +526,6 @@ namespace bodegaproyecto
         private decimal impuestoVenta = 0;
         private decimal totalVenta = 0;
 
-        // CREAR DETALLE DE LA VENTA - Cambiar
         private void CrearDetalleVenta()
         {
             detalleVenta = new DataTable();
