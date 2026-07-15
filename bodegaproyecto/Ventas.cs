@@ -77,6 +77,9 @@ namespace bodegaproyecto
             lblTotalValor.Text = "L. 0.00";
 
             cmbCliente.Focus();
+
+            CrearDetalleVenta();
+            dgvDetallesVentas.DataSource = detalleVenta;
         }
 
 
@@ -538,6 +541,19 @@ namespace bodegaproyecto
             impuestoVenta = 0;
             totalVenta = 0;
 
+            dgvDetallesVentas.DataSource = detalleVenta;
+
+            dgvDetallesVentas.Columns["ID"].Visible = false;
+
+            dgvDetallesVentas.Columns["Producto"].HeaderText = "Producto";
+            dgvDetallesVentas.Columns["Precio"].HeaderText = "Precio";
+            dgvDetallesVentas.Columns["ISV"].HeaderText = "ISV";
+            dgvDetallesVentas.Columns["Cantidad"].HeaderText = "Cantidad";
+            dgvDetallesVentas.Columns["Subtotal"].HeaderText = "Subtotal";
+
+            dgvDetallesVentas.AutoSizeColumnsMode =
+                DataGridViewAutoSizeColumnsMode.Fill;
+
         }
 
         private void btnBuscarProducto_Click(object sender, EventArgs e)
@@ -674,7 +690,7 @@ namespace bodegaproyecto
             lblImpuestoValor.Text = "L. " + impuestoVenta.ToString("N2");
             lblTotalValor.Text = "L. " + totalVenta.ToString("N2");
 
-            dgvVentas.DataSource = detalleVenta;
+            dgvDetallesVentas.DataSource = detalleVenta;
 
             LimpiarProducto();
         }
@@ -734,70 +750,22 @@ namespace bodegaproyecto
 
         private void btnActualizar_Click(object sender, EventArgs e)
         {
-            if (idVentaSeleccionada == 0)
-            {
-                MessageBox.Show(
-                    "Seleccione una venta para actualizar.",
-                    "Validación",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-                return;
-            }
+            MostrarVentas();
 
-            if (!ValidarVenta())
-                return;
+            LimpiarFormulario();
 
-            try
-            {
-                using (SqlConnection cn = ConexionBD.ObtenerConexion())
-                {
-                    if (cn.State != ConnectionState.Open)
-                        cn.Open();
-                    SqlTransaction transaccion = cn.BeginTransaction();
+            HabilitarControles(false);
 
-                    string consulta = @"UPDATE Venta
-                                SET Fecha_Venta = @fecha,
-                                    metodo_pago = @metodo,
-                                    id_cliente = @cliente,
-                                WHERE id_venta = @id";
+            modoNuevo = false;
+            modoEditar = false;
+            idVentaSeleccionada = 0;
 
-                    using (SqlCommand cmd = new SqlCommand(consulta, cn, transaccion))
-                    {
-                        cmd.Parameters.AddWithValue("@id", idVentaSeleccionada);
-                        cmd.Parameters.AddWithValue("@fecha", dtpFecha.Value.Date);
-                        cmd.Parameters.AddWithValue("@cliente", cmbCliente.SelectedValue);
-                        cmd.Parameters.AddWithValue("@metodo", cmbMetodoPago.Text);
-
-                        cmd.ExecuteNonQuery();
-                    }
-
-                    MessageBox.Show(
-                        "Venta actualizada correctamente.",
-                        "Información",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-
-
-                    LimpiarFormulario();
-
-                    modoEditar = false;
-                    modoNuevo = false;
-
-                    idVentaSeleccionada = 0;
-
-                    HabilitarControles(false);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    "Error al actualizar la venta.\n" + ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
+            MessageBox.Show(
+                "Datos actualizados correctamente.",
+                "Información",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
-
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             modoNuevo = false;
@@ -810,46 +778,6 @@ namespace bodegaproyecto
             HabilitarControles(false);
 
             dtpFecha.Value = DateTime.Today;
-        }
-
-        // VALIDACION
-        private bool ValidarVenta()
-        {
-            if (cmbCliente.SelectedIndex == -1)
-            {
-                MessageBox.Show("Seleccione un cliente.",
-                    "Validación",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
-                cmbCliente.Focus();
-                return false;
-            }
-
-
-            if (cmbMetodoPago.SelectedIndex == -1)
-            {
-                MessageBox.Show("Seleccione un método de pago.",
-                    "Validación",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
-                cmbMetodoPago.Focus();
-                return false;
-            }
-
-            if (dtpFecha.Value.Date > DateTime.Today)
-            {
-                MessageBox.Show("La fecha de la venta no puede ser mayor que la fecha actual.",
-                    "Validación",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
-                dtpFecha.Focus();
-                return false;
-            }
-
-            return true;
         }
 
     }
