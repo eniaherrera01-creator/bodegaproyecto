@@ -285,6 +285,30 @@ DNI,Nombre,RTN,Telefono,Correo,Direccion,Estado)VALUES
 'VENTA AL CONTADO',
 1
 );
+INSERT INTO Cliente
+(
+DNI,Nombre,RTN,Telefono,Correo,Direccion,Estado)VALUES
+(
+'0801199901234',
+'JUAN BONILLA',
+'08011999000001',
+'98765432',
+'N/A',
+'COLONIA LAS FLORES, TEGUCIGALPA',
+1
+);
+INSERT INTO Cliente
+(
+DNI,Nombre,RTN,Telefono,Correo,Direccion,Estado)VALUES
+(
+'0801200005678',
+'MARIA LOPEZ',
+'08012000000002',
+'99887766',
+'N/A',
+'BARRIO EL CENTRO, CHOLUTECA',
+1
+);
 
 CREATE TABLE Venta (
     id_venta INT IDENTITY(1,1) PRIMARY KEY,
