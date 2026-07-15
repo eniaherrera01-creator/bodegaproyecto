@@ -286,7 +286,7 @@
             // 
             // cmbCliente
             // 
-            cmbCliente.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbCliente.DropDownStyle = ComboBoxStyle.DropDown;
             cmbCliente.Location = new Point(18, 215);
             cmbCliente.Name = "cmbCliente";
             cmbCliente.Size = new Size(310, 28);
