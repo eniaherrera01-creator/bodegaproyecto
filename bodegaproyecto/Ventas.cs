@@ -346,7 +346,7 @@ namespace bodegaproyecto
 
             HabilitarControles(true);
 
-            dtpFecha.Enabled = true;
+            dtpFecha.Enabled = false;
             dtpFecha.Value = DateTime.Now;
 
             cmbCliente.Focus();
@@ -743,7 +743,7 @@ namespace bodegaproyecto
 
             HabilitarControles(true);
 
-            dtpFecha.Enabled = true;
+            dtpFecha.Enabled = false;
         }
 
 
@@ -758,12 +758,6 @@ namespace bodegaproyecto
             modoNuevo = false;
             modoEditar = false;
             idVentaSeleccionada = 0;
-
-            MessageBox.Show(
-                "Datos actualizados correctamente.",
-                "Información",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
         }
         private void btnCancelar_Click(object sender, EventArgs e)
         {
