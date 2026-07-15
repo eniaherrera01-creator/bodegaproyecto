@@ -51,6 +51,7 @@ namespace bodegaproyecto
             dgvVentas.CellClick += dgvVentas_CellClick;
             nudCantidad.ValueChanged += nudCantidad_ValueChanged;
             btnAgregarProducto.Click += btnAgregarProducto_Click;
+            dgvDetallesVentas.CellClick += dgvDetallesVentas_CellClick;
             this.Load += Ventas_Load;
         }
 
@@ -358,7 +359,7 @@ namespace bodegaproyecto
             if (!ValidarCampos())
                 return;
 
-            if (detalleVenta.Rows.Count == 0)
+            if (modoNuevo && detalleVenta.Rows.Count == 0)
             {
                 MessageBox.Show(
                     "Debe agregar al menos un producto.",
@@ -420,25 +421,38 @@ namespace bodegaproyecto
                             idVenta = idVentaSeleccionada;
                         }
 
+
                         foreach (DataRow fila in detalleVenta.Rows)
                         {
-                            string sqlDetalle = @"INSERT INTO Detalle_Venta
-                        (
-                            Cantidad,
-                            precio_unitario,
-                            id_venta,
-                            id_producto
-                        )
-                        VALUES
-                        (
-                            @cantidad,
-                            @precio,
-                            @venta,
-                            @producto
-                        )";
+                            string sqlDetalle;
 
-                            using (SqlCommand detalle =
-                                   new SqlCommand(sqlDetalle, cn, transaccion))
+                            if (modoNuevo)
+                            {
+                                sqlDetalle = @"INSERT INTO Detalle_Venta
+                                            (
+                                                Cantidad,
+                                                precio_unitario,
+                                                id_venta,
+                                                id_producto
+                                            )
+                                            VALUES
+                                            (
+                                                @cantidad,
+                                                @precio,
+                                                @venta,
+                                                @producto
+                                            )";
+                            }
+                            else
+                            {
+                                sqlDetalle = @"UPDATE Detalle_Venta
+                                               SET Cantidad=@cantidad,
+                                               precio_unitario=@precio
+                                               WHERE id_venta=@venta
+                                               AND id_producto=@producto";
+                            }
+
+                            using (SqlCommand detalle = new SqlCommand(sqlDetalle, cn, transaccion))
                             {
                                 detalle.Parameters.AddWithValue("@cantidad", fila["Cantidad"]);
                                 detalle.Parameters.AddWithValue("@precio", fila["Precio"]);
@@ -446,20 +460,6 @@ namespace bodegaproyecto
                                 detalle.Parameters.AddWithValue("@producto", fila["ID"]);
 
                                 detalle.ExecuteNonQuery();
-
-                                string sqlStock = @"UPDATE Producto
-                                                  SET Stock = Stock - @cantidad
-                                                  WHERE id_producto = @producto";
-
-
-                                using (SqlCommand stock =
-                                       new SqlCommand(sqlStock, cn, transaccion))
-                                {
-                                    stock.Parameters.AddWithValue("@cantidad", fila["Cantidad"]);
-                                    stock.Parameters.AddWithValue("@producto", fila["ID"]);
-
-                                    stock.ExecuteNonQuery();
-                                }
                             }
                         }
 
@@ -497,6 +497,95 @@ namespace bodegaproyecto
         }
 
 
+        private void CargarDetalleVenta(int idVenta)
+        {
+            detalleVenta.Rows.Clear();
+
+            using (SqlConnection cn = ConexionBD.ObtenerConexion())
+            {
+
+                string sql = @"
+        SELECT
+            p.id_producto,
+            p.Nombre_Producto,
+            dv.precio_unitario,
+            p.impuesto,
+            dv.Cantidad
+        FROM Detalle_Venta dv
+        INNER JOIN Producto p
+            ON dv.id_producto=p.id_producto
+        WHERE dv.id_venta=@id";
+
+                SqlCommand cmd = new SqlCommand(sql, cn);
+
+                cmd.Parameters.AddWithValue("@id", idVenta);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    decimal precio = Convert.ToDecimal(dr["precio_unitario"]);
+
+                    decimal isv = Convert.ToDecimal(dr["impuesto"]);
+
+                    int cantidad = Convert.ToInt32(dr["Cantidad"]);
+
+                    decimal subtotal = precio * cantidad;
+
+                    detalleVenta.Rows.Add(
+                        dr["id_producto"],
+                        dr["Nombre_Producto"],
+                        precio,
+                        isv,
+                        cantidad,
+                        subtotal
+                    );
+                }
+
+                dr.Close();
+            }
+
+            subtotalVenta = 0;
+            impuestoVenta = 0;
+            totalVenta = 0;
+
+            foreach (DataRow fila in detalleVenta.Rows)
+            {
+                decimal subtotal = Convert.ToDecimal(fila["Subtotal"]);
+                decimal isv = Convert.ToDecimal(fila["ISV"]) * Convert.ToInt32(fila["Cantidad"]);
+
+                subtotalVenta += subtotal;
+                impuestoVenta += isv;
+            }
+
+            totalVenta = subtotalVenta + impuestoVenta;
+
+            lblSubtotal.Text = "L. " + subtotalVenta.ToString("N2");
+            lblImpuestoValor.Text = "L. " + impuestoVenta.ToString("N2");
+            lblTotalValor.Text = "L. " + totalVenta.ToString("N2");
+        }
+
+        private void BuscarStockProducto(int idProducto)
+        {
+            using (SqlConnection cn = ConexionBD.ObtenerConexion())
+            {
+                if (cn.State != ConnectionState.Open)
+                    cn.Open();
+
+                string sql = @"SELECT Stock
+                       FROM Producto
+                       WHERE id_producto=@id";
+
+                SqlCommand cmd = new SqlCommand(sql, cn);
+                cmd.Parameters.AddWithValue("@id", idProducto);
+
+                object stock = cmd.ExecuteScalar();
+
+                if (stock != null)
+                    txtStock.Text = stock.ToString();
+            }
+        }
+
         // SELECCIONAR VENTA
 
         private void dgvVentas_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -515,8 +604,29 @@ namespace bodegaproyecto
 
             cmbCliente.Text = fila.Cells["Cliente"].Value.ToString();
             cmbMetodoPago.Text = fila.Cells["metodo_pago"].Value.ToString();
+
+            CargarDetalleVenta(idVentaSeleccionada);
         }
 
+        private void dgvDetallesVentas_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+
+            DataGridViewRow fila = dgvDetallesVentas.Rows[e.RowIndex];
+
+            idProductoSeleccionado = Convert.ToInt32(fila.Cells["ID"].Value);
+
+            txtBuscarProducto.Text = fila.Cells["Producto"].Value.ToString();
+            txtProducto.Text = fila.Cells["Producto"].Value.ToString();
+
+            txtPrecio.Text = Convert.ToDecimal(fila.Cells["Precio"].Value).ToString("N2");
+            txtImpuesto.Text = Convert.ToDecimal(fila.Cells["ISV"].Value).ToString("N2");
+
+            nudCantidad.Value = Convert.ToDecimal(fila.Cells["Cantidad"].Value);
+
+            BuscarStockProducto(idProductoSeleccionado);
+        }
 
         private DataTable detalleVenta = new DataTable();
 
@@ -673,21 +783,42 @@ namespace bodegaproyecto
 
             decimal total = subtotal + impuesto;
 
-            detalleVenta.Rows.Add(
-                idProductoSeleccionado,
-                txtProducto.Text,
-                precio,
-                isv,
-                cantidad,
-                subtotal);
+            bool existe = false;
 
-            subtotalVenta += subtotal;
-            impuestoVenta += impuesto;
-            totalVenta += total;
+            foreach (DataRow fila in detalleVenta.Rows)
+            {
+                if (Convert.ToInt32(fila["ID"]) == idProductoSeleccionado)
+                {
+                    if (modoEditar)
+                    {
+                        fila["Cantidad"] = cantidad;
+                        fila["Subtotal"] = precio * cantidad;
+                    }
+                    else
+                    {
+                        int nuevaCantidad = Convert.ToInt32(fila["Cantidad"]) + cantidad;
 
-            lblSubtotal.Text = "L. " + subtotalVenta.ToString("N2");
-            lblImpuestoValor.Text = "L. " + impuestoVenta.ToString("N2");
-            lblTotalValor.Text = "L. " + totalVenta.ToString("N2");
+                        fila["Cantidad"] = nuevaCantidad;
+                        fila["Subtotal"] = precio * nuevaCantidad;
+                    }
+
+                    existe = true;
+                    break;
+                }
+            }
+
+            if (!existe)
+            {
+                detalleVenta.Rows.Add(
+                    idProductoSeleccionado,
+                    txtProducto.Text,
+                    precio,
+                    isv,
+                    cantidad,
+                    subtotal);
+            }
+
+            CalcularTotales();
 
             dgvDetallesVentas.DataSource = detalleVenta;
 
@@ -771,6 +902,28 @@ namespace bodegaproyecto
             HabilitarControles(false);
 
             dtpFecha.Value = DateTime.Today;
+        }
+
+        private void CalcularTotales()
+        {
+            subtotalVenta = 0;
+            impuestoVenta = 0;
+
+            foreach (DataRow fila in detalleVenta.Rows)
+            {
+                decimal precio = Convert.ToDecimal(fila["Precio"]);
+                decimal isv = Convert.ToDecimal(fila["ISV"]);
+                int cantidad = Convert.ToInt32(fila["Cantidad"]);
+
+                subtotalVenta += precio * cantidad;
+                impuestoVenta += isv * cantidad;
+            }
+
+            totalVenta = subtotalVenta + impuestoVenta;
+
+            lblSubtotal.Text = "L. " + subtotalVenta.ToString("N2");
+            lblImpuestoValor.Text = "L. " + impuestoVenta.ToString("N2");
+            lblTotalValor.Text = "L. " + totalVenta.ToString("N2");
         }
 
     }
