@@ -11,6 +11,7 @@ namespace bodegaproyecto
         private SqlConnection conexion = ConexionBD.ObtenerConexion();
 
         private int idVentaSeleccionada = 0;
+        private int idClienteSeleccionado = 0;
 
         private bool modoNuevo = false;
         private bool modoEditar = false;
@@ -24,8 +25,9 @@ namespace bodegaproyecto
 
         private void Ventas_Load(object sender, EventArgs e)
         {
-            CargarClientes();
             CargarUsuarios();
+
+            CargarTipoCliente();
 
             MostrarVentas();
 
@@ -52,6 +54,8 @@ namespace bodegaproyecto
             nudCantidad.ValueChanged += nudCantidad_ValueChanged;
             btnAgregarProducto.Click += btnAgregarProducto_Click;
             dgvDetallesVentas.CellClick += dgvDetallesVentas_CellClick;
+            btnBuscarCliente.Click += btnBuscarCliente_Click;
+            cmbTipoCliente.SelectedIndexChanged += cmbTipoCliente_SelectedIndexChanged;
             this.Load += Ventas_Load;
         }
 
@@ -62,7 +66,11 @@ namespace bodegaproyecto
 
             dtpFecha.Value = DateTime.Now;
 
-            cmbCliente.SelectedIndex = -1;
+            txtBuscarCliente.Clear();
+            txtNombreCliente.Clear();
+            txtClienteDNI.Clear();
+            cmbTipoCliente.SelectedIndex = -1;
+            idClienteSeleccionado = 0;
             cmbMetodoPago.SelectedIndex = -1;
 
             txtBuscarProducto.Clear();
@@ -77,16 +85,24 @@ namespace bodegaproyecto
             lblImpuestoValor.Text = "L. 0.00";
             lblTotalValor.Text = "L. 0.00";
 
-            cmbCliente.Focus();
-
+       
             CrearDetalleVenta();
             dgvDetallesVentas.DataSource = detalleVenta;
         }
 
+        private void CargarTipoCliente()
+        {
+            cmbTipoCliente.Items.Clear();
+
+            cmbTipoCliente.Items.Add("Cliente Normal");
+            cmbTipoCliente.Items.Add("Cliente Generico");
+
+            cmbTipoCliente.SelectedIndex = -1;
+        }
 
         private void HabilitarControles(bool estado)
         {
-            cmbCliente.Enabled = estado;
+            cmbTipoCliente.Enabled = estado;
             cmbMetodoPago.Enabled = estado;
 
             btnGuardar.Enabled = estado;
@@ -96,45 +112,22 @@ namespace bodegaproyecto
             btnAgregarProducto.Enabled = estado;
 
             nudCantidad.Enabled = estado;
-        }
 
-        private void CargarClientes()
-        {
-            try
+            cmbTipoCliente.Enabled = estado;
+
+            if (cmbTipoCliente.Text == "Cliente Normal")
             {
-                using (SqlConnection cn = ConexionBD.ObtenerConexion())
-                {
-                    if (cn.State != ConnectionState.Open)
-                        cn.Open();
-
-                    string consulta = @"SELECT
-                                            id_cliente,
-                                            Nombre
-                                        FROM Cliente
-                                        WHERE Estado = 1
-                                        ORDER BY Nombre";
-
-                    SqlDataAdapter da = new SqlDataAdapter(consulta, cn);
-
-                    DataTable dt = new DataTable();
-
-                    da.Fill(dt);
-
-                    cmbCliente.DataSource = dt;
-                    cmbCliente.DisplayMember = "Nombre";
-                    cmbCliente.ValueMember = "id_cliente";
-                    cmbCliente.SelectedIndex = -1;
-                }
+                txtBuscarCliente.Enabled = estado;
+                btnBuscarCliente.Enabled = estado;
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show(
-                    "Error al cargar clientes: " + ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                txtBuscarCliente.Enabled = false;
+                btnBuscarCliente.Enabled = false;
             }
         }
+
+       
 
 
         private void CargarUsuarios()
@@ -218,6 +211,119 @@ namespace bodegaproyecto
         }
 
 
+        private void BuscarClienteGenerico()
+        {
+            try
+            {
+                using (SqlConnection cn = ConexionBD.ObtenerConexion())
+                {
+                    if (cn.State != ConnectionState.Open)
+                        cn.Open();
+
+
+                    string sql = @"
+                SELECT 
+                    id_cliente,
+                    Nombre,
+                    DNI
+                FROM Cliente
+                WHERE Nombre = 'Cliente Generico'
+                AND Estado = 1";
+
+
+                    SqlCommand cmd = new SqlCommand(sql, cn);
+
+
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+
+                    if (dr.Read())
+                    {
+
+                        idClienteSeleccionado =
+                            Convert.ToInt32(dr["id_cliente"]);
+
+
+
+                        txtNombreCliente.Text =
+                            dr["Nombre"].ToString();
+
+
+
+                        txtClienteDNI.Text =
+                            dr["DNI"].ToString();
+
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                            "No existe el cliente genérico en la base de datos.",
+                            "Error",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+                    }
+
+
+                    dr.Close();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error al cargar cliente genérico: "
+                    + ex.Message);
+            }
+        }
+        private void cmbTipoCliente_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            if (cmbTipoCliente.SelectedItem == null)
+                return;
+
+
+            string tipo = cmbTipoCliente.SelectedItem.ToString();
+
+
+            if (tipo == "Cliente Normal")
+            {
+                // Habilitar búsqueda
+
+                txtBuscarCliente.Enabled = true;
+                btnBuscarCliente.Enabled = true;
+
+
+                txtBuscarCliente.Clear();
+                txtNombreCliente.Clear();
+                txtClienteDNI.Clear();
+
+
+                idClienteSeleccionado = 0;
+
+
+                txtBuscarCliente.Focus();
+            }
+
+
+
+            else if (tipo == "Cliente Generico")
+            {
+
+                // Desactivar búsqueda
+
+                txtBuscarCliente.Enabled = false;
+                btnBuscarCliente.Enabled = false;
+
+
+                txtBuscarCliente.Clear();
+
+
+                BuscarClienteGenerico();
+
+            }
+
+        }
+
         private void ConfigurarGrid()
         {
             if (dgvVentas.Columns.Count == 0)
@@ -241,15 +347,16 @@ namespace bodegaproyecto
 
         private bool ValidarCampos()
         {
-            if (cmbCliente.SelectedIndex == -1)
+            if (idClienteSeleccionado == 0)
             {
                 MessageBox.Show(
-                    "Seleccione un cliente.",
+                    "Debe seleccionar un cliente.",
                     "Validación",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
 
-                cmbCliente.Focus();
+                txtBuscarCliente.Focus();
+
                 return false;
             }
 
@@ -349,10 +456,7 @@ namespace bodegaproyecto
 
             dtpFecha.Enabled = false;
             dtpFecha.Value = DateTime.Now;
-
-            cmbCliente.Focus();
         }
-
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
@@ -376,6 +480,7 @@ namespace bodegaproyecto
                 {
                     if (cn.State != ConnectionState.Open)
                         cn.Open();
+
                     SqlTransaction transaccion = cn.BeginTransaction();
 
                     string consulta;
@@ -383,88 +488,155 @@ namespace bodegaproyecto
                     if (modoNuevo)
                     {
                         consulta = @"INSERT INTO Venta
-                        (Fecha_Venta, metodo_pago, id_cliente, id_usuario)
-                        VALUES
-                        (@fecha,@metodo,@cliente,@usuario)";
+                            (Fecha_Venta, metodo_pago, id_cliente, id_usuario)
+                            VALUES
+                            (@fecha,@metodo,@cliente,@usuario)";
                     }
                     else
                     {
                         consulta = @"UPDATE Venta
-                                     SET Fecha_Venta=@fecha,
-                                         metodo_pago=@metodo,
-                                         id_cliente=@cliente
-                                     WHERE id_venta=@id";
+                           SET Fecha_Venta=@fecha,
+                               metodo_pago=@metodo,
+                               id_cliente=@cliente
+                           WHERE id_venta=@id";
                     }
+
+                    int idVenta = 0;
 
                     using (SqlCommand cmd = new SqlCommand(consulta, cn, transaccion))
                     {
                         cmd.Parameters.AddWithValue("@fecha", dtpFecha.Value);
                         cmd.Parameters.AddWithValue("@metodo", cmbMetodoPago.Text);
-                        cmd.Parameters.AddWithValue("@cliente", cmbCliente.SelectedValue);
+                        cmd.Parameters.AddWithValue("@cliente", idClienteSeleccionado);
                         cmd.Parameters.AddWithValue("@usuario", cmbUsuario.SelectedValue);
 
                         if (!modoNuevo)
                             cmd.Parameters.AddWithValue("@id", idVentaSeleccionada);
 
-                        int idVenta = 0;
-
                         if (modoNuevo)
                         {
                             cmd.CommandText += "; SELECT SCOPE_IDENTITY();";
-
                             idVenta = Convert.ToInt32(cmd.ExecuteScalar());
                         }
                         else
                         {
                             cmd.ExecuteNonQuery();
-
                             idVenta = idVentaSeleccionada;
                         }
+                    }
 
+                    // GUARDAR DETALLES
+                    foreach (DataRow fila in detalleVenta.Rows)
+                    {
+                        int cantidadNueva = Convert.ToInt32(fila["Cantidad"]);
+                        int cantidadAnterior = 0;
 
-                        foreach (DataRow fila in detalleVenta.Rows)
+                        // Obtener cantidad anterior si se está editando
+                        if (modoEditar)
                         {
-                            string sqlDetalle;
+                            string sqlCantidad = @"
+                        SELECT Cantidad
+                        FROM Detalle_Venta
+                        WHERE id_venta=@venta
+                        AND id_producto=@producto";
 
-                            if (modoNuevo)
+                            using (SqlCommand cmdCantidad = new SqlCommand(sqlCantidad, cn, transaccion))
                             {
-                                sqlDetalle = @"INSERT INTO Detalle_Venta
-                                            (
-                                                Cantidad,
-                                                precio_unitario,
-                                                id_venta,
-                                                id_producto
-                                            )
-                                            VALUES
-                                            (
-                                                @cantidad,
-                                                @precio,
-                                                @venta,
-                                                @producto
-                                            )";
-                            }
-                            else
-                            {
-                                sqlDetalle = @"UPDATE Detalle_Venta
-                                               SET Cantidad=@cantidad,
-                                               precio_unitario=@precio
-                                               WHERE id_venta=@venta
-                                               AND id_producto=@producto";
-                            }
+                                cmdCantidad.Parameters.AddWithValue("@venta", idVenta);
+                                cmdCantidad.Parameters.AddWithValue("@producto", Convert.ToInt32(fila["ID"]));
 
-                            using (SqlCommand detalle = new SqlCommand(sqlDetalle, cn, transaccion))
-                            {
-                                detalle.Parameters.AddWithValue("@cantidad", fila["Cantidad"]);
-                                detalle.Parameters.AddWithValue("@precio", fila["Precio"]);
-                                detalle.Parameters.AddWithValue("@venta", idVenta);
-                                detalle.Parameters.AddWithValue("@producto", fila["ID"]);
+                                object resultado = cmdCantidad.ExecuteScalar();
 
-                                detalle.ExecuteNonQuery();
+                                if (resultado != null)
+                                    cantidadAnterior = Convert.ToInt32(resultado);
                             }
                         }
 
-                        transaccion.Commit();
+                        // Verificar si el producto ya existe
+                        int existeProducto = 0;
+
+                        string sqlExiste = @"
+                    SELECT COUNT(*)
+                    FROM Detalle_Venta
+                    WHERE id_venta=@venta
+                    AND id_producto=@producto";
+
+                        using (SqlCommand existeCmd = new SqlCommand(sqlExiste, cn, transaccion))
+                        {
+                            existeCmd.Parameters.AddWithValue("@venta", idVenta);
+                            existeCmd.Parameters.AddWithValue("@producto", Convert.ToInt32(fila["ID"]));
+
+                            existeProducto = Convert.ToInt32(existeCmd.ExecuteScalar());
+                        }
+
+                        // INSERTAR O ACTUALIZAR DETALLE
+                        string sqlDetalle;
+
+                        if (existeProducto > 0)
+                        {
+                            sqlDetalle = @"
+                        UPDATE Detalle_Venta
+                        SET Cantidad=@cantidad,
+                            precio_unitario=@precio
+                        WHERE id_venta=@venta
+                        AND id_producto=@producto";
+                        }
+                        else
+                        {
+                            sqlDetalle = @"
+                        INSERT INTO Detalle_Venta
+                        (
+                            Cantidad,
+                            precio_unitario,
+                            id_venta,
+                            id_producto
+                        )
+                        VALUES
+                        (
+                            @cantidad,
+                            @precio,
+                            @venta,
+                            @producto
+                        )";
+                        }
+
+                        // ESTA PARTE FALTABA EN TU CÓDIGO
+                        using (SqlCommand cmdDetalle = new SqlCommand(sqlDetalle, cn, transaccion))
+                        {
+                            cmdDetalle.Parameters.AddWithValue("@cantidad", cantidadNueva);
+                            cmdDetalle.Parameters.AddWithValue("@precio", Convert.ToDecimal(fila["Precio"]));
+                            cmdDetalle.Parameters.AddWithValue("@venta", idVenta);
+                            cmdDetalle.Parameters.AddWithValue("@producto", Convert.ToInt32(fila["ID"]));
+
+                            cmdDetalle.ExecuteNonQuery();
+                        }
+
+                        // ACTUALIZAR STOCK
+                        int diferencia;
+
+                        if (modoNuevo)
+                            diferencia = cantidadNueva;
+                        else
+                            diferencia = cantidadNueva - cantidadAnterior;
+
+                        if (diferencia != 0)
+                        {
+                            string sqlStock = @"
+                        UPDATE Producto
+                        SET Stock = Stock - @cantidad
+                        WHERE id_producto=@producto";
+
+                            using (SqlCommand cmdStock = new SqlCommand(sqlStock, cn, transaccion))
+                            {
+                                cmdStock.Parameters.AddWithValue("@cantidad", diferencia);
+                                cmdStock.Parameters.AddWithValue("@producto", Convert.ToInt32(fila["ID"]));
+
+                                cmdStock.ExecuteNonQuery();
+                            }
+                        }
                     }
+
+                    transaccion.Commit();
 
                     MessageBox.Show(
                         "Venta guardada correctamente.",
@@ -474,6 +646,7 @@ namespace bodegaproyecto
 
                     MostrarVentas();
 
+                    // Limpiar formulario después de guardar
                     LimpiarFormulario();
 
                     HabilitarControles(false);
@@ -482,11 +655,8 @@ namespace bodegaproyecto
                     modoEditar = false;
                     idVentaSeleccionada = 0;
                 }
-
             }
-
             catch (Exception ex)
-
             {
                 MessageBox.Show(
                     "Error al guardar la venta: " + ex.Message,
@@ -504,6 +674,9 @@ namespace bodegaproyecto
             using (SqlConnection cn = ConexionBD.ObtenerConexion())
             {
 
+                if (cn.State != ConnectionState.Open)
+                    cn.Open();
+
                 string sql = @"
         SELECT
             p.id_producto,
@@ -513,8 +686,8 @@ namespace bodegaproyecto
             dv.Cantidad
         FROM Detalle_Venta dv
         INNER JOIN Producto p
-            ON dv.id_producto=p.id_producto
-        WHERE dv.id_venta=@id";
+            ON dv.id_producto = p.id_producto
+        WHERE dv.id_venta = @id";
 
                 SqlCommand cmd = new SqlCommand(sql, cn);
 
@@ -524,12 +697,10 @@ namespace bodegaproyecto
 
                 while (dr.Read())
                 {
+
                     decimal precio = Convert.ToDecimal(dr["precio_unitario"]);
-
                     decimal isv = Convert.ToDecimal(dr["impuesto"]);
-
                     int cantidad = Convert.ToInt32(dr["Cantidad"]);
-
                     decimal subtotal = precio * cantidad;
 
                     detalleVenta.Rows.Add(
@@ -602,8 +773,8 @@ namespace bodegaproyecto
             if (fila.Cells["Fecha_Venta"].Value != DBNull.Value)
                 dtpFecha.Value = Convert.ToDateTime(fila.Cells["Fecha_Venta"].Value);
 
-            cmbCliente.Text = fila.Cells["Cliente"].Value.ToString();
             cmbMetodoPago.Text = fila.Cells["metodo_pago"].Value.ToString();
+            CargarClienteVenta(idVentaSeleccionada);
 
             CargarDetalleVenta(idVentaSeleccionada);
         }
@@ -770,61 +941,68 @@ namespace bodegaproyecto
         }
 
         private void btnAgregarProducto_Click(object sender, EventArgs e)
+{
+    decimal precio = Convert.ToDecimal(txtPrecio.Text);
+
+    decimal isv = Convert.ToDecimal(txtImpuesto.Text);
+
+    int cantidad = Convert.ToInt32(nudCantidad.Value);
+
+    decimal subtotal = precio * cantidad;
+
+    decimal impuesto = isv * cantidad;
+
+    decimal total = subtotal + impuesto;
+
+    bool existe = false;
+
+
+    foreach (DataRow fila in detalleVenta.Rows)
+    {
+        if (Convert.ToInt32(fila["ID"]) == idProductoSeleccionado)
         {
-            decimal precio = Convert.ToDecimal(txtPrecio.Text);
+            existe = true;
 
-            decimal isv = Convert.ToDecimal(txtImpuesto.Text);
 
-            int cantidad = Convert.ToInt32(nudCantidad.Value);
-
-            decimal subtotal = precio * cantidad;
-
-            decimal impuesto = isv * cantidad;
-
-            decimal total = subtotal + impuesto;
-
-            bool existe = false;
-
-            foreach (DataRow fila in detalleVenta.Rows)
+            if (modoEditar)
             {
-                if (Convert.ToInt32(fila["ID"]) == idProductoSeleccionado)
-                {
-                    if (modoEditar)
-                    {
-                        fila["Cantidad"] = cantidad;
-                        fila["Subtotal"] = precio * cantidad;
-                    }
-                    else
-                    {
-                        int nuevaCantidad = Convert.ToInt32(fila["Cantidad"]) + cantidad;
+                fila["Cantidad"] = cantidad;
+                fila["Subtotal"] = subtotal;
+            }
+            else
+            {
+                int nuevaCantidad = Convert.ToInt32(fila["Cantidad"]) + cantidad;
 
-                        fila["Cantidad"] = nuevaCantidad;
-                        fila["Subtotal"] = precio * nuevaCantidad;
-                    }
-
-                    existe = true;
-                    break;
-                }
+                fila["Cantidad"] = nuevaCantidad;
+                fila["Subtotal"] = precio * nuevaCantidad;
             }
 
-            if (!existe)
-            {
-                detalleVenta.Rows.Add(
-                    idProductoSeleccionado,
-                    txtProducto.Text,
-                    precio,
-                    isv,
-                    cantidad,
-                    subtotal);
-            }
 
-            CalcularTotales();
-
-            dgvDetallesVentas.DataSource = detalleVenta;
-
-            LimpiarProducto();
+            break;
         }
+    }
 
+
+    // Si el producto no existe, lo agrega aunque sea modo editar
+    if (!existe)
+    {
+        detalleVenta.Rows.Add(
+            idProductoSeleccionado,
+            txtProducto.Text,
+            precio,
+            isv,
+            cantidad,
+            subtotal
+        );
+    }
+
+
+    CalcularTotales();
+
+    dgvDetallesVentas.DataSource = detalleVenta;
+
+    LimpiarProducto();
+}
         private void nudCantidad_ValueChanged(object sender, EventArgs e)
         {
             if (txtStock.Text == "")
@@ -844,6 +1022,44 @@ namespace bodegaproyecto
             }
         }
 
+        private void CargarClienteVenta(int idVenta)
+        {
+            using (SqlConnection cn = ConexionBD.ObtenerConexion())
+            {
+                if (cn.State != ConnectionState.Open)
+                    cn.Open();
+
+                string sql = @"
+            SELECT
+                c.id_cliente,
+                c.Nombre,
+                c.DNI
+            FROM Venta v
+            INNER JOIN Cliente c
+                ON v.id_cliente = c.id_cliente
+            WHERE v.id_venta = @id";
+
+                SqlCommand cmd = new SqlCommand(sql, cn);
+                cmd.Parameters.AddWithValue("@id", idVenta);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr.Read())
+                {
+                    idClienteSeleccionado = Convert.ToInt32(dr["id_cliente"]);
+
+                    txtNombreCliente.Text = dr["Nombre"].ToString();
+                    txtClienteDNI.Text = dr["DNI"].ToString();
+
+                    if (dr["Nombre"].ToString() == "Cliente Generico")
+                        cmbTipoCliente.Text = "Cliente Generico";
+                    else
+                        cmbTipoCliente.Text = "Cliente Normal";
+                }
+
+                dr.Close();
+            }
+        }
         private void btnEditar_Click(object sender, EventArgs e)
         {
             if (idVentaSeleccionada == 0)
@@ -866,8 +1082,10 @@ namespace bodegaproyecto
             if (fila.Cells["Fecha_Venta"].Value != DBNull.Value)
                 dtpFecha.Value = Convert.ToDateTime(fila.Cells["Fecha_Venta"].Value);
 
-            cmbCliente.Text = fila.Cells["Cliente"].Value.ToString();
             cmbMetodoPago.Text = fila.Cells["metodo_pago"].Value.ToString();
+
+            CargarClienteVenta(idVentaSeleccionada);
+            CargarDetalleVenta(idVentaSeleccionada);
 
             modoNuevo = false;
             modoEditar = true;
@@ -926,6 +1144,102 @@ namespace bodegaproyecto
             lblTotalValor.Text = "L. " + totalVenta.ToString("N2");
         }
 
+        private void btnBuscarCliente_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtBuscarCliente.Text))
+            {
+                MessageBox.Show(
+                    "Ingrese el DNI del cliente.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                txtBuscarCliente.Focus();
+                return;
+            }
+
+
+            BuscarClienteDNI(txtBuscarCliente.Text.Trim());
+        }
+
+        private void BuscarClienteDNI(string dni)
+        {
+            try
+            {
+                using (SqlConnection cn = ConexionBD.ObtenerConexion())
+                {
+                    if (cn.State != ConnectionState.Open)
+                        cn.Open();
+
+
+                    string sql = @"
+                SELECT 
+                    id_cliente,
+                    Nombre,
+                    DNI
+                FROM Cliente
+                WHERE DNI = @dni
+                AND Estado = 1";
+
+
+                    SqlCommand cmd = new SqlCommand(sql, cn);
+
+                    cmd.Parameters.AddWithValue("@dni", dni);
+
+
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+
+                    if (dr.Read())
+                    {
+                        idClienteSeleccionado =
+                            Convert.ToInt32(dr["id_cliente"]);
+
+
+                        txtNombreCliente.Text =
+                            dr["Nombre"].ToString();
+
+
+                        txtClienteDNI.Text =
+                            dr["DNI"].ToString();
+
+
+                        MessageBox.Show(
+                            "Cliente encontrado.",
+                            "Información",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        idClienteSeleccionado = 0;
+
+                        txtNombreCliente.Clear();
+                        txtClienteDNI.Clear();
+
+
+                        MessageBox.Show(
+                            "Cliente no encontrado.",
+                            "Información",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+                    }
+
+
+                    dr.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error al buscar cliente: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
     }
+
+
 
 }

@@ -31,9 +31,6 @@
         private DateTimePicker dtpFecha;
 
         private Label lblCliente;
-        private ComboBox cmbCliente;
-
-        private Button btnBuscarCliente;
         private Button btnNuevoCliente;
 
         private Label lblUsuario;
@@ -137,15 +134,21 @@
             pnlHeader = new Panel();
             lblTituloForm = new Label();
             pnlIzquierdo = new Panel();
+            cmbTipoCliente = new ComboBox();
+            lblTipoCliente = new Label();
+            btnNuevoCliente = new Button();
+            txtDNICliente = new Label();
+            txtNombreCliente = new TextBox();
+            txtClienteDNI = new TextBox();
+            lblNombreCliente = new Label();
+            btnBuscarCliente = new Button();
+            txtBuscarCliente = new TextBox();
             lblTituloDatos = new Label();
             lblIDVenta = new Label();
             txtIDVenta = new TextBox();
             lblFecha = new Label();
             dtpFecha = new DateTimePicker();
             lblCliente = new Label();
-            cmbCliente = new ComboBox();
-            btnBuscarCliente = new Button();
-            btnNuevoCliente = new Button();
             lblUsuario = new Label();
             cmbUsuario = new ComboBox();
             lblMetodoPago = new Label();
@@ -217,15 +220,21 @@
             // pnlIzquierdo
             // 
             pnlIzquierdo.BackColor = Color.White;
+            pnlIzquierdo.Controls.Add(cmbTipoCliente);
+            pnlIzquierdo.Controls.Add(lblTipoCliente);
+            pnlIzquierdo.Controls.Add(btnNuevoCliente);
+            pnlIzquierdo.Controls.Add(txtDNICliente);
+            pnlIzquierdo.Controls.Add(txtNombreCliente);
+            pnlIzquierdo.Controls.Add(txtClienteDNI);
+            pnlIzquierdo.Controls.Add(lblNombreCliente);
+            pnlIzquierdo.Controls.Add(btnBuscarCliente);
+            pnlIzquierdo.Controls.Add(txtBuscarCliente);
             pnlIzquierdo.Controls.Add(lblTituloDatos);
             pnlIzquierdo.Controls.Add(lblIDVenta);
             pnlIzquierdo.Controls.Add(txtIDVenta);
             pnlIzquierdo.Controls.Add(lblFecha);
             pnlIzquierdo.Controls.Add(dtpFecha);
             pnlIzquierdo.Controls.Add(lblCliente);
-            pnlIzquierdo.Controls.Add(cmbCliente);
-            pnlIzquierdo.Controls.Add(btnBuscarCliente);
-            pnlIzquierdo.Controls.Add(btnNuevoCliente);
             pnlIzquierdo.Controls.Add(lblUsuario);
             pnlIzquierdo.Controls.Add(cmbUsuario);
             pnlIzquierdo.Controls.Add(lblMetodoPago);
@@ -234,6 +243,97 @@
             pnlIzquierdo.Name = "pnlIzquierdo";
             pnlIzquierdo.Size = new Size(350, 693);
             pnlIzquierdo.TabIndex = 1;
+            // 
+            // cmbTipoCliente
+            // 
+            cmbTipoCliente.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTipoCliente.Items.AddRange(new object[] { "Efectivo", "Tarjeta", "Transferencia" });
+            cmbTipoCliente.Location = new Point(18, 222);
+            cmbTipoCliente.Name = "cmbTipoCliente";
+            cmbTipoCliente.Size = new Size(179, 28);
+            cmbTipoCliente.TabIndex = 18;
+            // 
+            // lblTipoCliente
+            // 
+            lblTipoCliente.AutoSize = true;
+            lblTipoCliente.Location = new Point(18, 199);
+            lblTipoCliente.Name = "lblTipoCliente";
+            lblTipoCliente.Size = new Size(89, 20);
+            lblTipoCliente.TabIndex = 17;
+            lblTipoCliente.Text = "Tipo Cliente";
+            // 
+            // btnNuevoCliente
+            // 
+            btnNuevoCliente.BackColor = Color.SeaGreen;
+            btnNuevoCliente.Cursor = Cursors.Hand;
+            btnNuevoCliente.FlatAppearance.BorderSize = 0;
+            btnNuevoCliente.FlatStyle = FlatStyle.Flat;
+            btnNuevoCliente.ForeColor = Color.White;
+            btnNuevoCliente.Location = new Point(216, 222);
+            btnNuevoCliente.Name = "btnNuevoCliente";
+            btnNuevoCliente.Size = new Size(112, 29);
+            btnNuevoCliente.TabIndex = 4;
+            btnNuevoCliente.Text = "+ Nuevo";
+            btnNuevoCliente.UseVisualStyleBackColor = false;
+            // 
+            // txtDNICliente
+            // 
+            txtDNICliente.AutoSize = true;
+            txtDNICliente.Location = new Point(18, 390);
+            txtDNICliente.Name = "txtDNICliente";
+            txtDNICliente.Size = new Size(35, 20);
+            txtDNICliente.TabIndex = 15;
+            txtDNICliente.Text = "DNI";
+            // 
+            // txtNombreCliente
+            // 
+            txtNombreCliente.BackColor = Color.WhiteSmoke;
+            txtNombreCliente.Enabled = false;
+            txtNombreCliente.Location = new Point(18, 351);
+            txtNombreCliente.Name = "txtNombreCliente";
+            txtNombreCliente.ReadOnly = true;
+            txtNombreCliente.Size = new Size(310, 27);
+            txtNombreCliente.TabIndex = 13;
+            // 
+            // txtClienteDNI
+            // 
+            txtClienteDNI.BackColor = Color.WhiteSmoke;
+            txtClienteDNI.Enabled = false;
+            txtClienteDNI.Location = new Point(18, 413);
+            txtClienteDNI.Name = "txtClienteDNI";
+            txtClienteDNI.ReadOnly = true;
+            txtClienteDNI.Size = new Size(310, 27);
+            txtClienteDNI.TabIndex = 16;
+            // 
+            // lblNombreCliente
+            // 
+            lblNombreCliente.AutoSize = true;
+            lblNombreCliente.Location = new Point(18, 328);
+            lblNombreCliente.Name = "lblNombreCliente";
+            lblNombreCliente.Size = new Size(55, 20);
+            lblNombreCliente.TabIndex = 14;
+            lblNombreCliente.Text = "Cliente";
+            // 
+            // btnBuscarCliente
+            // 
+            btnBuscarCliente.BackColor = Color.FromArgb(26, 115, 232);
+            btnBuscarCliente.Cursor = Cursors.Hand;
+            btnBuscarCliente.FlatAppearance.BorderSize = 0;
+            btnBuscarCliente.FlatStyle = FlatStyle.Flat;
+            btnBuscarCliente.ForeColor = Color.White;
+            btnBuscarCliente.Location = new Point(216, 288);
+            btnBuscarCliente.Name = "btnBuscarCliente";
+            btnBuscarCliente.Size = new Size(112, 29);
+            btnBuscarCliente.TabIndex = 12;
+            btnBuscarCliente.Text = "🔍";
+            btnBuscarCliente.UseVisualStyleBackColor = false;
+            // 
+            // txtBuscarCliente
+            // 
+            txtBuscarCliente.Location = new Point(18, 289);
+            txtBuscarCliente.Name = "txtBuscarCliente";
+            txtBuscarCliente.Size = new Size(179, 27);
+            txtBuscarCliente.TabIndex = 11;
             // 
             // lblTituloDatos
             // 
@@ -286,51 +386,16 @@
             // lblCliente
             // 
             lblCliente.AutoSize = true;
-            lblCliente.Location = new Point(18, 192);
+            lblCliente.Location = new Point(18, 269);
             lblCliente.Name = "lblCliente";
-            lblCliente.Size = new Size(55, 20);
+            lblCliente.Size = new Size(102, 20);
             lblCliente.TabIndex = 3;
-            lblCliente.Text = "Cliente";
-            // 
-            // cmbCliente
-            // 
-            cmbCliente.Location = new Point(18, 215);
-            cmbCliente.Name = "cmbCliente";
-            cmbCliente.Size = new Size(310, 28);
-            cmbCliente.TabIndex = 2;
-            // 
-            // btnBuscarCliente
-            // 
-            btnBuscarCliente.BackColor = Color.FromArgb(26, 115, 232);
-            btnBuscarCliente.Cursor = Cursors.Hand;
-            btnBuscarCliente.FlatAppearance.BorderSize = 0;
-            btnBuscarCliente.FlatStyle = FlatStyle.Flat;
-            btnBuscarCliente.ForeColor = Color.White;
-            btnBuscarCliente.Location = new Point(18, 253);
-            btnBuscarCliente.Name = "btnBuscarCliente";
-            btnBuscarCliente.Size = new Size(145, 36);
-            btnBuscarCliente.TabIndex = 3;
-            btnBuscarCliente.Text = "🔍 Buscar";
-            btnBuscarCliente.UseVisualStyleBackColor = false;
-            // 
-            // btnNuevoCliente
-            // 
-            btnNuevoCliente.BackColor = Color.SeaGreen;
-            btnNuevoCliente.Cursor = Cursors.Hand;
-            btnNuevoCliente.FlatAppearance.BorderSize = 0;
-            btnNuevoCliente.FlatStyle = FlatStyle.Flat;
-            btnNuevoCliente.ForeColor = Color.White;
-            btnNuevoCliente.Location = new Point(183, 253);
-            btnNuevoCliente.Name = "btnNuevoCliente";
-            btnNuevoCliente.Size = new Size(145, 36);
-            btnNuevoCliente.TabIndex = 4;
-            btnNuevoCliente.Text = "+ Nuevo";
-            btnNuevoCliente.UseVisualStyleBackColor = false;
+            lblCliente.Text = "Buscar Cliente";
             // 
             // lblUsuario
             // 
             lblUsuario.AutoSize = true;
-            lblUsuario.Location = new Point(18, 306);
+            lblUsuario.Location = new Point(18, 461);
             lblUsuario.Name = "lblUsuario";
             lblUsuario.Size = new Size(59, 20);
             lblUsuario.TabIndex = 5;
@@ -340,7 +405,7 @@
             // 
             cmbUsuario.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbUsuario.Enabled = false;
-            cmbUsuario.Location = new Point(18, 329);
+            cmbUsuario.Location = new Point(18, 484);
             cmbUsuario.Name = "cmbUsuario";
             cmbUsuario.Size = new Size(310, 28);
             cmbUsuario.TabIndex = 5;
@@ -348,7 +413,7 @@
             // lblMetodoPago
             // 
             lblMetodoPago.AutoSize = true;
-            lblMetodoPago.Location = new Point(18, 370);
+            lblMetodoPago.Location = new Point(18, 525);
             lblMetodoPago.Name = "lblMetodoPago";
             lblMetodoPago.Size = new Size(120, 20);
             lblMetodoPago.TabIndex = 6;
@@ -358,7 +423,7 @@
             // 
             cmbMetodoPago.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbMetodoPago.Items.AddRange(new object[] { "Efectivo", "Tarjeta", "Transferencia" });
-            cmbMetodoPago.Location = new Point(18, 393);
+            cmbMetodoPago.Location = new Point(18, 548);
             cmbMetodoPago.Name = "cmbMetodoPago";
             cmbMetodoPago.Size = new Size(310, 28);
             cmbMetodoPago.TabIndex = 6;
@@ -416,6 +481,7 @@
             // txtProducto
             // 
             txtProducto.BackColor = Color.WhiteSmoke;
+            txtProducto.Enabled = false;
             txtProducto.Location = new Point(20, 138);
             txtProducto.Name = "txtProducto";
             txtProducto.ReadOnly = true;
@@ -434,6 +500,7 @@
             // txtPrecio
             // 
             txtPrecio.BackColor = Color.WhiteSmoke;
+            txtPrecio.Enabled = false;
             txtPrecio.Location = new Point(20, 200);
             txtPrecio.Name = "txtPrecio";
             txtPrecio.ReadOnly = true;
@@ -452,6 +519,7 @@
             // txtImpuesto
             // 
             txtImpuesto.BackColor = Color.WhiteSmoke;
+            txtImpuesto.Enabled = false;
             txtImpuesto.Location = new Point(185, 200);
             txtImpuesto.Name = "txtImpuesto";
             txtImpuesto.ReadOnly = true;
@@ -470,6 +538,7 @@
             // txtStock
             // 
             txtStock.BackColor = Color.WhiteSmoke;
+            txtStock.Enabled = false;
             txtStock.Location = new Point(20, 262);
             txtStock.Name = "txtStock";
             txtStock.ReadOnly = true;
@@ -831,5 +900,13 @@
 
         private Panel panel1;
         private DataGridView dgvDetallesVentas;
+        private Label txtDNICliente;
+        private TextBox txtNombreCliente;
+        private TextBox txtClienteDNI;
+        private Label lblNombreCliente;
+        private Button btnBuscarCliente;
+        private TextBox txtBuscarCliente;
+        private ComboBox cmbTipoCliente;
+        private Label lblTipoCliente;
     }
 }
