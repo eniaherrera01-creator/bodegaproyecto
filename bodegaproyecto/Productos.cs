@@ -24,7 +24,7 @@ namespace bodegaproyecto
             dtpfv.Value = DateTime.Today;
 
             dtpfv.Value = DateTime.Today;
-            dtpfv.Enabled = false;
+            dtpfv.Enabled = true;
         }
 
         private void AsignarEventosManuales()
@@ -32,13 +32,10 @@ namespace bodegaproyecto
             // Primero quitamos eventos por si el Designer ya los agregó
             btnguardar.Click -= btnguardar_Click;
             btneditar.Click -= btneditar_Click;
-            btnactualizar.Click -= btnactualizar_Click;
             btnestado.Click -= btnestado_Click;
             btnnuevo.Click -= btnnuevo_Click;
 
             // Por si algún botón quedó conectado al evento equivocado
-            btnguardar.Click -= btnactualizar_Click;
-            btnactualizar.Click -= btnguardar_Click;
 
             txtbuscar.TextChanged -= txtbuscar_TextChanged;
 
@@ -53,7 +50,6 @@ namespace bodegaproyecto
             // Ahora sí agregamos los eventos correctos una sola vez
             btnguardar.Click += btnguardar_Click;
             btneditar.Click += btneditar_Click;
-            btnactualizar.Click += btnactualizar_Click;
             btnestado.Click += btnestado_Click;
             btnnuevo.Click += btnnuevo_Click;
 
@@ -106,21 +102,24 @@ namespace bodegaproyecto
                         cn.Open();
 
                     string consulta = @"SELECT
-                                            p.id_producto,
-                                            p.Nombre_Producto,
-                                            p.Descripcion,
-                                            p.Precio_Compra,
-                                            p.Precio_Venta,
-                                            p.Stock,
-                                            p.fecha_vencimiento,
-                                            p.impuesto,
-                                            p.id_categoria,
-                                            c.Nombre_Categoria,
-                                            p.Estado
-                                        FROM Producto p
-                                        INNER JOIN Categoria c
-                                        ON p.id_categoria = c.id_categoria
-                                        ORDER BY p.id_producto DESC";
+                        p.id_producto,
+                        p.Nombre_Producto,
+                        p.Descripcion,
+                        p.Precio_Compra,
+                        p.Precio_Venta,
+                        p.Stock,
+                        p.fecha_vencimiento,
+                        p.impuesto,
+                        p.id_categoria,
+                        c.Nombre_Categoria,
+                        CASE
+                            WHEN p.Estado = 1 THEN 'Activo'
+                            ELSE 'Inactivo'
+                        END AS Estado
+                    FROM Producto p
+                    INNER JOIN Categoria c
+                    ON p.id_categoria = c.id_categoria
+                    ORDER BY p.id_producto DESC";
 
                     SqlDataAdapter da = new SqlDataAdapter(consulta, cn);
                     DataTable dt = new DataTable();
@@ -272,18 +271,8 @@ namespace bodegaproyecto
             );
         }
 
-        private void btnguardar_Click(object sender, EventArgs e)
+        private void GuardarProducto()
         {
-            if (!string.IsNullOrWhiteSpace(txtId.Text))
-            {
-                MessageBox.Show("Este producto ya existe. Use el botón Actualizar para modificarlo.",
-                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            if (!ValidarCampos())
-                return;
-
             ObtenerDecimal(txtpreciocompra.Text.Trim(), out decimal precioCompra);
             ObtenerDecimal(txtprecioventa.Text.Trim(), out decimal precioVenta);
             ObtenerDecimal(txtimpuesto.Text.Trim(), out decimal impuesto);
@@ -298,11 +287,15 @@ namespace bodegaproyecto
                         cn.Open();
 
                     string consulta = @"INSERT INTO Producto
-                                        (Nombre_Producto, Descripcion, Precio_Compra, Precio_Venta,
-                                         Stock, fecha_vencimiento, impuesto, id_categoria, Estado)
-                                        VALUES
-                                        (@nombre, @descripcion, @compra, @venta,
-                                         @stock, @fecha, @impuesto, @categoria, @estado)";
+                                (Nombre_Producto,Descripcion,
+                                 Precio_Compra,Precio_Venta,
+                                 Stock,fecha_vencimiento,
+                                 impuesto,id_categoria,Estado)
+                                VALUES
+                                (@nombre,@descripcion,
+                                 @compra,@venta,
+                                 @stock,@fecha,
+                                 @impuesto,@categoria,@estado)";
 
                     using (SqlCommand cmd = new SqlCommand(consulta, cn))
                     {
@@ -319,8 +312,7 @@ namespace bodegaproyecto
                         cmd.ExecuteNonQuery();
                     }
 
-                    MessageBox.Show("Producto guardado correctamente.", "Información",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Producto guardado correctamente.");
 
                     MostrarProductos();
                     LimpiarFormulario();
@@ -328,9 +320,25 @@ namespace bodegaproyecto
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al guardar producto: " + ex.Message,
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message);
             }
+        }
+
+        private void btnguardar_Click(object sender, EventArgs e)
+        {
+            if (!ValidarCampos())
+                return;
+
+            if (string.IsNullOrWhiteSpace(txtId.Text))
+            {
+                GuardarProducto();
+            }
+            else
+            {
+                ActualizarProducto();
+            }
+
+
         }
 
         private void btneditar_Click(object sender, EventArgs e)
@@ -360,7 +368,7 @@ namespace bodegaproyecto
             cbcategoria.SelectedValue = fila.Cells["id_categoria"].Value;
         }
 
-        private void btnactualizar_Click(object sender, EventArgs e)
+        private void ActualizarProducto()
         {
             if (string.IsNullOrWhiteSpace(txtId.Text))
             {
@@ -493,7 +501,10 @@ namespace bodegaproyecto
                                             p.impuesto,
                                             p.id_categoria,
                                             c.Nombre_Categoria,
-                                            p.Estado
+                                            CASE
+                                            WHEN p.Estado = 1 THEN 'Activo'
+                                            ELSE 'Inactivo'
+                                            END AS Estado
                                         FROM Producto p
                                         INNER JOIN Categoria c
                                         ON p.id_categoria = c.id_categoria
