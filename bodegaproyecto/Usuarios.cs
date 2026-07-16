@@ -369,5 +369,10 @@ namespace bodegaproyecto
         {
 
         }
+
+        private void cmbRol_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

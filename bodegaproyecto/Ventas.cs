@@ -1,4 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using DevExpress.Xpo.DB.Helpers;
+using DevExpress.XtraSpellChecker.Parser;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -85,7 +87,7 @@ namespace bodegaproyecto
             lblImpuestoValor.Text = "L. 0.00";
             lblTotalValor.Text = "L. 0.00";
 
-       
+
             CrearDetalleVenta();
             dgvDetallesVentas.DataSource = detalleVenta;
         }
@@ -127,7 +129,7 @@ namespace bodegaproyecto
             }
         }
 
-       
+
 
 
         private void CargarUsuarios()
@@ -445,8 +447,14 @@ namespace bodegaproyecto
 
         private void btnNuevo_Click(object sender, EventArgs e)
         {
+
+            if (modoEditar)
+            {
+                MessageBox.Show("Debe guardar o cancelar la edicion actual antes de crear una nueva venta.", "aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             modoNuevo = true;
-            modoEditar = false;
 
             idVentaSeleccionada = 0;
 
@@ -456,6 +464,10 @@ namespace bodegaproyecto
 
             dtpFecha.Enabled = false;
             dtpFecha.Value = DateTime.Now;
+
+
+
+
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
@@ -797,6 +809,12 @@ namespace bodegaproyecto
             nudCantidad.Value = Convert.ToDecimal(fila.Cells["Cantidad"].Value);
 
             BuscarStockProducto(idProductoSeleccionado);
+
+            TXTProductoRembolso.Text = fila.Cells["Producto"].Value.ToString();
+            int cantidadActual = Convert.ToInt32(fila.Cells["Cantidad"].Value);
+            nudCantidadRembolso.Minimum = 1;
+            nudCantidadRembolso.Maximum = cantidadActual;
+            nudCantidadRembolso.Value = 1;
         }
 
         private DataTable detalleVenta = new DataTable();
@@ -941,68 +959,83 @@ namespace bodegaproyecto
         }
 
         private void btnAgregarProducto_Click(object sender, EventArgs e)
-{
-    decimal precio = Convert.ToDecimal(txtPrecio.Text);
-
-    decimal isv = Convert.ToDecimal(txtImpuesto.Text);
-
-    int cantidad = Convert.ToInt32(nudCantidad.Value);
-
-    decimal subtotal = precio * cantidad;
-
-    decimal impuesto = isv * cantidad;
-
-    decimal total = subtotal + impuesto;
-
-    bool existe = false;
-
-
-    foreach (DataRow fila in detalleVenta.Rows)
-    {
-        if (Convert.ToInt32(fila["ID"]) == idProductoSeleccionado)
         {
-            existe = true;
-
 
             if (modoEditar)
             {
-                fila["Cantidad"] = cantidad;
-                fila["Subtotal"] = subtotal;
+                MessageBox.Show("no puede agrregar un producto en modo edicion, use el panel de reembolso",
+                   "aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            else
+
+            if (idProductoSeleccionado == 0)
             {
-                int nuevaCantidad = Convert.ToInt32(fila["Cantidad"]) + cantidad;
-
-                fila["Cantidad"] = nuevaCantidad;
-                fila["Subtotal"] = precio * nuevaCantidad;
+                MessageBox.Show("debe buscar un producto primero.", "aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
 
 
-            break;
+            decimal precio = Convert.ToDecimal(txtPrecio.Text);
+
+            decimal isv = Convert.ToDecimal(txtImpuesto.Text);
+
+            int cantidad = Convert.ToInt32(nudCantidad.Value);
+
+            decimal subtotal = precio * cantidad;
+
+            decimal impuesto = isv * cantidad;
+
+            decimal total = subtotal + impuesto;
+
+            bool existe = false;
+
+
+            foreach (DataRow fila in detalleVenta.Rows)
+            {
+                if (Convert.ToInt32(fila["ID"]) == idProductoSeleccionado)
+                {
+                    existe = true;
+
+
+                    if (modoEditar)
+                    {
+                        fila["Cantidad"] = cantidad;
+                        fila["Subtotal"] = subtotal;
+                    }
+                    else
+                    {
+                        int nuevaCantidad = Convert.ToInt32(fila["Cantidad"]) + cantidad;
+
+                        fila["Cantidad"] = nuevaCantidad;
+                        fila["Subtotal"] = precio * nuevaCantidad;
+                    }
+
+
+                    break;
+                }
+            }
+
+
+            // Si el producto no existe, lo agrega aunque sea modo editar
+            if (!existe)
+            {
+                detalleVenta.Rows.Add(
+                    idProductoSeleccionado,
+                    txtProducto.Text,
+                    precio,
+                    isv,
+                    cantidad,
+                    subtotal
+                );
+            }
+
+
+            CalcularTotales();
+
+            dgvDetallesVentas.DataSource = detalleVenta;
+
+            LimpiarProducto();
         }
-    }
-
-
-    // Si el producto no existe, lo agrega aunque sea modo editar
-    if (!existe)
-    {
-        detalleVenta.Rows.Add(
-            idProductoSeleccionado,
-            txtProducto.Text,
-            precio,
-            isv,
-            cantidad,
-            subtotal
-        );
-    }
-
-
-    CalcularTotales();
-
-    dgvDetallesVentas.DataSource = detalleVenta;
-
-    LimpiarProducto();
-}
         private void nudCantidad_ValueChanged(object sender, EventArgs e)
         {
             if (txtStock.Text == "")
@@ -1237,6 +1270,182 @@ namespace bodegaproyecto
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+        }
+
+        private void btnNuevo_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEditar_Click_1(object sender, EventArgs e)
+        {
+            if (modoNuevo)
+            {
+                MessageBox.Show("debe guardar o cancelar la venta antes de editar otra.", "aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (menu.RolUsuario != "Administrador")
+            {
+                MessageBox.Show("solo un administrador puede editar ventas.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            modoEditar = true;
+        }
+
+        private void btnCancelar_Click_1(object sender, EventArgs e)
+        {
+            LimpiarFormulario();
+            modoEditar = false;
+            modoNuevo = false;
+        }
+
+        private void cmbUsuario_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (!modoEditar)
+            {
+                MessageBox.Show("debe presionar 'editar' para poder realizar un reembolso",
+                    "aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(TXTProductoRembolso.Text))
+            {
+                MessageBox.Show("Seleccione un producto del dealle primero", "aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int cantidadRembolso = Convert.ToInt32(nudCantidadRembolso.Value);
+
+            DialogResult confirm = MessageBox.Show($" Desea Reembolsar? {cantidadRembolso} unidad(es) de {TXTProductoRembolso.Text}? ",
+               "confirmar Reembolso", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (confirm == DialogResult.No)
+                return;
+
+            try
+            {
+                using (SqlConnection cn = ConexionBD.ObtenerConexion())
+                {
+                    if (cn.State != ConnectionState.Open)
+                        cn.Open();
+
+                    SqlTransaction transaccion = cn.BeginTransaction();
+
+                    string sqlCantidadActual = @"
+                    SELECT Cantidad
+                    FROM Detalle_Venta
+                    WHERE id_venta = @venta
+                    AND id_producto = @producto";
+
+                    int cantidadActual = 0;
+
+                    using (SqlCommand cmd = new SqlCommand(sqlCantidadActual, cn, transaccion))
+                    {
+                        cmd.Parameters.AddWithValue("@venta", idVentaSeleccionada);
+                        cmd.Parameters.AddWithValue("@producto", idProductoSeleccionado);
+                        cantidadActual = Convert.ToInt32(cmd.ExecuteScalar());
+                    }
+                    int cantidadNueva = cantidadActual - cantidadRembolso;
+
+                    if (cantidadNueva <= 0)
+                    {
+                        string sqlEliminar = @"
+                         DELETE FROM Detalle_Venta 
+                         WHERE id_venta = @venta 
+                         AND id_producto = @producto";
+
+                        using (SqlCommand cmd = new SqlCommand(sqlEliminar, cn, transaccion))
+                        {
+                            cmd.Parameters.AddWithValue("@venta", idVentaSeleccionada);
+                            cmd.Parameters.AddWithValue("@producto", idProductoSeleccionado);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    else
+                    {
+                        string sqlActualizar = @"
+                          UPDATE Detalle_Venta 
+                          SET Cantidad = @cantidad 
+                          WHERE id_venta = @venta 
+                          AND id_producto = @producto";
+
+                        using (SqlCommand cmd = new SqlCommand(sqlActualizar, cn, transaccion))
+                        {
+                            cmd.Parameters.AddWithValue("@cantidad", cantidadNueva);
+                            cmd.Parameters.AddWithValue("@venta", idVentaSeleccionada);
+                            cmd.Parameters.AddWithValue("@producto", idProductoSeleccionado);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    string sqlStock = @"
+                     UPDATE Producto 
+                     SET Stock = Stock + @cantidad 
+                     WHERE id_producto = @producto";
+
+                    using (SqlCommand cmd = new SqlCommand(sqlStock, cn, transaccion))
+                    {
+                        cmd.Parameters.AddWithValue("@cantidad", cantidadRembolso);
+                        cmd.Parameters.AddWithValue("@producto", idProductoSeleccionado);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    transaccion.Commit();
+
+                    MessageBox.Show("Rembolso aplicado correctamente.",
+                        "exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    CargarDetalleVenta(idVentaSeleccionada);
+                    TXTProductoRembolso.Clear();
+                    nudCantidadRembolso.Value = 1;
+                    nudCantidadRembolso.Maximum = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("error al aplicar reembolso: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void pnlTotales_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void txtProducto_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+
+        private void btnBuscarProducto_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnBuscarCliente_Click_1(object sender, EventArgs e)
+        {
+            if (!modoNuevo)
+            {
+                MessageBox.Show("solo puede buscar un cliente al crear una nueva venta.",
+                    "aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+            }
+
         }
     }
 
