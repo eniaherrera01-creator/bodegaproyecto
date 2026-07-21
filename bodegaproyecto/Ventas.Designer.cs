@@ -1023,7 +1023,7 @@
             BTrembolso.TabIndex = 14;
             BTrembolso.Text = "+ hacer rembolso";
             BTrembolso.UseVisualStyleBackColor = false;
-            BTrembolso.Click += button2_Click;
+            BTrembolso.Click += BTrembolso_Click;
             // 
             // txtDescripcion
             // 
