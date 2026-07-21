@@ -1322,6 +1322,13 @@ namespace bodegaproyecto
                 return;
             }
 
+            if (string.IsNullOrWhiteSpace (txtDescripcion.Text))
+            {
+                MessageBox.Show("debe ingresar una descripcion del motivo del reembolso.",
+                    "aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             int cantidadRembolso = Convert.ToInt32(nudCantidadRembolso.Value);
 
             DialogResult confirm = MessageBox.Show($" Desea Reembolsar? {cantidadRembolso} unidad(es) de {TXTProductoRembolso.Text}? ",
@@ -1345,7 +1352,24 @@ namespace bodegaproyecto
                     WHERE id_venta = @venta
                     AND id_producto = @producto";
 
+                    string sqlInsertReembolso = @"
+                     INSERT INTO Reembolso
+                        (fecha_reembolso, descripcion, id_venta, id_usuario, id_producto, cantidad)
+                     VALUES
+                        (GETDATE(), @descripcion, @venta, @usuario, @producto, @cantidad)";
+
                     int cantidadActual = 0;
+
+                    using (SqlCommand cmd = new SqlCommand(sqlInsertReembolso, cn, transaccion))
+                    {
+                        cmd.Parameters.AddWithValue("@descripcion", txtDescripcion.Text.Trim());
+                        cmd.Parameters.AddWithValue("@venta", idVentaSeleccionada);
+                        cmd.Parameters.AddWithValue("@usuario", Convert.ToInt32(cmbUsuario.SelectedValue));
+                        cmd.Parameters.AddWithValue("@producto", idProductoSeleccionado);
+                        cmd.Parameters.AddWithValue("@cantidad", cantidadRembolso);
+                        cmd.ExecuteNonQuery();
+
+                    }
 
                     using (SqlCommand cmd = new SqlCommand(sqlCantidadActual, cn, transaccion))
                     {
@@ -1445,6 +1469,25 @@ namespace bodegaproyecto
                     "aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             }
+
+        }
+
+        private void BTverRembolso_Click(object sender, EventArgs e)
+        {
+            if (menu.RolUsuario != "Administrador")
+            {
+                MessageBox.Show("solo un administrador puede acceder a los reembolso",
+                    "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            Rembolso frmReembolso = new Rembolso();
+            frmReembolso.Show();
+
+        }
+
+        private void lbldescripcion_Click(object sender, EventArgs e)
+        {
 
         }
     }

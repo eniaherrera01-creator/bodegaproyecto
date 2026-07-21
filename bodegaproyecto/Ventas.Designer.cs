@@ -123,14 +123,14 @@
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle13 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle14 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle15 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle16 = new DataGridViewCellStyle();
             pnlHeader = new Panel();
             lblTituloForm = new Label();
             pnlIzquierdo = new Panel();
@@ -169,6 +169,7 @@
             nudCantidad = new NumericUpDown();
             btnAgregarProducto = new Button();
             pnlDerecho = new Panel();
+            BTverRembolso = new Button();
             dgvDetallesVentas = new DataGridView();
             lblTituloDetalle = new Label();
             btnNuevo = new Button();
@@ -192,7 +193,9 @@
             lbcantidadRembolso = new Label();
             nudCantidadRembolso = new NumericUpDown();
             plRembolso = new Panel();
+            lbldescripcion = new Label();
             BTrembolso = new Button();
+            txtDescripcion = new TextBox();
             pnlHeader.SuspendLayout();
             pnlIzquierdo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudCantidad).BeginInit();
@@ -613,6 +616,7 @@
             // pnlDerecho
             // 
             pnlDerecho.BackColor = Color.White;
+            pnlDerecho.Controls.Add(BTverRembolso);
             pnlDerecho.Controls.Add(dgvDetallesVentas);
             pnlDerecho.Controls.Add(lblTituloDetalle);
             pnlDerecho.Controls.Add(btnNuevo);
@@ -629,50 +633,67 @@
             pnlDerecho.Size = new Size(1006, 551);
             pnlDerecho.TabIndex = 2;
             // 
+            // BTverRembolso
+            // 
+            BTverRembolso.BackColor = Color.FromArgb(26, 115, 232);
+            BTverRembolso.Cursor = Cursors.Hand;
+            BTverRembolso.FlatAppearance.BorderSize = 0;
+            BTverRembolso.FlatStyle = FlatStyle.Flat;
+            BTverRembolso.Font = new Font("Segoe UI", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            BTverRembolso.ForeColor = Color.White;
+            BTverRembolso.Location = new Point(312, 41);
+            BTverRembolso.Margin = new Padding(3, 2, 3, 2);
+            BTverRembolso.Name = "BTverRembolso";
+            BTverRembolso.Size = new Size(88, 30);
+            BTverRembolso.TabIndex = 23;
+            BTverRembolso.Text = "Ver Rembolso";
+            BTverRembolso.UseVisualStyleBackColor = false;
+            BTverRembolso.Click += BTverRembolso_Click;
+            // 
             // dgvDetallesVentas
             // 
             dgvDetallesVentas.AllowUserToAddRows = false;
             dgvDetallesVentas.AllowUserToDeleteRows = false;
             dgvDetallesVentas.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(248, 250, 252);
-            dgvDetallesVentas.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle9.BackColor = Color.FromArgb(248, 250, 252);
+            dgvDetallesVentas.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle9;
             dgvDetallesVentas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvDetallesVentas.BackgroundColor = Color.White;
             dgvDetallesVentas.BorderStyle = BorderStyle.None;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(26, 42, 74);
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = Color.White;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgvDetallesVentas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = Color.FromArgb(26, 42, 74);
+            dataGridViewCellStyle10.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dataGridViewCellStyle10.ForeColor = Color.White;
+            dataGridViewCellStyle10.WrapMode = DataGridViewTriState.True;
+            dgvDetallesVentas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
             dgvDetallesVentas.ColumnHeadersHeight = 40;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Window;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
-            dgvDetallesVentas.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = SystemColors.Window;
+            dataGridViewCellStyle11.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle11.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle11.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = DataGridViewTriState.False;
+            dgvDetallesVentas.DefaultCellStyle = dataGridViewCellStyle11;
             dgvDetallesVentas.EnableHeadersVisualStyles = false;
             dgvDetallesVentas.Location = new Point(18, 263);
             dgvDetallesVentas.Margin = new Padding(3, 2, 3, 2);
             dgvDetallesVentas.MultiSelect = false;
             dgvDetallesVentas.Name = "dgvDetallesVentas";
             dgvDetallesVentas.ReadOnly = true;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = SystemColors.Control;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle4.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
-            dgvDetallesVentas.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = SystemColors.Control;
+            dataGridViewCellStyle12.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle12.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle12.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = DataGridViewTriState.True;
+            dgvDetallesVentas.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
             dgvDetallesVentas.RowHeadersVisible = false;
             dgvDetallesVentas.RowHeadersWidth = 51;
-            dataGridViewCellStyle5.SelectionBackColor = Color.FromArgb(210, 227, 252);
-            dataGridViewCellStyle5.SelectionForeColor = Color.Black;
-            dgvDetallesVentas.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle13.SelectionBackColor = Color.FromArgb(210, 227, 252);
+            dataGridViewCellStyle13.SelectionForeColor = Color.Black;
+            dgvDetallesVentas.RowsDefaultCellStyle = dataGridViewCellStyle13;
             dgvDetallesVentas.RowTemplate.Height = 35;
             dgvDetallesVentas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvDetallesVentas.Size = new Size(964, 168);
@@ -749,17 +770,17 @@
             dgvVentas.AllowUserToAddRows = false;
             dgvVentas.AllowUserToDeleteRows = false;
             dgvVentas.AllowUserToResizeRows = false;
-            dataGridViewCellStyle6.BackColor = Color.FromArgb(248, 250, 252);
-            dgvVentas.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle14.BackColor = Color.FromArgb(248, 250, 252);
+            dgvVentas.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle14;
             dgvVentas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvVentas.BackgroundColor = Color.White;
             dgvVentas.BorderStyle = BorderStyle.None;
-            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = Color.FromArgb(26, 42, 74);
-            dataGridViewCellStyle7.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            dataGridViewCellStyle7.ForeColor = Color.White;
-            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
-            dgvVentas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle15.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle15.BackColor = Color.FromArgb(26, 42, 74);
+            dataGridViewCellStyle15.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dataGridViewCellStyle15.ForeColor = Color.White;
+            dataGridViewCellStyle15.WrapMode = DataGridViewTriState.True;
+            dgvVentas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle15;
             dgvVentas.ColumnHeadersHeight = 40;
             dgvVentas.EnableHeadersVisualStyles = false;
             dgvVentas.Location = new Point(18, 75);
@@ -769,9 +790,9 @@
             dgvVentas.ReadOnly = true;
             dgvVentas.RowHeadersVisible = false;
             dgvVentas.RowHeadersWidth = 51;
-            dataGridViewCellStyle8.SelectionBackColor = Color.FromArgb(210, 227, 252);
-            dataGridViewCellStyle8.SelectionForeColor = Color.Black;
-            dgvVentas.RowsDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle16.SelectionBackColor = Color.FromArgb(210, 227, 252);
+            dataGridViewCellStyle16.SelectionForeColor = Color.Black;
+            dgvVentas.RowsDefaultCellStyle = dataGridViewCellStyle16;
             dgvVentas.RowTemplate.Height = 35;
             dgvVentas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvVentas.Size = new Size(964, 174);
@@ -963,6 +984,8 @@
             // plRembolso
             // 
             plRembolso.BackColor = Color.White;
+            plRembolso.Controls.Add(txtDescripcion);
+            plRembolso.Controls.Add(lbldescripcion);
             plRembolso.Controls.Add(nudCantidadRembolso);
             plRembolso.Controls.Add(BTrembolso);
             plRembolso.Controls.Add(LBlRembolso);
@@ -972,8 +995,18 @@
             plRembolso.Location = new Point(1362, 354);
             plRembolso.Margin = new Padding(3, 2, 3, 2);
             plRembolso.Name = "plRembolso";
-            plRembolso.Size = new Size(306, 228);
+            plRembolso.Size = new Size(306, 259);
             plRembolso.TabIndex = 15;
+            // 
+            // lbldescripcion
+            // 
+            lbldescripcion.AutoSize = true;
+            lbldescripcion.Location = new Point(19, 159);
+            lbldescripcion.Name = "lbldescripcion";
+            lbldescripcion.Size = new Size(68, 15);
+            lbldescripcion.TabIndex = 20;
+            lbldescripcion.Text = "descripcion";
+            lbldescripcion.Click += lbldescripcion_Click;
             // 
             // BTrembolso
             // 
@@ -983,7 +1016,7 @@
             BTrembolso.FlatStyle = FlatStyle.Flat;
             BTrembolso.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             BTrembolso.ForeColor = Color.White;
-            BTrembolso.Location = new Point(19, 177);
+            BTrembolso.Location = new Point(19, 211);
             BTrembolso.Margin = new Padding(3, 2, 3, 2);
             BTrembolso.Name = "BTrembolso";
             BTrembolso.Size = new Size(271, 32);
@@ -991,6 +1024,15 @@
             BTrembolso.Text = "+ hacer rembolso";
             BTrembolso.UseVisualStyleBackColor = false;
             BTrembolso.Click += button2_Click;
+            // 
+            // txtDescripcion
+            // 
+            txtDescripcion.Location = new Point(19, 177);
+            txtDescripcion.Margin = new Padding(3, 2, 3, 2);
+            txtDescripcion.MaxLength = 250;
+            txtDescripcion.Name = "txtDescripcion";
+            txtDescripcion.Size = new Size(202, 23);
+            txtDescripcion.TabIndex = 21;
             // 
             // Ventas
             // 
@@ -1049,5 +1091,8 @@
         private Label label1;
         private Button BTrembolso;
         private Panel plRembolso;
+        private Button BTverRembolso;
+        private Label lbldescripcion;
+        private TextBox txtDescripcion;
     }
 }
