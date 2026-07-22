@@ -418,7 +418,7 @@ namespace bodegaproyecto
             btnCancelar.TabIndex = 4;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = false;
-            btnCancelar.Click += this.btnCancelar_Click;
+            btnCancelar.Click += btnCancelar_Click;
             // 
             // BTVolver
             // 
@@ -443,6 +443,8 @@ namespace bodegaproyecto
             ClientSize = new Size(1405, 897);
             Controls.Add(plRembolso);
             Controls.Add(pnlHeader);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "Reembolso";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Reembolso";

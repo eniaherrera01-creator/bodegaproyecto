@@ -59,6 +59,7 @@ namespace bodegaproyecto
             btnAgregarProducto.Click += btnAgregarProducto_Click;
             dgvDetallesVentas.CellClick += dgvDetallesVentas_CellClick;
             btnBuscarCliente.Click += btnBuscarCliente_Click;
+            btnNuevoCliente.Click += btnNuevoCliente_Click;
             cmbTipoCliente.SelectedIndexChanged += cmbTipoCliente_SelectedIndexChanged;
             this.Load += Ventas_Load;
         }
@@ -110,7 +111,7 @@ namespace bodegaproyecto
             cmbMetodoPago.Enabled = estado;
 
             btnGuardar.Enabled = estado;
-
+            btnNuevoCliente.Enabled = estado;
             txtBuscarProducto.Enabled = estado;
             btnBuscarProducto.Enabled = estado;
             btnAgregarProducto.Enabled = estado;
@@ -1391,21 +1392,6 @@ namespace bodegaproyecto
 
         }
 
-        private void txtProducto_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-
-        private void btnBuscarProducto_Click_1(object sender, EventArgs e)
-        {
-
-        }
 
         private void btnBuscarCliente_Click_1(object sender, EventArgs e)
         {
@@ -1416,6 +1402,13 @@ namespace bodegaproyecto
 
             }
 
+        }
+
+        private void btnNuevoCliente_Click(object sender, EventArgs e)
+        {
+            FrmNuevoCliente frm = new FrmNuevoCliente();
+
+            frm.ShowDialog();
         }
 
         private void BTverRembolso_Click(object sender, EventArgs e)
@@ -1432,10 +1425,6 @@ namespace bodegaproyecto
 
         }
 
-        private void lbldescripcion_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 
 
