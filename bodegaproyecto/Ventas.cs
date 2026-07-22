@@ -59,6 +59,7 @@ namespace bodegaproyecto
             btnAgregarProducto.Click += btnAgregarProducto_Click;
             dgvDetallesVentas.CellClick += dgvDetallesVentas_CellClick;
             btnBuscarCliente.Click += btnBuscarCliente_Click;
+            cmbTipoCliente.SelectedIndexChanged += cmbTipoCliente_SelectedIndexChanged;
             this.Load += Ventas_Load;
         }
 
