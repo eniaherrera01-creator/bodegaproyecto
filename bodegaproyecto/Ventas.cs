@@ -39,6 +39,8 @@ namespace bodegaproyecto
 
             dtpFecha.Value = DateTime.Now;
             dtpFecha.Enabled = false;
+
+            BTrembolso.Enabled = false;
         }
 
         // EVENTOS MANUALES
@@ -57,7 +59,6 @@ namespace bodegaproyecto
             btnAgregarProducto.Click += btnAgregarProducto_Click;
             dgvDetallesVentas.CellClick += dgvDetallesVentas_CellClick;
             btnBuscarCliente.Click += btnBuscarCliente_Click;
-            cmbTipoCliente.SelectedIndexChanged += cmbTipoCliente_SelectedIndexChanged;
             this.Load += Ventas_Load;
         }
 
@@ -279,53 +280,40 @@ namespace bodegaproyecto
         }
         private void cmbTipoCliente_SelectedIndexChanged(object sender, EventArgs e)
         {
-
             if (cmbTipoCliente.SelectedItem == null)
                 return;
 
-
             string tipo = cmbTipoCliente.SelectedItem.ToString();
-
 
             if (tipo == "Cliente Normal")
             {
-                // Habilitar búsqueda
-
                 txtBuscarCliente.Enabled = true;
                 btnBuscarCliente.Enabled = true;
 
+                if (modoNuevo)
+                {
+                    txtBuscarCliente.Clear();
+                    txtNombreCliente.Clear();
+                    txtClienteDNI.Clear();
 
-                txtBuscarCliente.Clear();
-                txtNombreCliente.Clear();
-                txtClienteDNI.Clear();
+                    idClienteSeleccionado = 0;
 
-
-                idClienteSeleccionado = 0;
-
-
-                txtBuscarCliente.Focus();
+                    txtBuscarCliente.Focus();
+                }
             }
-
-
-
             else if (tipo == "Cliente Generico")
             {
-
-                // Desactivar búsqueda
-
                 txtBuscarCliente.Enabled = false;
                 btnBuscarCliente.Enabled = false;
 
-
-                txtBuscarCliente.Clear();
-
-
-                BuscarClienteGenerico();
-
+                if (modoNuevo)
+                {
+                    txtBuscarCliente.Clear();
+                    BuscarClienteGenerico();
+                }
             }
-
         }
-
+       
         private void ConfigurarGrid()
         {
             if (dgvVentas.Columns.Count == 0)
@@ -775,6 +763,7 @@ namespace bodegaproyecto
         {
             if (e.RowIndex < 0)
                 return;
+            BTrembolso.Enabled = true;
 
             DataGridViewRow fila = dgvVentas.Rows[e.RowIndex];
 
@@ -789,6 +778,8 @@ namespace bodegaproyecto
             CargarClienteVenta(idVentaSeleccionada);
 
             CargarDetalleVenta(idVentaSeleccionada);
+
+            BTrembolso.Enabled = (menu.RolUsuario == "Administrador");
         }
 
         private void dgvDetallesVentas_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -809,12 +800,8 @@ namespace bodegaproyecto
             nudCantidad.Value = Convert.ToDecimal(fila.Cells["Cantidad"].Value);
 
             BuscarStockProducto(idProductoSeleccionado);
-
-            TXTProductoRembolso.Text = fila.Cells["Producto"].Value.ToString();
             int cantidadActual = Convert.ToInt32(fila.Cells["Cantidad"].Value);
-            nudCantidadRembolso.Minimum = 1;
-            nudCantidadRembolso.Maximum = cantidadActual;
-            nudCantidadRembolso.Value = 1;
+    
         }
 
         private DataTable detalleVenta = new DataTable();
@@ -1063,14 +1050,14 @@ namespace bodegaproyecto
                     cn.Open();
 
                 string sql = @"
-            SELECT
-                c.id_cliente,
-                c.Nombre,
-                c.DNI
-            FROM Venta v
-            INNER JOIN Cliente c
-                ON v.id_cliente = c.id_cliente
-            WHERE v.id_venta = @id";
+        SELECT
+            c.id_cliente,
+            c.Nombre,
+            c.DNI
+        FROM Venta v
+        INNER JOIN Cliente c
+            ON v.id_cliente = c.id_cliente
+        WHERE v.id_venta = @id";
 
                 SqlCommand cmd = new SqlCommand(sql, cn);
                 cmd.Parameters.AddWithValue("@id", idVenta);
@@ -1080,19 +1067,20 @@ namespace bodegaproyecto
                 if (dr.Read())
                 {
                     idClienteSeleccionado = Convert.ToInt32(dr["id_cliente"]);
+               
+                    if (dr["Nombre"].ToString() == "Cliente Generico")
+                        cmbTipoCliente.SelectedItem = "Cliente Generico";
+                    else
+                        cmbTipoCliente.SelectedItem = "Cliente Normal";
 
                     txtNombreCliente.Text = dr["Nombre"].ToString();
                     txtClienteDNI.Text = dr["DNI"].ToString();
-
-                    if (dr["Nombre"].ToString() == "Cliente Generico")
-                        cmbTipoCliente.Text = "Cliente Generico";
-                    else
-                        cmbTipoCliente.Text = "Cliente Normal";
                 }
 
                 dr.Close();
             }
         }
+
         private void btnEditar_Click(object sender, EventArgs e)
         {
             if (idVentaSeleccionada == 0)
@@ -1309,135 +1297,92 @@ namespace bodegaproyecto
 
         private void BTrembolso_Click(object sender, EventArgs e)
         {
-            if (!modoEditar)
+            if (menu.RolUsuario != "Administrador")
             {
-                MessageBox.Show("debe presionar 'editar' para poder realizar un reembolso",
-                    "aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Solo un administrador puede realizar reembolsos.",
+                    "Acceso denegado",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(TXTProductoRembolso.Text))
+            if (idVentaSeleccionada == 0)
             {
-                MessageBox.Show("Seleccione un producto del dealle primero", "aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Seleccione una venta.",
+                    "Aviso",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace (txtDescripcion.Text))
+            Reembolso frm = new Reembolso();
+            frm.RecibirVenta(idVentaSeleccionada);
+            frm.RecibirUsuario(
+            Convert.ToInt32(cmbUsuario.SelectedValue));
+            frm.TxtCliente.Text = txtNombreCliente.Text;
+
+            // Datos de la venta
+            frm.TxtVenta.Text = txtIDVenta.Text;
+            frm.TxtFecha.Text = dtpFecha.Value.ToString("dd/MM/yyyy");
+            frm.TxtUsuario.Text = cmbUsuario.Text;
+
+            // Limpiar el detalle del formulario
+            frm.GridDetalleVenta.Columns.Clear();
+            frm.GridDetalleVenta.Rows.Clear();
+
+            foreach (DataGridViewColumn columna in dgvDetallesVentas.Columns)
             {
-                MessageBox.Show("debe ingresar una descripcion del motivo del reembolso.",
-                    "aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                frm.GridDetalleVenta.Columns.Add(columna.Name, columna.HeaderText);
             }
 
-            int cantidadRembolso = Convert.ToInt32(nudCantidadRembolso.Value);
-
-            DialogResult confirm = MessageBox.Show($" Desea Reembolsar? {cantidadRembolso} unidad(es) de {TXTProductoRembolso.Text}? ",
-               "confirmar Reembolso", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (confirm == DialogResult.No)
-                return;
-
-            try
+            foreach (DataGridViewRow fila in dgvDetallesVentas.Rows)
             {
-                using (SqlConnection cn = ConexionBD.ObtenerConexion())
+                if (!fila.IsNewRow)
                 {
-                    if (cn.State != ConnectionState.Open)
-                        cn.Open();
+                    int indice = frm.GridDetalleVenta.Rows.Add();
 
-                    SqlTransaction transaccion = cn.BeginTransaction();
-
-                    string sqlCantidadActual = @"
-                    SELECT Cantidad
-                    FROM Detalle_Venta
-                    WHERE id_venta = @venta
-                    AND id_producto = @producto";
-
-                    string sqlInsertReembolso = @"
-                     INSERT INTO Reembolso
-                        (fecha_reembolso, descripcion, id_venta, id_usuario, id_producto, cantidad)
-                     VALUES
-                        (GETDATE(), @descripcion, @venta, @usuario, @producto, @cantidad)";
-
-                    int cantidadActual = 0;
-
-                    using (SqlCommand cmd = new SqlCommand(sqlInsertReembolso, cn, transaccion))
+                    for (int i = 0; i < dgvDetallesVentas.Columns.Count; i++)
                     {
-                        cmd.Parameters.AddWithValue("@descripcion", txtDescripcion.Text.Trim());
-                        cmd.Parameters.AddWithValue("@venta", idVentaSeleccionada);
-                        cmd.Parameters.AddWithValue("@usuario", Convert.ToInt32(cmbUsuario.SelectedValue));
-                        cmd.Parameters.AddWithValue("@producto", idProductoSeleccionado);
-                        cmd.Parameters.AddWithValue("@cantidad", cantidadRembolso);
-                        cmd.ExecuteNonQuery();
-
+                        frm.GridDetalleVenta.Rows[indice].Cells[i].Value =
+                            fila.Cells[i].Value;
                     }
-
-                    using (SqlCommand cmd = new SqlCommand(sqlCantidadActual, cn, transaccion))
-                    {
-                        cmd.Parameters.AddWithValue("@venta", idVentaSeleccionada);
-                        cmd.Parameters.AddWithValue("@producto", idProductoSeleccionado);
-                        cantidadActual = Convert.ToInt32(cmd.ExecuteScalar());
-                    }
-                    int cantidadNueva = cantidadActual - cantidadRembolso;
-
-                    if (cantidadNueva <= 0)
-                    {
-                        string sqlEliminar = @"
-                         DELETE FROM Detalle_Venta 
-                         WHERE id_venta = @venta 
-                         AND id_producto = @producto";
-
-                        using (SqlCommand cmd = new SqlCommand(sqlEliminar, cn, transaccion))
-                        {
-                            cmd.Parameters.AddWithValue("@venta", idVentaSeleccionada);
-                            cmd.Parameters.AddWithValue("@producto", idProductoSeleccionado);
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-                    else
-                    {
-                        string sqlActualizar = @"
-                          UPDATE Detalle_Venta 
-                          SET Cantidad = @cantidad 
-                          WHERE id_venta = @venta 
-                          AND id_producto = @producto";
-
-                        using (SqlCommand cmd = new SqlCommand(sqlActualizar, cn, transaccion))
-                        {
-                            cmd.Parameters.AddWithValue("@cantidad", cantidadNueva);
-                            cmd.Parameters.AddWithValue("@venta", idVentaSeleccionada);
-                            cmd.Parameters.AddWithValue("@producto", idProductoSeleccionado);
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-
-                    string sqlStock = @"
-                     UPDATE Producto 
-                     SET Stock = Stock + @cantidad 
-                     WHERE id_producto = @producto";
-
-                    using (SqlCommand cmd = new SqlCommand(sqlStock, cn, transaccion))
-                    {
-                        cmd.Parameters.AddWithValue("@cantidad", cantidadRembolso);
-                        cmd.Parameters.AddWithValue("@producto", idProductoSeleccionado);
-                        cmd.ExecuteNonQuery();
-                    }
-
-                    transaccion.Commit();
-
-                    MessageBox.Show("Rembolso aplicado correctamente.",
-                        "exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    CargarDetalleVenta(idVentaSeleccionada);
-                    TXTProductoRembolso.Clear();
-                    nudCantidadRembolso.Value = 1;
-                    nudCantidadRembolso.Maximum = 1;
                 }
             }
-            catch (Exception ex)
+
+            if (frm.GridDetalleVenta.Columns.Contains("ID"))
+                frm.GridDetalleVenta.Columns["ID"].Visible = false;
+
+            if (frm.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show("error al aplicar reembolso: " + ex.Message,
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                RecargarDetallesVenta();
             }
+        }
+
+        private void RecargarDetallesVenta()
+        {
+            if (idVentaSeleccionada == 0)
+                return;
+
+            MostrarVentas();                     
+            CargarClienteVenta(idVentaSeleccionada); 
+            CargarDetalleVenta(idVentaSeleccionada); 
+
+            dgvVentas.Refresh();
+            dgvDetallesVentas.Refresh();
+
+            txtNombreCliente.Refresh();
+            txtClienteDNI.Refresh();
+
+            detalleVenta.Rows.Clear();
+            dgvDetallesVentas.DataSource = null;
+            dgvDetallesVentas.DataSource = detalleVenta;
+            CalcularTotales();
+
+            dgvDetallesVentas.Refresh();
         }
 
         private void pnlTotales_Paint(object sender, PaintEventArgs e)
@@ -1481,7 +1426,7 @@ namespace bodegaproyecto
                 return;
             }
 
-            Rembolso frmReembolso = new Rembolso();
+            Reembolso frmReembolso = new Reembolso();
             frmReembolso.Show();
 
         }
