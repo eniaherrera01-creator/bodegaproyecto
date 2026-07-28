@@ -233,5 +233,20 @@ namespace bodegaproyecto
 
             frm.Show();
         }
+
+        private void barButtonItem5_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            FrmDetellesVenta frm = new FrmDetellesVenta();
+
+            frm.TopLevel = false;
+            frm.FormBorderStyle = FormBorderStyle.None;
+            frm.Dock = DockStyle.Fill;
+
+            panelContenedor.Controls.Clear();
+
+            panelContenedor.Controls.Add(frm);
+
+            frm.Show();
+        }
     }
 }
