@@ -963,6 +963,12 @@ namespace bodegaproyecto
                 return;
             }
 
+            if (string.IsNullOrWhiteSpace(txtStock.Text) || Convert.ToInt32(txtStock.Text) <= 0)
+            {
+                MessageBox.Show("Este producto no tiene stock disponible.",
+                    "Stock", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             decimal precio = Convert.ToDecimal(txtPrecio.Text);
 
@@ -1034,13 +1040,18 @@ namespace bodegaproyecto
 
             if (nudCantidad.Value > stock)
             {
-                MessageBox.Show(
-                    "No hay suficiente stock disponible.",
-                    "Stock",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
-                nudCantidad.Value = stock;
+                if (stock <= 0)
+                {
+                    MessageBox.Show("Este producto no tiene stock disponible.",
+                        "Stock", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    nudCantidad.Value = nudCantidad.Minimum; // vuelve al mínimo permitido
+                }
+                else
+                {
+                    MessageBox.Show("No hay suficiente stock disponible.",
+                        "Stock", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    nudCantidad.Value = stock;
+                }
             }
         }
 
