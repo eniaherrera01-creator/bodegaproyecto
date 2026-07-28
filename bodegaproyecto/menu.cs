@@ -248,5 +248,19 @@ namespace bodegaproyecto
 
             frm.Show();
         }
+
+        private void barButtonItem9_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            DashboardForm dashboard = new DashboardForm();
+
+            dashboard.TopLevel = false;
+            dashboard.FormBorderStyle = FormBorderStyle.None;
+            dashboard.Dock = DockStyle.Fill;
+
+            panelContenedor.Controls.Clear();
+            panelContenedor.Controls.Add(dashboard);
+
+            dashboard.Show();
+        }
     }
 }
