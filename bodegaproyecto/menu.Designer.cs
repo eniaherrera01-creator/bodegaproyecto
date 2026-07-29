@@ -220,6 +220,7 @@
             barButtonItem7.ImageOptions.Image = (Image)resources.GetObject("barButtonItem7.ImageOptions.Image");
             barButtonItem7.Name = "barButtonItem7";
             barButtonItem7.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            barButtonItem7.ItemClick += barButtonItem7_ItemClick;
             // 
             // barButtonItem8
             // 

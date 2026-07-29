@@ -262,5 +262,20 @@ namespace bodegaproyecto
 
             dashboard.Show();
         }
+
+        private void barButtonItem7_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            Compras frm = new Compras();
+
+            frm.TopLevel = false;
+            frm.FormBorderStyle = FormBorderStyle.None;
+            frm.Dock = DockStyle.Fill;
+
+            panelContenedor.Controls.Clear();
+
+            panelContenedor.Controls.Add(frm);
+
+            frm.Show();
+        }
     }
 }
