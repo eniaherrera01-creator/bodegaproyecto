@@ -277,5 +277,10 @@ namespace bodegaproyecto
 
             frm.Show();
         }
+
+        private void barButtonItem6_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            AbrirFormulario(new ReportesForm());
+        }
     }
 }
