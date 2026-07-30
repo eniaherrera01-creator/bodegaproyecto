@@ -46,6 +46,7 @@ namespace bodegaproyecto
             txtimpuesto.KeyPress -= Decimal_KeyPress;
             txtstock.KeyPress -= Entero_KeyPress;
             txtbuscar.KeyPress -= TextoProducto_KeyPress;
+            
 
             // Ahora sí agregamos los eventos correctos una sola vez
             btnguardar.Click += btnguardar_Click;
@@ -62,6 +63,12 @@ namespace bodegaproyecto
             txtimpuesto.KeyPress += Decimal_KeyPress;
             txtstock.KeyPress += Entero_KeyPress;
             txtbuscar.KeyPress += TextoProducto_KeyPress;
+
+        }
+
+        private void txtprecioventa_TextChanged(object sender, EventArgs e)
+        {
+           
         }
 
         private void CargarCategorias()
@@ -275,7 +282,9 @@ namespace bodegaproyecto
         {
             ObtenerDecimal(txtpreciocompra.Text.Trim(), out decimal precioCompra);
             ObtenerDecimal(txtprecioventa.Text.Trim(), out decimal precioVenta);
-            ObtenerDecimal(txtimpuesto.Text.Trim(), out decimal impuesto);
+            ObtenerDecimal(txtimpuesto.Text.Trim(), out decimal porcentaje);
+
+            decimal impuesto = (precioVenta * porcentaje) / 100;
 
             int stock = int.Parse(txtstock.Text.Trim());
 
@@ -323,6 +332,8 @@ namespace bodegaproyecto
                 MessageBox.Show(ex.Message);
             }
         }
+
+     
 
         private void btnguardar_Click(object sender, EventArgs e)
         {
@@ -382,7 +393,9 @@ namespace bodegaproyecto
 
             ObtenerDecimal(txtpreciocompra.Text.Trim(), out decimal precioCompra);
             ObtenerDecimal(txtprecioventa.Text.Trim(), out decimal precioVenta);
-            ObtenerDecimal(txtimpuesto.Text.Trim(), out decimal impuesto);
+            ObtenerDecimal(txtimpuesto.Text.Trim(), out decimal porcentaje);
+
+            decimal impuesto = (precioVenta * porcentaje) / 100;
 
             int stock = int.Parse(txtstock.Text.Trim());
 
