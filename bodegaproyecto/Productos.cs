@@ -25,6 +25,8 @@ namespace bodegaproyecto
 
             dtpfv.Value = DateTime.Today;
             dtpfv.Enabled = true;
+            txtimpuesto.Text = "%";
+            txtimpuesto.ForeColor = Color.Gray;
         }
 
         private void AsignarEventosManuales()
@@ -46,7 +48,10 @@ namespace bodegaproyecto
             txtimpuesto.KeyPress -= Decimal_KeyPress;
             txtstock.KeyPress -= Entero_KeyPress;
             txtbuscar.KeyPress -= TextoProducto_KeyPress;
-            
+            txtimpuesto.Enter += txtImpuesto_Enter;
+            txtimpuesto.Leave += txtImpuesto_Leave;
+
+
 
             // Ahora sí agregamos los eventos correctos una sola vez
             btnguardar.Click += btnguardar_Click;
@@ -63,12 +68,31 @@ namespace bodegaproyecto
             txtimpuesto.KeyPress += Decimal_KeyPress;
             txtstock.KeyPress += Entero_KeyPress;
             txtbuscar.KeyPress += TextoProducto_KeyPress;
+  
 
+        }
+
+        private void txtImpuesto_Enter(object sender, EventArgs e)
+        {
+            if (txtimpuesto.Text == "%")
+            {
+                txtimpuesto.Clear();
+                txtimpuesto.ForeColor = Color.Black;
+            }
+        }
+
+        private void txtImpuesto_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtimpuesto.Text))
+            {
+                txtimpuesto.Text = "%";
+                txtimpuesto.ForeColor = Color.Gray;
+            }
         }
 
         private void txtprecioventa_TextChanged(object sender, EventArgs e)
         {
-           
+
         }
 
         private void CargarCategorias()
@@ -333,7 +357,7 @@ namespace bodegaproyecto
             }
         }
 
-     
+
 
         private void btnguardar_Click(object sender, EventArgs e)
         {
@@ -635,12 +659,21 @@ namespace bodegaproyecto
             }
         }
 
+       
+
+    
+
         private void dgvproductos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
 
         private void lblTituloForm_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtimpuesto_TextChanged(object sender, EventArgs e)
         {
 
         }

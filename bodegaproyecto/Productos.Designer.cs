@@ -185,6 +185,8 @@
             txtimpuesto.PlaceholderText = "Ej: 49";
             txtimpuesto.Size = new Size(280, 22);
             txtimpuesto.TabIndex = 31;
+            txtimpuesto.MouseEnter += txtimpuesto_TextChanged;
+            txtimpuesto.MouseLeave += txtImpuesto_Leave;
             // 
             // dtpfv
             // 
