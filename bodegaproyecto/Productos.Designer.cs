@@ -39,13 +39,11 @@
             label3 = new Label();
             txtimpuesto = new TextBox();
             dtpfv = new DateTimePicker();
-            txtpreciocompra = new TextBox();
             txtdescripcion = new TextBox();
             txtnombre = new TextBox();
             txtId = new TextBox();
             label9 = new Label();
             label8 = new Label();
-            label7 = new Label();
             label4 = new Label();
             label2 = new Label();
             lblId = new Label();
@@ -96,13 +94,11 @@
             panel1.Controls.Add(label3);
             panel1.Controls.Add(txtimpuesto);
             panel1.Controls.Add(dtpfv);
-            panel1.Controls.Add(txtpreciocompra);
             panel1.Controls.Add(txtdescripcion);
             panel1.Controls.Add(txtnombre);
             panel1.Controls.Add(txtId);
             panel1.Controls.Add(label9);
             panel1.Controls.Add(label8);
-            panel1.Controls.Add(label7);
             panel1.Controls.Add(label4);
             panel1.Controls.Add(label2);
             panel1.Controls.Add(lblId);
@@ -118,7 +114,7 @@
             cbcategoria.Font = new Font("Microsoft Sans Serif", 10.2F);
             cbcategoria.FormattingEnabled = true;
             cbcategoria.Items.AddRange(new object[] { "Bebidas", "Snacks", "Lacteos", "Otro" });
-            cbcategoria.Location = new Point(11, 467);
+            cbcategoria.Location = new Point(12, 410);
             cbcategoria.Name = "cbcategoria";
             cbcategoria.Size = new Size(280, 25);
             cbcategoria.TabIndex = 38;
@@ -127,7 +123,7 @@
             // 
             txtstock.Font = new Font("Microsoft Sans Serif", 10.2F);
             txtstock.ForeColor = Color.Gray;
-            txtstock.Location = new Point(11, 306);
+            txtstock.Location = new Point(11, 254);
             txtstock.Multiline = true;
             txtstock.Name = "txtstock";
             txtstock.PlaceholderText = "Ej: 70";
@@ -138,7 +134,7 @@
             // 
             label10.AutoSize = true;
             label10.Font = new Font("Microsoft Sans Serif", 10.2F);
-            label10.Location = new Point(11, 288);
+            label10.Location = new Point(11, 236);
             label10.Name = "label10";
             label10.Size = new Size(43, 17);
             label10.TabIndex = 36;
@@ -148,7 +144,7 @@
             // 
             txtprecioventa.Font = new Font("Microsoft Sans Serif", 10.2F);
             txtprecioventa.ForeColor = Color.Gray;
-            txtprecioventa.Location = new Point(12, 257);
+            txtprecioventa.Location = new Point(12, 205);
             txtprecioventa.Multiline = true;
             txtprecioventa.Name = "txtprecioventa";
             txtprecioventa.PlaceholderText = "Ej: 1000";
@@ -159,7 +155,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Microsoft Sans Serif", 10.2F);
-            label6.Location = new Point(12, 239);
+            label6.Location = new Point(12, 187);
             label6.Name = "label6";
             label6.Size = new Size(89, 17);
             label6.TabIndex = 34;
@@ -169,7 +165,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Microsoft Sans Serif", 10.2F);
-            label3.Location = new Point(11, 441);
+            label3.Location = new Point(12, 390);
             label3.Name = "label3";
             label3.Size = new Size(69, 17);
             label3.TabIndex = 32;
@@ -179,7 +175,7 @@
             // 
             txtimpuesto.Font = new Font("Microsoft Sans Serif", 10.2F);
             txtimpuesto.ForeColor = Color.Gray;
-            txtimpuesto.Location = new Point(12, 409);
+            txtimpuesto.Location = new Point(12, 357);
             txtimpuesto.Multiline = true;
             txtimpuesto.Name = "txtimpuesto";
             txtimpuesto.PlaceholderText = "Ej: 49";
@@ -191,22 +187,11 @@
             // dtpfv
             // 
             dtpfv.Format = DateTimePickerFormat.Short;
-            dtpfv.Location = new Point(12, 357);
+            dtpfv.Location = new Point(12, 305);
             dtpfv.Name = "dtpfv";
             dtpfv.Size = new Size(280, 23);
             dtpfv.TabIndex = 30;
             dtpfv.Value = new DateTime(2027, 7, 7, 21, 37, 0, 0);
-            // 
-            // txtpreciocompra
-            // 
-            txtpreciocompra.Font = new Font("Microsoft Sans Serif", 10.2F);
-            txtpreciocompra.ForeColor = Color.Gray;
-            txtpreciocompra.Location = new Point(12, 206);
-            txtpreciocompra.Multiline = true;
-            txtpreciocompra.Name = "txtpreciocompra";
-            txtpreciocompra.PlaceholderText = "Ej: 700 ";
-            txtpreciocompra.Size = new Size(280, 23);
-            txtpreciocompra.TabIndex = 29;
             // 
             // txtdescripcion
             // 
@@ -247,7 +232,7 @@
             // 
             label9.AutoSize = true;
             label9.Font = new Font("Microsoft Sans Serif", 10.2F);
-            label9.Location = new Point(12, 339);
+            label9.Location = new Point(12, 287);
             label9.Name = "label9";
             label9.Size = new Size(128, 17);
             label9.TabIndex = 26;
@@ -257,21 +242,11 @@
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Microsoft Sans Serif", 10.2F);
-            label8.Location = new Point(12, 391);
+            label8.Location = new Point(12, 339);
             label8.Name = "label8";
             label8.Size = new Size(65, 17);
             label8.TabIndex = 25;
             label8.Text = "Impuesto";
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Font = new Font("Microsoft Sans Serif", 10.2F);
-            label7.Location = new Point(12, 188);
-            label7.Name = "label7";
-            label7.Size = new Size(101, 17);
-            label7.TabIndex = 24;
-            label7.Text = "Precio Compra";
             // 
             // label4
             // 
@@ -463,12 +438,10 @@
         private Label lblId;
         private Label label9;
         private Label label8;
-        private Label label7;
         private Label label4;
         private Label label2;
         private TextBox txtId;
         private TextBox txtnombre;
-        private TextBox txtpreciocompra;
         private TextBox txtdescripcion;
         private TextBox txtimpuesto;
         private DateTimePicker dtpfv;

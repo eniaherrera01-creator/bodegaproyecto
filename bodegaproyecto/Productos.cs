@@ -43,7 +43,6 @@ namespace bodegaproyecto
 
             txtnombre.KeyPress -= TextoProducto_KeyPress;
             txtdescripcion.KeyPress -= TextoDescripcion_KeyPress;
-            txtpreciocompra.KeyPress -= Decimal_KeyPress;
             txtprecioventa.KeyPress -= Decimal_KeyPress;
             txtimpuesto.KeyPress -= Decimal_KeyPress;
             txtstock.KeyPress -= Entero_KeyPress;
@@ -63,7 +62,6 @@ namespace bodegaproyecto
 
             txtnombre.KeyPress += TextoProducto_KeyPress;
             txtdescripcion.KeyPress += TextoDescripcion_KeyPress;
-            txtpreciocompra.KeyPress += Decimal_KeyPress;
             txtprecioventa.KeyPress += Decimal_KeyPress;
             txtimpuesto.KeyPress += Decimal_KeyPress;
             txtstock.KeyPress += Entero_KeyPress;
@@ -136,7 +134,6 @@ namespace bodegaproyecto
                         p.id_producto,
                         p.Nombre_Producto,
                         p.Descripcion,
-                        p.Precio_Compra,
                         p.Precio_Venta,
                         p.Stock,
                         p.fecha_vencimiento,
@@ -175,7 +172,6 @@ namespace bodegaproyecto
             dgvproductos.Columns["id_producto"].HeaderText = "ID";
             dgvproductos.Columns["Nombre_Producto"].HeaderText = "Nombre del Producto";
             dgvproductos.Columns["Descripcion"].HeaderText = "Descripción";
-            dgvproductos.Columns["Precio_Compra"].HeaderText = "Precio Compra";
             dgvproductos.Columns["Precio_Venta"].HeaderText = "Precio Venta";
             dgvproductos.Columns["Stock"].HeaderText = "Stock";
             dgvproductos.Columns["fecha_vencimiento"].HeaderText = "Fecha de Vencimiento";
@@ -194,7 +190,6 @@ namespace bodegaproyecto
         {
             string nombre = txtnombre.Text.Trim();
             string descripcion = txtdescripcion.Text.Trim();
-            string precioCompraTexto = txtpreciocompra.Text.Trim();
             string precioVentaTexto = txtprecioventa.Text.Trim();
             string stockTexto = txtstock.Text.Trim();
             string impuestoTexto = txtimpuesto.Text.Trim();
@@ -223,13 +218,7 @@ namespace bodegaproyecto
                 return false;
             }
 
-            if (!ObtenerDecimal(precioCompraTexto, out decimal precioCompra) || precioCompra <= 0)
-            {
-                MessageBox.Show("Ingrese un precio de compra válido mayor que 0.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtpreciocompra.Focus();
-                return false;
-            }
+           
 
             if (!ObtenerDecimal(precioVentaTexto, out decimal precioVenta) || precioVenta <= 0)
             {
@@ -239,13 +228,7 @@ namespace bodegaproyecto
                 return false;
             }
 
-            if (precioVenta < precioCompra)
-            {
-                MessageBox.Show("El precio de venta no puede ser menor que el precio de compra.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtprecioventa.Focus();
-                return false;
-            }
+          
 
             if (!int.TryParse(stockTexto, out int stock) || stock < 0)
             {
@@ -304,7 +287,6 @@ namespace bodegaproyecto
 
         private void GuardarProducto()
         {
-            ObtenerDecimal(txtpreciocompra.Text.Trim(), out decimal precioCompra);
             ObtenerDecimal(txtprecioventa.Text.Trim(), out decimal precioVenta);
             ObtenerDecimal(txtimpuesto.Text.Trim(), out decimal porcentaje);
 
@@ -321,12 +303,11 @@ namespace bodegaproyecto
 
                     string consulta = @"INSERT INTO Producto
                                 (Nombre_Producto,Descripcion,
-                                 Precio_Compra,Precio_Venta,
                                  Stock,fecha_vencimiento,
                                  impuesto,id_categoria,Estado)
                                 VALUES
                                 (@nombre,@descripcion,
-                                 @compra,@venta,
+                                 @venta,
                                  @stock,@fecha,
                                  @impuesto,@categoria,@estado)";
 
@@ -334,7 +315,6 @@ namespace bodegaproyecto
                     {
                         cmd.Parameters.AddWithValue("@nombre", txtnombre.Text.Trim());
                         cmd.Parameters.AddWithValue("@descripcion", txtdescripcion.Text.Trim());
-                        cmd.Parameters.AddWithValue("@compra", precioCompra);
                         cmd.Parameters.AddWithValue("@venta", precioVenta);
                         cmd.Parameters.AddWithValue("@stock", stock);
                         cmd.Parameters.AddWithValue("@fecha", dtpfv.Value.Date);
@@ -390,7 +370,6 @@ namespace bodegaproyecto
             txtId.Text = fila.Cells["id_producto"].Value.ToString();
             txtnombre.Text = fila.Cells["Nombre_Producto"].Value.ToString();
             txtdescripcion.Text = fila.Cells["Descripcion"].Value.ToString();
-            txtpreciocompra.Text = fila.Cells["Precio_Compra"].Value.ToString();
             txtprecioventa.Text = fila.Cells["Precio_Venta"].Value.ToString();
             txtstock.Text = fila.Cells["Stock"].Value.ToString();
             txtimpuesto.Text = fila.Cells["impuesto"].Value.ToString();
@@ -415,7 +394,7 @@ namespace bodegaproyecto
             if (!ValidarCampos())
                 return;
 
-            ObtenerDecimal(txtpreciocompra.Text.Trim(), out decimal precioCompra);
+           
             ObtenerDecimal(txtprecioventa.Text.Trim(), out decimal precioVenta);
             ObtenerDecimal(txtimpuesto.Text.Trim(), out decimal porcentaje);
 
@@ -433,7 +412,6 @@ namespace bodegaproyecto
                     string consulta = @"UPDATE Producto
                                         SET Nombre_Producto = @nombre,
                                             Descripcion = @descripcion,
-                                            Precio_Compra = @compra,
                                             Precio_Venta = @venta,
                                             Stock = @stock,
                                             fecha_vencimiento = @fecha,
@@ -446,7 +424,6 @@ namespace bodegaproyecto
                         cmd.Parameters.AddWithValue("@id", Convert.ToInt32(txtId.Text));
                         cmd.Parameters.AddWithValue("@nombre", txtnombre.Text.Trim());
                         cmd.Parameters.AddWithValue("@descripcion", txtdescripcion.Text.Trim());
-                        cmd.Parameters.AddWithValue("@compra", precioCompra);
                         cmd.Parameters.AddWithValue("@venta", precioVenta);
                         cmd.Parameters.AddWithValue("@stock", stock);
                         cmd.Parameters.AddWithValue("@fecha", dtpfv.Value.Date);
@@ -531,7 +508,6 @@ namespace bodegaproyecto
                                             p.id_producto,
                                             p.Nombre_Producto,
                                             p.Descripcion,
-                                            p.Precio_Compra,
                                             p.Precio_Venta,
                                             p.Stock,
                                             p.fecha_vencimiento,
@@ -580,7 +556,6 @@ namespace bodegaproyecto
             txtId.Clear();
             txtnombre.Clear();
             txtdescripcion.Clear();
-            txtpreciocompra.Clear();
             txtprecioventa.Clear();
             txtstock.Clear();
             txtimpuesto.Clear();
