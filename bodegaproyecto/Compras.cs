@@ -1,18 +1,636 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using Microsoft.Data.SqlClient;
 using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
+using System.Globalization;
 
 namespace bodegaproyecto
 {
     public partial class Compras : Form
     {
+        // ================== ESTADO INTERNO ==================
+        private List<DetalleLinea> detalleActual = new List<DetalleLinea>();
+
+        private int idProveedorSeleccionado = 0;
+        private int idProductoSeleccionado = 0;
+        private decimal impuestoProductoSeleccionado = 0m; // % de ISV del producto elegido
+
+        private int idCompraActual = 0;   // 0 = compra nueva todavía no guardada
+        private bool cargandoDatos = false; // evita disparar eventos mientras se llenan campos por código
+
+        private class DetalleLinea
+        {
+            public int IdProducto;
+            public string Producto;
+            public int Cantidad;
+            public decimal PrecioUnitario;
+            public decimal IsvUnitario;
+            public bool EsNuevo; // true = todavía no está guardado en Detalle_Compra
+
+            public decimal Subtotal => PrecioUnitario * Cantidad;
+            public decimal IsvTotal => IsvUnitario * Cantidad;
+            public decimal Total => Subtotal + IsvTotal;
+        }
+
         public Compras()
         {
             InitializeComponent();
+
+            // Eventos que NO están conectados en el Designer
+            btnNuevoCompra.Click += btnNuevoCompra_Click;
+            btnEditarCompra.Click += btnEditarCompra_Click;
+            btnRefrescar.Click += btnRefrescar_Click;
+            txtBuscarCompra.TextChanged += txtBuscarCompra_TextChanged;
+            btnBuscarProveedor.Click += btnBuscarProveedor_Click;
+            btnBuscarProducto.Click += btnBuscarProducto_Click;
+            btnAgregarProducto.Click += btnAgregarProducto_Click;
+            btnGuardar.Click += btnGuardar_Click;
+            btnCancelar.Click += btnCancelar_Click;
+            dgvDetalleCompra.CellDoubleClick += dgvDetalleCompra_CellDoubleClick;
+
+            this.Load += Compras_Load;
+        }
+
+        // ================== CARGA INICIAL ==================
+        private void Compras_Load(object sender, EventArgs e)
+        {
+            ConfigurarColumnasGrids();
+            CargarUsuarios();
+            CargarCompras();
+            HabilitarFormularioCompra(false);
+        }
+
+        private void ConfigurarColumnasGrids()
+        {
+            // dgvCompras: id, fecha, proveedor, total
+            dgvCompras.Columns[0].HeaderText = "ID";
+            dgvCompras.Columns[0].Name = "colIdCompra";
+            dgvCompras.Columns[1].HeaderText = "Fecha";
+            dgvCompras.Columns[2].HeaderText = "Proveedor";
+            dgvCompras.Columns[3].HeaderText = "Total";
+
+            // dgvDetalleCompra: producto, cantidad, precio unit, isv, subtotal
+            dgvDetalleCompra.Columns[0].HeaderText = "Producto";
+            dgvDetalleCompra.Columns[1].HeaderText = "Cantidad";
+            dgvDetalleCompra.Columns[2].HeaderText = "Precio Unit.";
+            dgvDetalleCompra.Columns[3].HeaderText = "ISV";
+            dgvDetalleCompra.Columns[4].HeaderText = "Subtotal";
+        }
+
+        private void CargarUsuarios()
+        {
+            try
+            {
+                using (SqlConnection conn = ConexionBD.ObtenerConexion())
+                {
+                    string sql = "SELECT id_usuario, Nombre FROM Usuario ORDER BY Nombre";
+                    SqlDataAdapter da = new SqlDataAdapter(sql, conn);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    cmbUsuario.DisplayMember = "Nombre";
+                    cmbUsuario.ValueMember = "id_usuario";
+                    cmbUsuario.DataSource = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar usuarios: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // ================== LISTA DE COMPRAS (izquierda de la grilla superior) ==================
+        private void CargarCompras(string filtro = "")
+        {
+            try
+            {
+                using (SqlConnection conn = ConexionBD.ObtenerConexion())
+                {
+                    string sql = @"
+                        SELECT c.id_compra, c.fecha_compra, p.Nombre AS Proveedor,
+                               ISNULL(SUM(dc.Cantidad * dc.precio_unitario), 0) AS Total
+                        FROM Compra c
+                        INNER JOIN Proveedor p ON p.id_proveedor = c.id_proveedor
+                        LEFT JOIN Detalle_Compra dc ON dc.id_compra = c.id_compra
+                        WHERE (@filtro = '' OR CAST(c.id_compra AS VARCHAR(20)) LIKE @like
+                               OR p.Nombre LIKE @like)
+                        GROUP BY c.id_compra, c.fecha_compra, p.Nombre
+                        ORDER BY c.id_compra DESC";
+
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@filtro", filtro ?? "");
+                        cmd.Parameters.AddWithValue("@like", "%" + (filtro ?? "") + "%");
+
+                        dgvCompras.Rows.Clear();
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                dgvCompras.Rows.Add(
+                                    reader["id_compra"],
+                                    Convert.ToDateTime(reader["fecha_compra"]).ToString("dd/MM/yyyy"),
+                                    reader["Proveedor"].ToString(),
+                                    "L. " + Convert.ToDecimal(reader["Total"]).ToString("0.00")
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar compras: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void txtBuscarCompra_TextChanged(object sender, EventArgs e)
+        {
+            CargarCompras(txtBuscarCompra.Text.Trim());
+        }
+
+        private void btnRefrescar_Click(object sender, EventArgs e)
+        {
+            CargarCompras(txtBuscarCompra.Text.Trim());
+        }
+
+        // ================== SELECCIÓN DE UNA COMPRA EXISTENTE ==================
+        private void dgvCompras_SelectionChanged(object sender, EventArgs e)
+        {
+            if (cargandoDatos) return;
+            if (dgvCompras.SelectedRows.Count == 0) return;
+
+            int idCompra = Convert.ToInt32(dgvCompras.SelectedRows[0].Cells["colIdCompra"].Value);
+            CargarCabeceraCompra(idCompra);
+            CargarDetalleCompra(idCompra);
+        }
+
+        private void CargarCabeceraCompra(int idCompra)
+        {
+            try
+            {
+                using (SqlConnection conn = ConexionBD.ObtenerConexion())
+                {
+                    string sql = @"
+                        SELECT c.id_compra, c.fecha_compra, pr.id_proveedor, pr.Nombre, pr.Telefono
+                        FROM Compra c
+                        INNER JOIN Proveedor pr ON pr.id_proveedor = c.id_proveedor
+                        WHERE c.id_compra = @id";
+
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", idCompra);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                cargandoDatos = true;
+                                idCompraActual = Convert.ToInt32(reader["id_compra"]);
+                                txtIdCompra.Text = idCompraActual.ToString();
+                                dtpFecha.Value = Convert.ToDateTime(reader["fecha_compra"]);
+                                idProveedorSeleccionado = Convert.ToInt32(reader["id_proveedor"]);
+                                txtProveedor.Text = reader["Nombre"].ToString();
+                                txtTelefono.Text = reader["Telefono"].ToString();
+                                cargandoDatos = false;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar la compra: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void CargarDetalleCompra(int idCompra)
+        {
+            try
+            {
+                detalleActual.Clear();
+
+                using (SqlConnection conn = ConexionBD.ObtenerConexion())
+                {
+                    string sql = @"
+                        SELECT pr.id_producto, pr.Nombre_Producto, dc.Cantidad,
+                               dc.precio_unitario, pr.impuesto
+                        FROM Detalle_Compra dc
+                        INNER JOIN Producto pr ON pr.id_producto = dc.id_producto
+                        WHERE dc.id_compra = @id";
+
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", idCompra);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                decimal precioUnit = Convert.ToDecimal(reader["precio_unitario"]);
+                                decimal impuestoPct = reader["impuesto"] == DBNull.Value
+                                    ? 0m : Convert.ToDecimal(reader["impuesto"]);
+
+                                detalleActual.Add(new DetalleLinea
+                                {
+                                    IdProducto = Convert.ToInt32(reader["id_producto"]),
+                                    Producto = reader["Nombre_Producto"].ToString(),
+                                    Cantidad = Convert.ToInt32(reader["Cantidad"]),
+                                    PrecioUnitario = precioUnit,
+                                    IsvUnitario = Math.Round(precioUnit * (impuestoPct / 100m), 2),
+                                    EsNuevo = false
+                                });
+                            }
+                        }
+                    }
+                }
+
+                RefrescarGridDetalle();
+                RecalcularTotales();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar el detalle: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // ================== BÚSQUEDA DE PROVEEDOR ==================
+        private void btnBuscarProveedor_Click(object sender, EventArgs e)
+        {
+            string busqueda = txtBuscarProveedor.Text.Trim();
+            if (string.IsNullOrEmpty(busqueda))
+            {
+                MessageBox.Show("Escriba un nombre o ID de proveedor para buscar.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                using (SqlConnection conn = ConexionBD.ObtenerConexion())
+                {
+                    string sql = @"
+                        SELECT TOP 1 id_proveedor, Nombre, Telefono
+                        FROM Proveedor
+                        WHERE Nombre LIKE @like OR CAST(id_proveedor AS VARCHAR(20)) = @exacto
+                        ORDER BY Nombre";
+
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@like", "%" + busqueda + "%");
+                        cmd.Parameters.AddWithValue("@exacto", busqueda);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                idProveedorSeleccionado = Convert.ToInt32(reader["id_proveedor"]);
+                                txtProveedor.Text = reader["Nombre"].ToString();
+                                txtTelefono.Text = reader["Telefono"].ToString();
+                            }
+                            else
+                            {
+                                idProveedorSeleccionado = 0;
+                                txtProveedor.Clear();
+                                txtTelefono.Clear();
+                                MessageBox.Show("No se encontró ningún proveedor con ese criterio.",
+                                    "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al buscar proveedor: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // ================== BÚSQUEDA DE PRODUCTO ==================
+        private void btnBuscarProducto_Click(object sender, EventArgs e)
+        {
+            string busqueda = txtBuscarProducto.Text.Trim();
+            if (string.IsNullOrEmpty(busqueda))
+            {
+                MessageBox.Show("Escriba un nombre o ID de producto para buscar.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                using (SqlConnection conn = ConexionBD.ObtenerConexion())
+                {
+                    string sql = @"
+                        SELECT TOP 1 id_producto, Nombre_Producto, Precio_Compra, Stock, impuesto
+                        FROM Producto
+                        WHERE Nombre_Producto LIKE @like OR CAST(id_producto AS VARCHAR(20)) = @exacto
+                        ORDER BY Nombre_Producto";
+
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@like", "%" + busqueda + "%");
+                        cmd.Parameters.AddWithValue("@exacto", busqueda);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                idProductoSeleccionado = Convert.ToInt32(reader["id_producto"]);
+                                txtProducto.Text = reader["Nombre_Producto"].ToString();
+                                txtStockActual.Text = reader["Stock"].ToString();
+                                impuestoProductoSeleccionado = reader["impuesto"] == DBNull.Value
+                                    ? 0m : Convert.ToDecimal(reader["impuesto"]);
+
+                                txtCosto.Text = Convert.ToDecimal(reader["Precio_Compra"])
+                                    .ToString("0.00", CultureInfo.InvariantCulture);
+                                // esto dispara txtCosto_TextChanged y calcula el ISV
+                            }
+                            else
+                            {
+                                idProductoSeleccionado = 0;
+                                txtProducto.Clear();
+                                txtStockActual.Clear();
+                                txtCosto.Clear();
+                                txtIsvProducto.Text = "0.00";
+                                MessageBox.Show("No se encontró ningún producto con ese criterio.",
+                                    "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al buscar producto: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void txtCosto_TextChanged(object sender, EventArgs e)
+        {
+            decimal costo;
+            if (decimal.TryParse(txtCosto.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out costo))
+            {
+                decimal isv = Math.Round(costo * (impuestoProductoSeleccionado / 100m), 2);
+                txtIsvProducto.Text = isv.ToString("0.00", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                txtIsvProducto.Text = "0.00";
+            }
+        }
+
+        // ================== AGREGAR PRODUCTO AL DETALLE ==================
+        private void btnAgregarProducto_Click(object sender, EventArgs e)
+        {
+            if (idProductoSeleccionado == 0)
+            {
+                MessageBox.Show("Primero busque y seleccione un producto.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            decimal costo;
+            if (!decimal.TryParse(txtCosto.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out costo) || costo <= 0)
+            {
+                MessageBox.Show("Ingrese un costo válido.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int cantidad = (int)nudCantidad.Value;
+            decimal isvUnit = Math.Round(costo * (impuestoProductoSeleccionado / 100m), 2);
+
+            // si el producto ya estaba en el detalle, se suma la cantidad
+            var existente = detalleActual.FirstOrDefault(x => x.IdProducto == idProductoSeleccionado);
+            if (existente != null)
+            {
+                existente.Cantidad += cantidad;
+                existente.PrecioUnitario = costo;
+                existente.IsvUnitario = isvUnit;
+            }
+            else
+            {
+                detalleActual.Add(new DetalleLinea
+                {
+                    IdProducto = idProductoSeleccionado,
+                    Producto = txtProducto.Text,
+                    Cantidad = cantidad,
+                    PrecioUnitario = costo,
+                    IsvUnitario = isvUnit,
+                    EsNuevo = true
+                });
+            }
+
+            RefrescarGridDetalle();
+            RecalcularTotales();
+            LimpiarPanelProducto();
+        }
+
+        private void dgvDetalleCompra_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (e.RowIndex >= detalleActual.Count) return;
+
+            var linea = detalleActual[e.RowIndex];
+            if (!linea.EsNuevo)
+            {
+                MessageBox.Show("Solo se pueden quitar líneas que aún no han sido guardadas.",
+                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (MessageBox.Show($"¿Quitar \"{linea.Producto}\" del detalle?", "Confirmar",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                detalleActual.RemoveAt(e.RowIndex);
+                RefrescarGridDetalle();
+                RecalcularTotales();
+            }
+        }
+
+        private void RefrescarGridDetalle()
+        {
+            dgvDetalleCompra.Rows.Clear();
+            foreach (var linea in detalleActual)
+            {
+                dgvDetalleCompra.Rows.Add(
+                    linea.Producto,
+                    linea.Cantidad,
+                    "L. " + linea.PrecioUnitario.ToString("0.00"),
+                    "L. " + linea.IsvUnitario.ToString("0.00"),
+                    "L. " + linea.Subtotal.ToString("0.00")
+                );
+            }
+        }
+
+        private void RecalcularTotales()
+        {
+            decimal subtotal = detalleActual.Sum(x => x.Subtotal);
+            decimal isv = detalleActual.Sum(x => x.IsvTotal);
+            decimal total = subtotal + isv;
+
+            lblSubtotalValor.Text = "L. " + subtotal.ToString("0.00");
+            lblIsvValor.Text = "L. " + isv.ToString("0.00");
+            lblTotalValor.Text = "L. " + total.ToString("0.00");
+        }
+
+        // ================== NUEVO / EDITAR ==================
+        private void btnNuevoCompra_Click(object sender, EventArgs e)
+        {
+            LimpiarFormularioCompra();
+            idCompraActual = 0;
+            dtpFecha.Value = DateTime.Now;
+            HabilitarFormularioCompra(true);
+        }
+
+        private void btnEditarCompra_Click(object sender, EventArgs e)
+        {
+            if (dgvCompras.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Seleccione una compra de la lista para editarla.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // idCompraActual y el detalle ya fueron cargados por dgvCompras_SelectionChanged
+            HabilitarFormularioCompra(true);
+        }
+
+        // ================== GUARDAR ==================
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            if (idProveedorSeleccionado == 0)
+            {
+                MessageBox.Show("Seleccione un proveedor.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (cmbUsuario.SelectedValue == null)
+            {
+                MessageBox.Show("Seleccione un usuario.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (detalleActual.Count == 0)
+            {
+                MessageBox.Show("Agregue al menos un producto al detalle.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using (SqlConnection conn = ConexionBD.ObtenerConexion())
+            {
+                SqlTransaction tx = conn.BeginTransaction();
+                try
+                {
+                    // 1) Cabecera de la compra
+                    if (idCompraActual == 0)
+                    {
+                        string sqlInsertCompra = @"
+                            INSERT INTO Compra (fecha_compra, id_proveedor, id_usuario)
+                            OUTPUT INSERTED.id_compra
+                            VALUES (@fecha, @idProveedor, @idUsuario)";
+
+                        using (SqlCommand cmd = new SqlCommand(sqlInsertCompra, conn, tx))
+                        {
+                            cmd.Parameters.AddWithValue("@fecha", dtpFecha.Value);
+                            cmd.Parameters.AddWithValue("@idProveedor", idProveedorSeleccionado);
+                            cmd.Parameters.AddWithValue("@idUsuario", cmbUsuario.SelectedValue);
+                            idCompraActual = (int)cmd.ExecuteScalar();
+                        }
+                    }
+
+                    // 2) Detalle: solo las líneas nuevas (EsNuevo = true)
+                    string sqlDetalle = @"
+                        INSERT INTO Detalle_Compra (Cantidad, precio_unitario, id_compra, id_producto)
+                        VALUES (@cantidad, @precio, @idCompra, @idProducto)";
+
+                    string sqlStock = @"
+                        UPDATE Producto SET Stock = Stock + @cantidad
+                        WHERE id_producto = @idProducto";
+
+                    foreach (var linea in detalleActual.Where(l => l.EsNuevo))
+                    {
+                        using (SqlCommand cmd = new SqlCommand(sqlDetalle, conn, tx))
+                        {
+                            cmd.Parameters.AddWithValue("@cantidad", linea.Cantidad);
+                            cmd.Parameters.AddWithValue("@precio", linea.PrecioUnitario);
+                            cmd.Parameters.AddWithValue("@idCompra", idCompraActual);
+                            cmd.Parameters.AddWithValue("@idProducto", linea.IdProducto);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        using (SqlCommand cmd = new SqlCommand(sqlStock, conn, tx))
+                        {
+                            cmd.Parameters.AddWithValue("@cantidad", linea.Cantidad);
+                            cmd.Parameters.AddWithValue("@idProducto", linea.IdProducto);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    tx.Commit();
+                    MessageBox.Show("Compra guardada correctamente.", "Éxito",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    LimpiarFormularioCompra();
+                    HabilitarFormularioCompra(false);
+                    CargarCompras(txtBuscarCompra.Text.Trim());
+                }
+                catch (Exception ex)
+                {
+                    tx.Rollback();
+                    MessageBox.Show("Error al guardar la compra: " + ex.Message, "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            LimpiarFormularioCompra();
+            HabilitarFormularioCompra(false);
+        }
+
+        // ================== AUXILIARES ==================
+        private void LimpiarPanelProducto()
+        {
+            txtBuscarProducto.Clear();
+            txtProducto.Clear();
+            txtCosto.Clear();
+            txtIsvProducto.Text = "0.00";
+            txtStockActual.Clear();
+            nudCantidad.Value = 1;
+            idProductoSeleccionado = 0;
+            impuestoProductoSeleccionado = 0;
+        }
+
+        private void LimpiarFormularioCompra()
+        {
+            txtIdCompra.Text = "(Automático)";
+            dtpFecha.Value = DateTime.Now;
+            txtBuscarProveedor.Clear();
+            txtProveedor.Clear();
+            txtTelefono.Clear();
+            idProveedorSeleccionado = 0;
+
+            detalleActual.Clear();
+            dgvDetalleCompra.Rows.Clear();
+            RecalcularTotales();
+            LimpiarPanelProducto();
+        }
+
+        private void HabilitarFormularioCompra(bool activar)
+        {
+            dtpFecha.Enabled = activar;
+            txtBuscarProveedor.Enabled = activar;
+            btnBuscarProveedor.Enabled = activar;
+            cmbUsuario.Enabled = activar;
+            grpAgregarProducto.Enabled = activar;
+            btnGuardar.Enabled = activar;
+            btnCancelar.Enabled = activar;
         }
     }
 }
