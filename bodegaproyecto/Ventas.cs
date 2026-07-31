@@ -951,17 +951,16 @@ namespace bodegaproyecto
         {
 
             if (modoEditar)
+        
+            if (idProductoSeleccionado == 0)
             {
-                MessageBox.Show("no puede agrregar un producto en modo edicion, use el panel de reembolso",
-                   "aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Debe buscar un producto primero.",
+                    "Aviso",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
 
-            if (idProductoSeleccionado == 0)
-            {
-                MessageBox.Show("debe buscar un producto primero.", "aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
 
             if (string.IsNullOrWhiteSpace(txtStock.Text) || Convert.ToInt32(txtStock.Text) <= 0)
             {
@@ -991,25 +990,12 @@ namespace bodegaproyecto
                 {
                     existe = true;
 
-
-                    if (modoEditar)
-                    {
-                        fila["Cantidad"] = cantidad;
-                        fila["Subtotal"] = subtotal;
-                    }
-                    else
-                    {
-                        int nuevaCantidad = Convert.ToInt32(fila["Cantidad"]) + cantidad;
-
-                        fila["Cantidad"] = nuevaCantidad;
-                        fila["Subtotal"] = precio * nuevaCantidad;
-                    }
-
+                    fila["Cantidad"] = cantidad;
+                    fila["Subtotal"] = precio * cantidad;
 
                     break;
                 }
             }
-
 
             // Si el producto no existe, lo agrega aunque sea modo editar
             if (!existe)
@@ -1044,13 +1030,35 @@ namespace bodegaproyecto
                 {
                     MessageBox.Show("Este producto no tiene stock disponible.",
                         "Stock", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    nudCantidad.Value = nudCantidad.Minimum; // vuelve al mínimo permitido
+                    nudCantidad.Value = nudCantidad.Minimum;
                 }
                 else
                 {
                     MessageBox.Show("No hay suficiente stock disponible.",
                         "Stock", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     nudCantidad.Value = stock;
+                }
+
+                return;
+            }
+
+            if (modoEditar && dgvDetallesVentas.CurrentRow != null)
+            {
+                int indice = dgvDetallesVentas.CurrentRow.Index;
+
+                if (indice >= 0 && indice < detalleVenta.Rows.Count)
+                {
+                    DataRow fila = detalleVenta.Rows[indice];
+
+                    decimal precio = Convert.ToDecimal(fila["Precio"]);
+                    int cantidad = Convert.ToInt32(nudCantidad.Value);
+
+                    fila["Cantidad"] = cantidad;
+                    fila["Subtotal"] = precio * cantidad;
+
+                    dgvDetallesVentas.Refresh();
+
+                    CalcularTotales();
                 }
             }
         }
