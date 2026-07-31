@@ -240,9 +240,10 @@ CREATE TABLE Compra (
     id_compra INT IDENTITY(1,1) PRIMARY KEY,
     fecha_compra DATE NOT NULL,
     id_proveedor INT NOT NULL,
+    id_usuario INT NOT NULL,
 
-    CONSTRAINT FK_Compra_Proveedor
-    FOREIGN KEY (id_proveedor) REFERENCES Proveedor(id_proveedor)
+    CONSTRAINT FK_Compra_Proveedor FOREIGN KEY (id_proveedor) REFERENCES Proveedor(id_proveedor),
+    CONSTRAINT FK_Compra_Usuario FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
 );
 
 
