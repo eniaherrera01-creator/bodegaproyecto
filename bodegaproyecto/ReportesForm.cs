@@ -1,7 +1,10 @@
-﻿using System;
-using System.Data;
-using System.Windows.Forms;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
 using Microsoft.Data.SqlClient;
+using System;
+using System.Data;
+using System.IO;
+using System.Windows.Forms;
 
 namespace bodegaproyecto
 {
@@ -50,9 +53,85 @@ namespace bodegaproyecto
             }
         }
 
+        private void ExportarPDF()
+        {
+            if (dgvReporte.Rows.Count == 0)
+            {
+                MessageBox.Show("No hay datos para exportar.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "Archivo PDF|*.pdf";
+                sfd.FileName = $"Reporte_{cbReporte.Text}_{DateTime.Now:yyyyMMdd_HHmm}.pdf";
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    // Crear documento PDF
+                    Document doc = new Document(PageSize.A4.Rotate(), 10, 10, 10, 10);
+                    PdfWriter.GetInstance(doc, new FileStream(sfd.FileName, FileMode.Create));
+                    doc.Open();
+
+                    // Título
+                    Paragraph titulo = new Paragraph("Reporte - " + cbReporte.Text,
+                        FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 16, BaseColor.BLACK));
+                    titulo.Alignment = Element.ALIGN_CENTER;
+                    titulo.SpacingAfter = 10;
+                    doc.Add(titulo);
+
+                    // Subtítulo con fecha de generación
+                    Paragraph fecha = new Paragraph("Generado el: " + DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
+                        FontFactory.GetFont(FontFactory.HELVETICA, 9, BaseColor.DARK_GRAY));
+                    fecha.Alignment = Element.ALIGN_CENTER;
+                    fecha.SpacingAfter = 20;
+                    doc.Add(fecha);
+
+                    // Crear tabla PDF con el mismo número de columnas
+                    PdfPTable pdfTable = new PdfPTable(dgvReporte.Columns.Count);
+                    pdfTable.WidthPercentage = 100;
+
+                    // Agregar encabezados
+                    foreach (DataGridViewColumn column in dgvReporte.Columns)
+                    {
+                        PdfPCell cell = new PdfPCell(new Phrase(column.HeaderText, FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10, BaseColor.WHITE)));
+                        cell.BackgroundColor = new BaseColor(0, 102, 204); // Azul suave
+                        cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                        cell.Padding = 5;
+                        pdfTable.AddCell(cell);
+                    }
+
+                    // Agregar filas
+                    foreach (DataGridViewRow row in dgvReporte.Rows)
+                    {
+                        if (!row.IsNewRow)
+                        {
+                            foreach (DataGridViewCell cell in row.Cells)
+                            {
+                                PdfPCell dataCell = new PdfPCell(new Phrase(cell.Value?.ToString() ?? "", FontFactory.GetFont(FontFactory.HELVETICA, 9)));
+                                dataCell.Padding = 4;
+                                pdfTable.AddCell(dataCell);
+                            }
+                        }
+                    }
+
+                    doc.Add(pdfTable);
+                    doc.Close();
+
+                    MessageBox.Show("PDF exportado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al exportar PDF: " + ex.Message);
+            }
+        }
+
         private void btnGenerar_Click(object sender, EventArgs e)
         {
-            GenerarReporte();
+            ExportarPDF();
+
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
