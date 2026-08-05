@@ -301,6 +301,11 @@ namespace bodegaproyecto
 
                     cmd.ExecuteNonQuery();
 
+                    if (esEdicion)
+                        Bitacora.Registrar("Categorias", "Editar Categoria", "Se editó una categoría");
+                    else
+                        Bitacora.Registrar("Categorias", "Nueva Categoria", "Se registró una nueva categoría");
+
                     MessageBox.Show(
                         esEdicion
                         ? "Categoría actualizada correctamente."
@@ -448,6 +453,8 @@ namespace bodegaproyecto
                 cmd.Parameters.AddWithValue("@Id", id);
 
                 cmd.ExecuteNonQuery();
+               
+                Bitacora.Registrar("Categorias", "Cambiar Estado", $"se {accion}o una categoria");
             }
 
             MessageBox.Show(

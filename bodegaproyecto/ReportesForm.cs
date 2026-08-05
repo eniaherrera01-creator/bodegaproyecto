@@ -120,6 +120,8 @@ namespace bodegaproyecto
                     doc.Close();
 
                     MessageBox.Show("PDF exportado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    Bitacora.Registrar("Reportas", "Exportar PDF", $"Exportar el reporte '{cbReporte.Text}' a PDF ({sfd.FileName})");
                 }
             }
             catch (Exception ex)

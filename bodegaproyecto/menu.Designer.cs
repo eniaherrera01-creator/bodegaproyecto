@@ -64,6 +64,8 @@
             ribbonPageGroup9 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPageGroup10 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             panelContenedor = new DevExpress.XtraEditors.PanelControl();
+            BItacora = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            BTbitacora = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)ribbon).BeginInit();
             ((System.ComponentModel.ISupportInitialize)panelContenedor).BeginInit();
             SuspendLayout();
@@ -75,11 +77,11 @@
             ribbonStatusBar.ItemLinks.Add(barStaticItemusuarios);
             ribbonStatusBar.ItemLinks.Add(barStaticItemrol);
             ribbonStatusBar.ItemLinks.Add(barButtoncerrarsesion);
-            ribbonStatusBar.Location = new Point(0, 542);
-            ribbonStatusBar.Margin = new Padding(4, 2, 4, 2);
+            ribbonStatusBar.Location = new Point(0, 441);
+            ribbonStatusBar.Margin = new Padding(3, 2, 3, 2);
             ribbonStatusBar.Name = "ribbonStatusBar";
             ribbonStatusBar.Ribbon = ribbon;
-            ribbonStatusBar.Size = new Size(1054, 30);
+            ribbonStatusBar.Size = new Size(903, 24);
             ribbonStatusBar.Click += ribbonStatusBar_Click;
             // 
             // barStaticItemusuarios
@@ -104,15 +106,17 @@
             // 
             ribbon.BackColor = Color.FromArgb(192, 255, 255);
             ribbon.CaptionBarItemLinks.Add(barButtonItem1);
+            ribbon.EmptyAreaImageOptions.ImagePadding = new Padding(26, 24, 26, 24);
             ribbon.ExpandCollapseItem.Id = 0;
-            ribbon.Items.AddRange(new DevExpress.XtraBars.BarItem[] { barButtonItem1, ribbon.ExpandCollapseItem, barButtonusuarios, barButtoncategorias, barButtomproveedores, barStaticusuario, barStaticrol, barButtonItem4, barStaticItemusuarios, barStaticItemrol, barButtoncerrarsesion, barButtonclientes, barButtonItem2, barButtonItem3, barButtonItem5, barButtonItem6, barButtonItem7, barButtonItem8, barButtonItem9 });
+            ribbon.Items.AddRange(new DevExpress.XtraBars.BarItem[] { barButtonItem1, ribbon.ExpandCollapseItem, barButtonusuarios, barButtoncategorias, barButtomproveedores, barStaticusuario, barStaticrol, barButtonItem4, barStaticItemusuarios, barStaticItemrol, barButtoncerrarsesion, barButtonclientes, barButtonItem2, barButtonItem3, barButtonItem5, barButtonItem6, barButtonItem7, barButtonItem8, barButtonItem9, BTbitacora });
             ribbon.Location = new Point(0, 0);
-            ribbon.Margin = new Padding(4, 2, 4, 2);
-            ribbon.MaxItemId = 27;
+            ribbon.Margin = new Padding(3, 2, 3, 2);
+            ribbon.MaxItemId = 28;
             ribbon.Name = "ribbon";
+            ribbon.OptionsMenuMinWidth = 283;
             ribbon.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1, ribbonPage2, ribbonPage3, ribbonPage4 });
             ribbon.QuickToolbarItemLinks.Add(barButtonItem9);
-            ribbon.Size = new Size(1054, 193);
+            ribbon.Size = new Size(903, 158);
             ribbon.StatusBar = ribbonStatusBar;
             ribbon.Click += ribbon_Click;
             // 
@@ -242,7 +246,7 @@
             // 
             // ribbonPage1
             // 
-            ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1, ribbonPageGroup4, ribbonPageGroup8 });
+            ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1, ribbonPageGroup4, ribbonPageGroup8, BItacora });
             ribbonPage1.Name = "ribbonPage1";
             ribbonPage1.Text = "Administracion";
             // 
@@ -317,22 +321,35 @@
             // panelContenedor
             // 
             panelContenedor.Dock = DockStyle.Fill;
-            panelContenedor.Location = new Point(0, 193);
-            panelContenedor.Margin = new Padding(4, 2, 4, 2);
+            panelContenedor.Location = new Point(0, 158);
+            panelContenedor.Margin = new Padding(3, 2, 3, 2);
             panelContenedor.Name = "panelContenedor";
-            panelContenedor.Size = new Size(1054, 349);
+            panelContenedor.Size = new Size(903, 283);
             panelContenedor.TabIndex = 2;
             panelContenedor.Paint += panelContenedor_Paint;
             // 
+            // BItacora
+            // 
+            BItacora.ItemLinks.Add(BTbitacora);
+            BItacora.Name = "BItacora";
+            BItacora.Text = "Bitacora";
+            // 
+            // BTbitacora
+            // 
+            BTbitacora.Caption = "barButtonItem10";
+            BTbitacora.Id = 27;
+            BTbitacora.Name = "BTbitacora";
+            BTbitacora.ItemClick += BTbitacora_ItemClick;
+            // 
             // menu
             // 
-            AutoScaleDimensions = new SizeF(7F, 16F);
+            AutoScaleDimensions = new SizeF(6F, 13F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1054, 572);
+            ClientSize = new Size(903, 465);
             Controls.Add(panelContenedor);
             Controls.Add(ribbon);
             Controls.Add(ribbonStatusBar);
-            Margin = new Padding(4, 2, 4, 2);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "menu";
             Ribbon = ribbon;
             StartPosition = FormStartPosition.CenterScreen;
@@ -382,5 +399,7 @@
         private DevExpress.XtraBars.BarButtonItem barButtonItem8;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup10;
         private DevExpress.XtraBars.BarButtonItem barButtonItem9;
+        private DevExpress.XtraBars.BarButtonItem BTbitacora;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup BItacora;
     }
 }

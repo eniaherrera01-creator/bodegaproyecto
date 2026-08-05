@@ -440,7 +440,7 @@ namespace bodegaproyecto
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
 
-
+                        Bitacora.Registrar("Reembolsos", "guardar", $"Registro un reembolso para la venta ID {idVentaSeleccionada} con {dgvDetallesRembolso.Rows.Count} productos(s), total l. {lblTotal.Text.Replace("L.", "")}");
                             dgvDetallesRembolso.Rows.Clear();
 
                             lblTotal.Text = "L. 0.00";
@@ -556,6 +556,8 @@ namespace bodegaproyecto
                     "Información",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
+
+                Bitacora.Registrar("Reembolsos", "Cancelar", "Canceló un reembolso en proceso para la venta ID " + idVentaSeleccionada);
             }
         }
 

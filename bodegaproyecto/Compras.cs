@@ -433,6 +433,7 @@ namespace bodegaproyecto
         {
             if (e.RowIndex < 0) return;
             if (e.RowIndex >= detalleActual.Count) return;
+       
 
             var linea = detalleActual[e.RowIndex];
             if (!linea.EsNuevo)
@@ -448,6 +449,7 @@ namespace bodegaproyecto
                 detalleActual.RemoveAt(e.RowIndex);
                 RefrescarGridDetalle();
                 RecalcularTotales();
+                Bitacora.Registrar("Compras", "quitar Producto", "se quito un producto del detalle");
             }
         }
 
@@ -502,7 +504,9 @@ namespace bodegaproyecto
         // ================== GUARDAR ==================
         private void btnGuardar_Click(object sender, EventArgs e)
         {
+           
             if (idProveedorSeleccionado == 0)
+
             {
                 MessageBox.Show("Seleccione un proveedor.", "Aviso",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -572,6 +576,7 @@ namespace bodegaproyecto
                     }
 
                     tx.Commit();
+                    Bitacora.Registrar("Compras", "Nueva Compra", "Se registro una nueva compra");
                     MessageBox.Show("Compra guardada correctamente.", "Éxito",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
 

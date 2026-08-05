@@ -86,10 +86,14 @@
 
                 dgvVentas.DataSource = tabla;
 
+                Bitacora.Registrar("Ventas", "Consultar", "Consultó el listado general de ventas");
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al cargar ventas: " + ex.Message);
+
+                Bitacora.Registrar("Ventas", "Erro", "Error al cargar ventas" + ex.Message);
             }
             finally
             {
@@ -164,10 +168,14 @@
 
                 dgvVentas.DataSource = tabla;
 
+                Bitacora.Registrar("Ventas", "Buscar", "Buscó la venta con ID " + txtBuscarID.Text);
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al buscar venta: " + ex.Message);
+
+                Bitacora.Registrar("Ventas", "Error", "Error al buscar venta: " + ex.Message);
             }
             finally
             {
@@ -243,10 +251,14 @@
 
                 dgvVentas.DataSource = tabla;
 
+                Bitacora.Registrar("Ventas", "Buscar por fecha",
+                   $"Buscó ventas entre {dtpDesde.Value:dd/MM/yyyy} y {dtpHasta.Value:dd/MM/yyyy}");
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al buscar fecha: " + ex.Message);
+                Bitacora.Registrar("Ventas", "Error", "Error al buscar por fecha: " + ex.Message);
             }
             finally
             {
@@ -282,10 +294,15 @@
                 adapter.Fill(tabla);
 
                 dgvDetalleVenta.DataSource = tabla;
+
+                Bitacora.Registrar("Ventas", "Ver detalle", "Consultó el detalle de la venta ID " + idVenta);
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al cargar detalle: " + ex.Message);
+
+                Bitacora.Registrar("Ventas", "Error", "Error al cargar detalle de venta " + idVenta + ": " + ex.Message);
             }
             finally
             {

@@ -158,6 +158,12 @@ namespace bodegaproyecto
                     cmd.ExecuteNonQuery();
                     MessageBox.Show(selectedUserId == -1 ? "✅ Usuario agregado." : "✅ Usuario actualizado.",
                         "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    bool esNuevo = selectedUserId == -1;
+
+                    Bitacora.Registrar(
+                        "Usuarios",
+                        esNuevo ? "Guardar" : "Editar",
+                        (esNuevo ? "Creó" : "Actualizó") + " al usuario " + txtUsuario.Text.Trim() + " (rol: " + cmbRol.SelectedItem.ToString() + ")");
                     LimpiarFormulario();
                     CargarUsuarios();
 
@@ -243,6 +249,8 @@ namespace bodegaproyecto
 
             string accionPasada = estadoActual == "Activo" ? "inhabilitado" : "habilitado";
             MessageBox.Show($"Usuario {accionPasada} correctamente.");
+
+            Bitacora.Registrar("Usuarios", "Cambiar estado", $"Cambió el usuario ID {idUsuario} a {(estadoActual == "Activo" ? "Inactivo" : "Activo")}");
 
             CargarUsuarios();
         }

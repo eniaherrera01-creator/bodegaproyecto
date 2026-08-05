@@ -354,6 +354,16 @@ CREATE TABLE Reembolso
     FOREIGN KEY (id_producto) REFERENCES Producto(id_producto)
 );
 
+CREATE TABLE Bitacora
+(
+    id_bitacora  INT IDENTITY(1,1) PRIMARY KEY,
+    fecha        DATETIME NOT NULL DEFAULT GETDATE(),
+    usuario      VARCHAR(50) NOT NULL,
+    modulo       VARCHAR(100) NOT NULL,
+    accion       VARCHAR(100) NOT NULL,
+    descripcion  VARCHAR(255) NOT NULL
+);
+
 INSERT INTO Usuario (Nombre, usuario, Contraseña, rol, Estado)
 VALUES
 ('Juan Perez', 'jperez',

@@ -237,6 +237,11 @@ namespace bodegaproyecto
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
 
+                    Bitacora.Registrar(
+                    "Clientes",
+                    "Guardar",
+                    "Registró al cliente " + txtNombre.Text.Trim() + " (DNI: " + txtDNI.Text.Trim() + ")");
+
 
                     MostrarClientes();
 

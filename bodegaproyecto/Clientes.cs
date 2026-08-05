@@ -155,6 +155,9 @@ namespace bodegaproyecto
 
         private void btnGuardar_Click_1(object sender, EventArgs e)
         {
+
+            Bitacora.Registrar("Cliente", "Nuevo Cliente", $"se creo el cliente {txtNombre.Text}");
+            
             //==============================
             // VALIDAR CAMPOS VACIOS
             //==============================
@@ -441,6 +444,8 @@ namespace bodegaproyecto
             txtIDCliente.Text = selectedClienteId.ToString();
 
             txtDNI.Text = row.Cells["DNI"].Value.ToString();
+
+            Bitacora.Registrar("Clientes", "Editar Cliente", $"Se editó el cliente {txtNombre.Text}");
 
             txtNombre.Text = row.Cells["Nombre"].Value.ToString();
 

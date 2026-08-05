@@ -646,6 +646,11 @@ namespace bodegaproyecto
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
 
+                    Bitacora.Registrar(
+                        "Ventas",
+                        modoNuevo ? "Guardar" : "Editar",
+                        (modoNuevo ? "Registró" : "Actualizó") + $" la venta ID {idVenta} - Cliente: {txtNombreCliente.Text} - Total: {lblTotalValor.Text}");
+
                     MostrarVentas();
 
                     // Limpiar formulario después de guardar

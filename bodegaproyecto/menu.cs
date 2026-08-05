@@ -282,5 +282,11 @@ namespace bodegaproyecto
         {
             AbrirFormulario(new ReportesForm());
         }
+
+        private void BTbitacora_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            pbitacora frm = new pbitacora();
+            frm.ShowDialog();
+        }
     }
 }

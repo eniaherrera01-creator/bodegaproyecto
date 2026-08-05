@@ -317,6 +317,8 @@ namespace bodegaproyecto
             if (txtId.Text != "ID: Automático")
                 idProveedor = Convert.ToInt32(txtId.Text);
 
+            bool esNuevo = txtId.Text == "ID: Automático";
+
             if (ExisteProveedor(nombre, idProveedor))
             {
                 MessageBox.Show(
@@ -330,7 +332,7 @@ namespace bodegaproyecto
             }
 
             DialogResult respuesta = MessageBox.Show(
-                txtId.Text == "ID: Automático"
+                esNuevo
                 ? "¿Desea guardar este proveedor?"
                 : "¿Desea actualizar este proveedor?",
                 "Confirmar",
@@ -346,7 +348,7 @@ namespace bodegaproyecto
                 {
                     SqlCommand cmd;
 
-                    if (txtId.Text == "ID: Automático")
+                    if (esNuevo)
                     {
                         cmd = new SqlCommand(@"
                         INSERT INTO Proveedor
@@ -393,6 +395,12 @@ namespace bodegaproyecto
                     "Éxito",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
+
+                // Bitácora: registro de alta o edición de proveedor
+                Bitacora.Registrar(
+                    "Proveedores",
+                    esNuevo ? "Guardar" : "Editar",
+                    (esNuevo ? "Registró" : "Actualizó") + " al proveedor " + nombre);
 
                 LimpiarFormulario();
 
@@ -550,6 +558,12 @@ namespace bodegaproyecto
                 "Información",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
+
+            // Bitácora: registro de cambio de estado del proveedor
+            Bitacora.Registrar(
+                "Proveedores",
+                "Cambiar estado",
+                $"Cambió el proveedor ID {idProveedor} a {(estadoActual == "Activo" ? "Inactivo" : "Activo")}");
 
             permitirSeleccionGrid = false;
             btnEstado.Enabled = false;

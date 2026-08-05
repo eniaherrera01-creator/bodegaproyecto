@@ -31,13 +31,10 @@ namespace bodegaproyecto
 
         private void AsignarEventosManuales()
         {
-            // Primero quitamos eventos por si el Designer ya los agregó
             btnguardar.Click -= btnguardar_Click;
             btneditar.Click -= btneditar_Click;
             btnestado.Click -= btnestado_Click;
             btnnuevo.Click -= btnnuevo_Click;
-
-            // Por si algún botón quedó conectado al evento equivocado
 
             txtbuscar.TextChanged -= txtbuscar_TextChanged;
 
@@ -50,9 +47,6 @@ namespace bodegaproyecto
             txtimpuesto.Enter += txtImpuesto_Enter;
             txtimpuesto.Leave += txtImpuesto_Leave;
 
-
-
-            // Ahora sí agregamos los eventos correctos una sola vez
             btnguardar.Click += btnguardar_Click;
             btneditar.Click += btneditar_Click;
             btnestado.Click += btnestado_Click;
@@ -66,8 +60,6 @@ namespace bodegaproyecto
             txtimpuesto.KeyPress += Decimal_KeyPress;
             txtstock.KeyPress += Entero_KeyPress;
             txtbuscar.KeyPress += TextoProducto_KeyPress;
-  
-
         }
 
         private void txtImpuesto_Enter(object sender, EventArgs e)
@@ -218,8 +210,6 @@ namespace bodegaproyecto
                 return false;
             }
 
-           
-
             if (!ObtenerDecimal(precioVentaTexto, out decimal precioVenta) || precioVenta <= 0)
             {
                 MessageBox.Show("Ingrese un precio de venta válido mayor que 0.", "Validación",
@@ -227,8 +217,6 @@ namespace bodegaproyecto
                 txtprecioventa.Focus();
                 return false;
             }
-
-          
 
             if (!int.TryParse(stockTexto, out int stock) || stock < 0)
             {
@@ -294,6 +282,11 @@ namespace bodegaproyecto
 
             int stock = int.Parse(txtstock.Text.Trim());
 
+            // TEMPORAL: Precio_Compra es NOT NULL en la BD pero el formulario
+            // no tiene un campo para capturarlo todavía. Usando 0 como placeholder
+            // hasta que agregues el campo txtpreciocompra en el formulario.
+            decimal precioCompra = 0;
+
             try
             {
                 using (SqlConnection cn = ConexionBD.ObtenerConexion())
@@ -302,12 +295,11 @@ namespace bodegaproyecto
                         cn.Open();
 
                     string consulta = @"INSERT INTO Producto
-                                (Nombre_Producto,Descripcion,
+                                (Nombre_Producto,Descripcion,Precio_Venta,Precio_Compra,
                                  Stock,fecha_vencimiento,
                                  impuesto,id_categoria,Estado)
                                 VALUES
-                                (@nombre,@descripcion,
-                                 @venta,
+                                (@nombre,@descripcion,@venta,@compra,
                                  @stock,@fecha,
                                  @impuesto,@categoria,@estado)";
 
@@ -316,6 +308,7 @@ namespace bodegaproyecto
                         cmd.Parameters.AddWithValue("@nombre", txtnombre.Text.Trim());
                         cmd.Parameters.AddWithValue("@descripcion", txtdescripcion.Text.Trim());
                         cmd.Parameters.AddWithValue("@venta", precioVenta);
+                        cmd.Parameters.AddWithValue("@compra", precioCompra);
                         cmd.Parameters.AddWithValue("@stock", stock);
                         cmd.Parameters.AddWithValue("@fecha", dtpfv.Value.Date);
                         cmd.Parameters.AddWithValue("@impuesto", impuesto);
@@ -337,8 +330,6 @@ namespace bodegaproyecto
             }
         }
 
-
-
         private void btnguardar_Click(object sender, EventArgs e)
         {
             if (!ValidarCampos())
@@ -352,8 +343,6 @@ namespace bodegaproyecto
             {
                 ActualizarProducto();
             }
-
-
         }
 
         private void btneditar_Click(object sender, EventArgs e)
@@ -394,7 +383,6 @@ namespace bodegaproyecto
             if (!ValidarCampos())
                 return;
 
-           
             ObtenerDecimal(txtprecioventa.Text.Trim(), out decimal precioVenta);
             ObtenerDecimal(txtimpuesto.Text.Trim(), out decimal porcentaje);
 
@@ -479,6 +467,7 @@ namespace bodegaproyecto
                     MessageBox.Show("Estado actualizado correctamente.", "Información",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                   
                     MostrarProductos();
                     LimpiarFormulario();
                 }
@@ -571,8 +560,6 @@ namespace bodegaproyecto
 
         private void TextoProducto_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Para nombre de producto y búsqueda:
-            // permite letras, números, espacios y símbolos básicos.
             if (!char.IsLetterOrDigit(e.KeyChar) &&
                 !char.IsWhiteSpace(e.KeyChar) &&
                 e.KeyChar != '.' &&
@@ -587,8 +574,6 @@ namespace bodegaproyecto
 
         private void TextoDescripcion_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Para descripción:
-            // permite letras, números, espacios y signos comunes.
             if (!char.IsLetterOrDigit(e.KeyChar) &&
                 !char.IsWhiteSpace(e.KeyChar) &&
                 e.KeyChar != '.' &&
@@ -604,7 +589,6 @@ namespace bodegaproyecto
 
         private void Entero_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Solo números enteros
             if (!char.IsDigit(e.KeyChar) &&
                 e.KeyChar != (char)Keys.Back)
             {
@@ -616,7 +600,6 @@ namespace bodegaproyecto
         {
             TextBox caja = sender as TextBox;
 
-            // Permitir números, borrar, punto y coma decimal
             if (!char.IsDigit(e.KeyChar) &&
                 e.KeyChar != '.' &&
                 e.KeyChar != ',' &&
@@ -626,17 +609,12 @@ namespace bodegaproyecto
                 return;
             }
 
-            // Evitar más de un punto o coma decimal
             if ((e.KeyChar == '.' || e.KeyChar == ',') &&
                 (caja.Text.Contains(".") || caja.Text.Contains(",")))
             {
                 e.Handled = true;
             }
         }
-
-       
-
-    
 
         private void dgvproductos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
