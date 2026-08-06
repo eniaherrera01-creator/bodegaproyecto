@@ -35,6 +35,9 @@
 
         private void FrmDetellesVenta_Load(object sender, EventArgs e)
         {
+            dtpDesde.MaxDate = DateTime.Today;
+            dtpHasta.MaxDate = DateTime.Today;
+
             MostrarVentas();
             dgvDetalleVenta.DataSource = null;
         }
@@ -197,6 +200,17 @@
 
         private void BuscarPorFecha()
         {
+            if (dtpDesde.Value.Date > dtpHasta.Value.Date)
+            {
+                MessageBox.Show(
+                    "La fecha inicial no puede ser mayor que la fecha final.",
+                    "Rango de fechas",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
             try
             {
 
