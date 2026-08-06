@@ -220,7 +220,7 @@
             // 
             barButtoncompras.Caption = "Compras";
             barButtoncompras.Id = 23;
-            barButtoncompras.ImageOptions.Image = (Image)resources.GetObject("barButtoncompra.ImageOptions.Image");
+            barButtoncompras.ImageOptions.Image = (Image)resources.GetObject("barButtoncompras.ImageOptions.Image");
             barButtoncompras.Name = "barButtoncompras";
             barButtoncompras.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
             barButtoncompras.ItemClick += barButtonItem7_ItemClick;
@@ -232,6 +232,7 @@
             barButtondetallecompra.ImageOptions.Image = (Image)resources.GetObject("barButtondetallecompra.ImageOptions.Image");
             barButtondetallecompra.Name = "barButtondetallecompra";
             barButtondetallecompra.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            barButtondetallecompra.ItemClick += barButtondetallecompra_ItemClick;
             // 
             // barButtonItem9
             // 
