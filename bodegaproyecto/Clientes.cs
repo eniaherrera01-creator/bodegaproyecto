@@ -157,196 +157,135 @@ namespace bodegaproyecto
         {
 
             Bitacora.Registrar("Cliente", "Nuevo Cliente", $"se creo el cliente {txtNombre.Text}");
-            
-            //==============================
-            // VALIDAR CAMPOS VACIOS
-            //==============================
 
-            if (string.IsNullOrWhiteSpace(txtDNI.Text) ||
-                string.IsNullOrWhiteSpace(txtNombre.Text) ||
-                string.IsNullOrWhiteSpace(txtRTN.Text) ||
-                string.IsNullOrWhiteSpace(txtTelefono.Text) ||
-                string.IsNullOrWhiteSpace(txtCorreo.Text))
+            // ==============================
+            // 1. VALIDAR CAMPOS OBLIGATORIOS
+            // ==============================
+            if (string.IsNullOrWhiteSpace(txtDNI.Text))
             {
-                MessageBox.Show(
-                    "Debe completar todos los campos.",
-                    "Validación",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageBox.Show("El DNI es obligatorio.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtDNI.Focus();
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(txtNombre.Text))
+            {
+                MessageBox.Show("El nombre es obligatorio.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNombre.Focus();
                 return;
             }
 
-            //==============================
-            // NOMBRE
-            //==============================
-
+            // ==============================
+            // 2. VALIDAR NOMBRE (SOLO LETRAS)
+            // ==============================
             foreach (char c in txtNombre.Text)
             {
                 if (!char.IsLetter(c) && c != ' ')
                 {
-                    MessageBox.Show(
-                        "El nombre solo puede contener letras.",
-                        "Validación",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-
+                    MessageBox.Show("El nombre solo puede contener letras.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtNombre.Focus();
                     return;
                 }
             }
 
-            //==============================
-            // RTN
-            //==============================
-
-            if (txtRTN.Text.Length != 14 || !txtRTN.Text.All(char.IsDigit))
-            {
-                MessageBox.Show(
-                    "El RTN debe contener exactamente 14 números.",
-                    "Validación",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
-                txtRTN.Focus();
-                return;
-            }
-
-            //==============================
-            // DNI
-            //==============================
-
+            // ==============================
+            // 3. VALIDAR DNI (OBLIGATORIO, 13 DÍGITOS)
+            // ==============================
             if (txtDNI.Text.Length != 13 || !txtDNI.Text.All(char.IsDigit))
             {
-                MessageBox.Show(
-                    "El DNI debe contener exactamente 13 números.",
-                    "Validación",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageBox.Show("El DNI debe contener exactamente 13 números.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtDNI.Focus();
                 return;
             }
 
-            //==============================
-            // TELEFONO
-            //==============================
-
-            if (txtTelefono.Text.Length != 8 || !txtTelefono.Text.All(char.IsDigit))
+            // ==============================
+            // 4. VALIDAR RTN (OPCIONAL)
+            // ==============================
+            if (!string.IsNullOrWhiteSpace(txtRTN.Text))
             {
-                MessageBox.Show(
-                    "El teléfono debe contener 8 dígitos.",
-                    "Validación",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
-                txtTelefono.Focus();
-                return;
+                if (txtRTN.Text.Length != 14 || !txtRTN.Text.All(char.IsDigit))
+                {
+                    MessageBox.Show("El RTN debe contener exactamente 14 números.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtRTN.Focus();
+                    return;
+                }
             }
 
-
-            //==============================
-            // CORREO
-            //==============================
-
-            if (!Regex.IsMatch(
-                txtCorreo.Text,
-                @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            // ==============================
+            // 5. VALIDAR TELÉFONO (OPCIONAL)
+            // ==============================
+            if (!string.IsNullOrWhiteSpace(txtTelefono.Text))
             {
-                MessageBox.Show(
-                    "Ingrese un correo válido.",
-                    "Validación",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
-                txtCorreo.Focus();
-                return;
+                if (txtTelefono.Text.Length != 8 || !txtTelefono.Text.All(char.IsDigit))
+                {
+                    MessageBox.Show("El teléfono debe contener 8 dígitos.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtTelefono.Focus();
+                    return;
+                }
             }
 
-
-
-
-
-            //==============================
-            // DUPLICADOS
-            //==============================
-
-            if (ExisteRTN(txtRTN.Text.Trim(), selectedClienteId))
+            // ==============================
+            // 6. VALIDAR CORREO (OPCIONAL)
+            // ==============================
+            if (!string.IsNullOrWhiteSpace(txtCorreo.Text))
             {
-                MessageBox.Show(
-                    "El RTN ya está registrado.",
-                    "Validación",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
-                return;
+                if (!Regex.IsMatch(txtCorreo.Text, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                {
+                    MessageBox.Show("Ingrese un correo electrónico válido.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtCorreo.Focus();
+                    return;
+                }
             }
 
+            // ==============================
+            // 7. VALIDAR DUPLICADOS
+            // ==============================
             if (ExisteDNI(txtDNI.Text.Trim(), selectedClienteId))
             {
-                MessageBox.Show(
-                    "El DNI ya está registrado.",
-                    "Validación",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageBox.Show("El DNI ya está registrado.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (!string.IsNullOrWhiteSpace(txtRTN.Text) && ExisteRTN(txtRTN.Text.Trim(), selectedClienteId))
+            {
+                MessageBox.Show("El RTN ya está registrado.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            //==============================
-            // GUARDAR
-            //==============================
-
+            // ==============================
+            // 8. GUARDAR EN BASE DE DATOS
+            // ==============================
             try
             {
                 using (SqlConnection conn = ConexionBD.ObtenerConexion())
                 {
-
                     string query;
-
                     if (selectedClienteId == -1)
                     {
-                        query = @"
-                        INSERT INTO Cliente
-                        (
-                            DNI,
-                            Nombre,
-                            RTN,
-                            Telefono,
-                            Correo,
-                            Direccion)
-                        VALUES
-                        (
-                            @DNI,
-                            @Nombre,
-                            @RTN,
-                            @Telefono,
-                            @Correo,
-                            @Direccion)";
+                        query = @"INSERT INTO Cliente 
+                          (DNI, Nombre, RTN, Telefono, Correo, Direccion) 
+                          VALUES 
+                          (@DNI, @Nombre, @RTN, @Telefono, @Correo, @Direccion)";
                     }
                     else
                     {
-                        query = @"
-                        UPDATE Cliente
-                        SET
-
-                            DNI=@DNI,
-                            Nombre=@Nombre,
-                            RTN=@RTN,
-                            Telefono=@Telefono,
-                            Correo=@Correo,
-                            Direccion=@Direccion
-                        WHERE id_cliente=@ID";
+                        query = @"UPDATE Cliente 
+                          SET DNI = @DNI, 
+                              Nombre = @Nombre, 
+                              RTN = @RTN, 
+                              Telefono = @Telefono, 
+                              Correo = @Correo, 
+                              Direccion = @Direccion 
+                          WHERE id_cliente = @ID";
                     }
 
                     SqlCommand cmd = new SqlCommand(query, conn);
 
+                    // Parámetros (con DBNull.Value para campos opcionales vacíos)
                     cmd.Parameters.AddWithValue("@DNI", txtDNI.Text.Trim());
                     cmd.Parameters.AddWithValue("@Nombre", txtNombre.Text.Trim());
-                    cmd.Parameters.AddWithValue("@RTN", txtRTN.Text.Trim());
-                    cmd.Parameters.AddWithValue("@Telefono", txtTelefono.Text.Trim());
-                    cmd.Parameters.AddWithValue("@Correo", txtCorreo.Text.Trim());
-                    cmd.Parameters.AddWithValue("@Direccion", txtDireccion.Text.Trim());
+                    cmd.Parameters.AddWithValue("@RTN", string.IsNullOrWhiteSpace(txtRTN.Text) ? (object)DBNull.Value : txtRTN.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Telefono", string.IsNullOrWhiteSpace(txtTelefono.Text) ? (object)DBNull.Value : txtTelefono.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Correo", string.IsNullOrWhiteSpace(txtCorreo.Text) ? (object)DBNull.Value : txtCorreo.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Direccion", string.IsNullOrWhiteSpace(txtDireccion.Text) ? (object)DBNull.Value : txtDireccion.Text.Trim());
 
                     if (selectedClienteId != -1)
                         cmd.Parameters.AddWithValue("@ID", selectedClienteId);
@@ -361,21 +300,20 @@ namespace bodegaproyecto
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
 
+                    Bitacora.Registrar(
+                        "Cliente",
+                        selectedClienteId == -1 ? "Nuevo Cliente" : "Editar Cliente",
+                        $"Cliente: {txtNombre.Text} (DNI: {txtDNI.Text})");
+
                     LimpiarFormulario();
-
                     CargarClientes();
-
                     enModoEdicion = false;
                     enModoNuevo = false;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageBox.Show("Error al guardar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -464,6 +402,7 @@ namespace bodegaproyecto
 
         private void btnEstado_Click(object sender, EventArgs e)
         {
+
             if (!permitirSeleccionGrid || dgvClientes.CurrentRow == null)
             {
                 MessageBox.Show(

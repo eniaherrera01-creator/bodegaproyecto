@@ -44,10 +44,61 @@ namespace bodegaproyecto
             btnGuardar.Click += btnGuardar_Click;
             btnCancelar.Click += btnCancelar_Click;
             dgvDetalleCompra.CellDoubleClick += dgvDetalleCompra_CellDoubleClick;
+            dgvCompras.SelectionChanged += dgvCompras_SelectionChanged;
+            dgvDetalleCompra.SelectionChanged += dgvDetalleCompra_SelectionChanged;
 
             this.Load += Compras_Load;
 
 
+        }
+
+        private void dgvDetalleCompra_SelectionChanged(object? sender, EventArgs e)
+        {
+            if (dgvDetalleCompra.SelectedRows.Count == 0) return;
+
+            int index = dgvDetalleCompra.SelectedRows[0].Index;
+            if (index < 0 || index >= detalleActual.Count) return;
+
+            var linea = detalleActual[index];
+
+            // Cargar variables de estado interno
+            idProductoSeleccionado = linea.IdProducto;
+
+            // Cargar cajas de texto con la información de la línea seleccionada
+            txtProducto.Text = linea.Producto;
+            txtCosto.Text = linea.PrecioUnitario.ToString("0.00", CultureInfo.InvariantCulture);
+
+            // Si la línea fue calculada, sacamos el % equivalente para mostrarlo en txtIsvProducto
+            decimal porcentajeEquivalente = linea.PrecioUnitario > 0
+                ? Math.Round((linea.IsvUnitario / linea.PrecioUnitario) * 100m, 2)
+                : 0m;
+
+            txtIsvProducto.Text = porcentajeEquivalente.ToString("0.00", CultureInfo.InvariantCulture);
+            nudCantidad.Value = linea.Cantidad;
+
+            // Consultar el Stock actual del producto a la BD para mostrarlo en txtStockActual
+            CargarStockProductoActual(linea.IdProducto);
+        }
+
+        private void CargarStockProductoActual(int idProducto)
+        {
+            try
+            {
+                using (SqlConnection conn = ConexionBD.ObtenerConexion())
+                {
+                    string sql = "SELECT Stock FROM Producto WHERE id_producto = @id";
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", idProducto);
+                        object result = cmd.ExecuteScalar();
+                        txtStockActual.Text = result != null ? result.ToString() : "0";
+                    }
+                }
+            }
+            catch
+            {
+                txtStockActual.Text = "0";
+            }
         }
 
         // ================== CARGA INICIAL ==================
@@ -191,11 +242,12 @@ namespace bodegaproyecto
         private void dgvCompras_SelectionChanged(object sender, EventArgs e)
         {
             if (cargandoDatos) return;
-            if (dgvCompras.SelectedRows.Count == 0) return;
+            if (dgvCompras.SelectedRows.Count == 0) return; 
 
             int idCompra = Convert.ToInt32(dgvCompras.SelectedRows[0].Cells["colIdCompra"].Value);
             CargarCabeceraCompra(idCompra);
             CargarDetalleCompra(idCompra);
+            HabilitarFormularioCompra(false);
         }
 
         private void CargarCabeceraCompra(int idCompra)
@@ -449,7 +501,7 @@ namespace bodegaproyecto
                 var existente = detalleActual.FirstOrDefault(x => x.IdProducto == idProductoSeleccionado);
                 if (existente != null)
                 {
-                    existente.Cantidad += cantidad;
+                    existente.Cantidad = cantidad;
                     existente.PrecioUnitario = costo;
                     existente.IsvUnitario = isvUnit;
                 }
@@ -489,14 +541,10 @@ namespace bodegaproyecto
             if (e.RowIndex < 0) return;
             if (e.RowIndex >= detalleActual.Count) return;
 
-
+            // Solo permitir doble clic si el formulario está en modo edición (Guardar activado)
+            if (!btnGuardar.Enabled) return;
             var linea = detalleActual[e.RowIndex];
-            if (!linea.EsNuevo)
-            {
-                MessageBox.Show("Solo se pueden quitar líneas que aún no han sido guardadas.",
-                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+
 
             if (MessageBox.Show($"¿Quitar \"{linea.Producto}\" del detalle?", "Confirmar",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -554,6 +602,9 @@ namespace bodegaproyecto
 
             // idCompraActual y el detalle ya fueron cargados por dgvCompras_SelectionChanged
             HabilitarFormularioCompra(true);
+
+            MessageBox.Show("Modo edición activado. Puede modificar la información o agregar más productos.", "Información",
+        MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         // ================== GUARDAR ==================
@@ -561,7 +612,6 @@ namespace bodegaproyecto
         {
 
             if (idProveedorSeleccionado == 0)
-
             {
                 MessageBox.Show("Seleccione un proveedor.", "Aviso",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -585,13 +635,13 @@ namespace bodegaproyecto
                 SqlTransaction tx = conn.BeginTransaction();
                 try
                 {
-                    // 1) Cabecera de la compra
+                    // 1) Cabecera de la compra: Insertar o Actualizar
                     if (idCompraActual == 0)
                     {
                         string sqlInsertCompra = @"
-                            INSERT INTO Compra (fecha_compra, id_proveedor, id_usuario)
-                            OUTPUT INSERTED.id_compra
-                            VALUES (@fecha, @idProveedor, @idUsuario)";
+                    INSERT INTO Compra (fecha_compra, id_proveedor, id_usuario)
+                    OUTPUT INSERTED.id_compra
+                    VALUES (@fecha, @idProveedor, @idUsuario)";
 
                         using (SqlCommand cmd = new SqlCommand(sqlInsertCompra, conn, tx))
                         {
@@ -601,17 +651,55 @@ namespace bodegaproyecto
                             idCompraActual = (int)cmd.ExecuteScalar();
                         }
                     }
+                    else
+                    {
+                        // Si la compra ya existe, actualizar cabecera
+                        string sqlUpdateCompra = @"
+                    UPDATE Compra 
+                    SET fecha_compra = @fecha, id_proveedor = @idProveedor, id_usuario = @idUsuario
+                    WHERE id_compra = @idCompra";
 
-                    // 2) Detalle: solo las líneas nuevas (EsNuevo = true)
+                        using (SqlCommand cmd = new SqlCommand(sqlUpdateCompra, conn, tx))
+                        {
+                            cmd.Parameters.AddWithValue("@fecha", dtpFecha.Value);
+                            cmd.Parameters.AddWithValue("@idProveedor", idProveedorSeleccionado);
+                            cmd.Parameters.AddWithValue("@idUsuario", cmbUsuario.SelectedValue);
+                            cmd.Parameters.AddWithValue("@idCompra", idCompraActual);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        // Si se esta editando, revertimos el Stock y borramos el detalle viejo para reinsertar el nuevo
+                        string sqlRevertirStock = @"
+                    UPDATE Producto 
+                    SET Stock = Stock - dc.Cantidad
+                    FROM Producto p
+                    INNER JOIN Detalle_Compra dc ON p.id_producto = dc.id_producto
+                    WHERE dc.id_compra = @idCompra";
+
+                        using (SqlCommand cmd = new SqlCommand(sqlRevertirStock, conn, tx))
+                        {
+                            cmd.Parameters.AddWithValue("@idCompra", idCompraActual);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        string sqlDeleteDetalle = "DELETE FROM Detalle_Compra WHERE id_compra = @idCompra";
+                        using (SqlCommand cmd = new SqlCommand(sqlDeleteDetalle, conn, tx))
+                        {
+                            cmd.Parameters.AddWithValue("@idCompra", idCompraActual);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    // 2) Insertar las líneas vigentes de detalleActual y actualizar Stock
                     string sqlDetalle = @"
-                        INSERT INTO Detalle_Compra (Cantidad, precio_unitario, id_compra, id_producto)
-                        VALUES (@cantidad, @precio, @idCompra, @idProducto)";
+                INSERT INTO Detalle_Compra (Cantidad, precio_unitario, id_compra, id_producto)
+                VALUES (@cantidad, @precio, @idCompra, @idProducto)";
 
                     string sqlStock = @"
-                        UPDATE Producto SET Stock = Stock + @cantidad
-                        WHERE id_producto = @idProducto";
+                UPDATE Producto SET Stock = Stock + @cantidad
+                WHERE id_producto = @idProducto";
 
-                    foreach (var linea in detalleActual.Where(l => l.EsNuevo))
+                    foreach (var linea in detalleActual)
                     {
                         using (SqlCommand cmd = new SqlCommand(sqlDetalle, conn, tx))
                         {
@@ -631,13 +719,23 @@ namespace bodegaproyecto
                     }
 
                     tx.Commit();
-                    Bitacora.Registrar("Compras", "Nueva Compra", "Se registro una nueva compra");
+                    Bitacora.Registrar("Compras", "Guardar Compra", "Se guardó/actualizó la compra ID: " + idCompraActual);
                     MessageBox.Show("Compra guardada correctamente.", "Éxito",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                    // PASO 1: Desactivar escuchadores de eventos
+                    cargandoDatos = true;
+
+                    // PASO 2: Recargar las compras sin seleccionar ninguna fila
+                    CargarCompras(txtBuscarCompra.Text.Trim());
+                    dgvCompras.ClearSelection();
+
+                    // PASO 3: Limpiar el formulario y deshabilitar controles
                     LimpiarFormularioCompra();
                     HabilitarFormularioCompra(false);
-                    CargarCompras(txtBuscarCompra.Text.Trim());
+
+                    // PASO 4: Reactivar eventos
+                    cargandoDatos = false;
                 }
                 catch (Exception ex)
                 {
@@ -647,6 +745,7 @@ namespace bodegaproyecto
                 }
             }
         }
+
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
@@ -669,17 +768,34 @@ namespace bodegaproyecto
 
         private void LimpiarFormularioCompra()
         {
+
+            // 1. Resetear variables de estado interno
+            idCompraActual = 0;
+            idProveedorSeleccionado = 0;
+            idProductoSeleccionado = 0;
+            impuestoProductoSeleccionado = 0;
+
             txtIdCompra.Text = "(Automático)";
             dtpFecha.Value = DateTime.Now;
             txtBuscarProveedor.Clear();
             txtProveedor.Clear();
             txtTelefono.Clear();
-            idProveedorSeleccionado = 0;
 
+            // 3. Limpiar panel lateral (Agregar Producto)
+            LimpiarPanelProducto();
+            
+
+            // 4. Vaciar lista en memoria y limpiar la grilla del detalle
             detalleActual.Clear();
             dgvDetalleCompra.Rows.Clear();
+
+            // 5. Blanquear etiquetas de los totales
+            lblSubtotalValor.Text = "L. 0.00";
+            lblIsvValor.Text = "L. 0.00";
+            lblTotalValor.Text = "L. 0.00";
+
+            // 5. Recalcular y forzar la reescritura de los totales a cero
             RecalcularTotales();
-            LimpiarPanelProducto();
         }
 
         private void HabilitarFormularioCompra(bool activar)
@@ -688,9 +804,15 @@ namespace bodegaproyecto
             txtBuscarProveedor.Enabled = activar;
             btnBuscarProveedor.Enabled = activar;
             cmbUsuario.Enabled = activar;
+            grpAgregarProducto.Enabled = activar; // Habilita o deshabilita el panel de productos
             grpAgregarProducto.Enabled = activar;
             btnGuardar.Enabled = activar;
             btnCancelar.Enabled = activar;
+
+            // Controlar campos específicos según estado
+            txtCosto.ReadOnly = !activar;
+            txtIsvProducto.ReadOnly = !activar;
+            nudCantidad.Enabled = activar;
         }
     }
 }

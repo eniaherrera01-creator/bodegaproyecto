@@ -15,6 +15,17 @@ namespace bodegaproyecto
         {
             InitializeComponent();
             AsignarEventos();
+
+            txtBuscarID.KeyPress += TxtBuscarID_KeyPress;
+
+        }
+
+        private void TxtBuscarID_KeyPress(object? sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
         }
 
         private void AsignarEventos()
@@ -114,6 +125,9 @@ namespace bodegaproyecto
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(txtBuscarID.Text))
+                    return;
+
                 conexion = ConexionBD.ObtenerConexion();
 
                 string consulta = @"

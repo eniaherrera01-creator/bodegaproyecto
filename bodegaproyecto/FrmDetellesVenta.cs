@@ -17,6 +17,9 @@
             InitializeComponent();
 
             AsignarEventos();
+
+            txtBuscarID.KeyPress += TxtBuscarID_KeyPress;
+
         }
 
 
@@ -29,9 +32,18 @@
             btnBuscarFecha.Click += btnBuscarFecha_Click;
 
             dgvVentas.CellClick += dgvVentas_CellClick;
+
+
         }
 
-
+        private void TxtBuscarID_KeyPress(object? sender, KeyPressEventArgs e)
+        {
+            // Permitir solo dígitos, tecla Backspace y teclas de control (Ctrl+C, Ctrl+V, etc.)
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true; // Bloquear el caracter
+            }
+        }
 
         private void FrmDetellesVenta_Load(object sender, EventArgs e)
         {
@@ -109,13 +121,29 @@
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            if (txtBuscarID.Text.Trim() == "")
+            string texto = txtBuscarID.Text.Trim();
+
+            // Si está vacío, mostrar todas las ventas
+            if (string.IsNullOrEmpty(texto))
             {
                 MostrarVentas();
                 return;
             }
 
+            // Validar que solo contenga números
+            if (!int.TryParse(texto, out _))
+            {
+                MessageBox.Show(
+                    "El ID de venta debe ser un número válido.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                txtBuscarID.Clear();
+                txtBuscarID.Focus();
+                return;
+            }
 
+            // Si es numérico, ejecutar búsqueda
             BuscarVenta();
         }
 
@@ -125,7 +153,9 @@
         {
             try
             {
-
+                // Si no hay texto, no hacer nada (ya se validó antes)
+                if (string.IsNullOrWhiteSpace(txtBuscarID.Text))
+                    return;
 
                 string consulta = @"
                     SELECT

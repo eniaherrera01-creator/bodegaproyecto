@@ -450,7 +450,7 @@ namespace bodegaproyecto
             btnActualizar.Name = "btnActualizar";
             btnActualizar.Size = new Size(105, 34);
             btnActualizar.TabIndex = 4;
-            btnActualizar.Text = "↻ Clientes";
+            btnActualizar.Text = "↻ Refrescar";
             btnActualizar.UseVisualStyleBackColor = false;
             btnActualizar.Click += btnActualizar_Click;
             // 
