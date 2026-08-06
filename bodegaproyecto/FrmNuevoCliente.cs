@@ -211,7 +211,9 @@ namespace bodegaproyecto
 
                         cmd.Parameters.AddWithValue(
                             "@telefono",
-                            txtTelefono.Text.Trim());
+                            string.IsNullOrWhiteSpace(txtTelefono.Text)
+                            ? "N/A"
+                            : txtTelefono.Text.Trim());
 
 
                         cmd.Parameters.AddWithValue(

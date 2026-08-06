@@ -279,13 +279,13 @@ namespace bodegaproyecto
 
                     SqlCommand cmd = new SqlCommand(query, conn);
 
-                    // Parámetros (con DBNull.Value para campos opcionales vacíos)
+                    // Parámetros (con "N/A" para campos opcionales vacíos)
                     cmd.Parameters.AddWithValue("@DNI", txtDNI.Text.Trim());
                     cmd.Parameters.AddWithValue("@Nombre", txtNombre.Text.Trim());
-                    cmd.Parameters.AddWithValue("@RTN", string.IsNullOrWhiteSpace(txtRTN.Text) ? (object)DBNull.Value : txtRTN.Text.Trim());
-                    cmd.Parameters.AddWithValue("@Telefono", string.IsNullOrWhiteSpace(txtTelefono.Text) ? (object)DBNull.Value : txtTelefono.Text.Trim());
-                    cmd.Parameters.AddWithValue("@Correo", string.IsNullOrWhiteSpace(txtCorreo.Text) ? (object)DBNull.Value : txtCorreo.Text.Trim());
-                    cmd.Parameters.AddWithValue("@Direccion", string.IsNullOrWhiteSpace(txtDireccion.Text) ? (object)DBNull.Value : txtDireccion.Text.Trim());
+                    cmd.Parameters.AddWithValue("@RTN", string.IsNullOrWhiteSpace(txtRTN.Text) ? "N/A" : txtRTN.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Telefono", string.IsNullOrWhiteSpace(txtTelefono.Text) ? "N/A" : txtTelefono.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Correo", string.IsNullOrWhiteSpace(txtCorreo.Text) ? "N/A" : txtCorreo.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Direccion", string.IsNullOrWhiteSpace(txtDireccion.Text) ? "N/A" : txtDireccion.Text.Trim());
 
                     if (selectedClienteId != -1)
                         cmd.Parameters.AddWithValue("@ID", selectedClienteId);
