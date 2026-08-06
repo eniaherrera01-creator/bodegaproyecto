@@ -42,17 +42,19 @@
             barStaticrol = new DevExpress.XtraBars.BarStaticItem();
             barButtonItem4 = new DevExpress.XtraBars.BarButtonItem();
             barButtonclientes = new DevExpress.XtraBars.BarButtonItem();
-            barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
-            barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
-            barButtonItem5 = new DevExpress.XtraBars.BarButtonItem();
-            barButtonItem6 = new DevExpress.XtraBars.BarButtonItem();
-            barButtonItem7 = new DevExpress.XtraBars.BarButtonItem();
-            barButtonItem8 = new DevExpress.XtraBars.BarButtonItem();
+            barButtonproductos = new DevExpress.XtraBars.BarButtonItem();
+            barButtonventas = new DevExpress.XtraBars.BarButtonItem();
+            barButtondetalleventa = new DevExpress.XtraBars.BarButtonItem();
+            barButtonreportes = new DevExpress.XtraBars.BarButtonItem();
+            barButtoncompras = new DevExpress.XtraBars.BarButtonItem();
+            barButtondetallecompra = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem9 = new DevExpress.XtraBars.BarButtonItem();
+            BTbitacora = new DevExpress.XtraBars.BarButtonItem();
             ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPageGroup8 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            BItacora = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPage2 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPageGroup3 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
@@ -64,8 +66,6 @@
             ribbonPageGroup9 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonPageGroup10 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             panelContenedor = new DevExpress.XtraEditors.PanelControl();
-            BItacora = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            BTbitacora = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)ribbon).BeginInit();
             ((System.ComponentModel.ISupportInitialize)panelContenedor).BeginInit();
             SuspendLayout();
@@ -77,11 +77,11 @@
             ribbonStatusBar.ItemLinks.Add(barStaticItemusuarios);
             ribbonStatusBar.ItemLinks.Add(barStaticItemrol);
             ribbonStatusBar.ItemLinks.Add(barButtoncerrarsesion);
-            ribbonStatusBar.Location = new Point(0, 441);
-            ribbonStatusBar.Margin = new Padding(3, 2, 3, 2);
+            ribbonStatusBar.Location = new Point(0, 542);
+            ribbonStatusBar.Margin = new Padding(4, 2, 4, 2);
             ribbonStatusBar.Name = "ribbonStatusBar";
             ribbonStatusBar.Ribbon = ribbon;
-            ribbonStatusBar.Size = new Size(903, 24);
+            ribbonStatusBar.Size = new Size(1054, 30);
             ribbonStatusBar.Click += ribbonStatusBar_Click;
             // 
             // barStaticItemusuarios
@@ -106,17 +106,15 @@
             // 
             ribbon.BackColor = Color.FromArgb(192, 255, 255);
             ribbon.CaptionBarItemLinks.Add(barButtonItem1);
-            ribbon.EmptyAreaImageOptions.ImagePadding = new Padding(26, 24, 26, 24);
             ribbon.ExpandCollapseItem.Id = 0;
-            ribbon.Items.AddRange(new DevExpress.XtraBars.BarItem[] { barButtonItem1, ribbon.ExpandCollapseItem, barButtonusuarios, barButtoncategorias, barButtomproveedores, barStaticusuario, barStaticrol, barButtonItem4, barStaticItemusuarios, barStaticItemrol, barButtoncerrarsesion, barButtonclientes, barButtonItem2, barButtonItem3, barButtonItem5, barButtonItem6, barButtonItem7, barButtonItem8, barButtonItem9, BTbitacora });
+            ribbon.Items.AddRange(new DevExpress.XtraBars.BarItem[] { barButtonItem1, ribbon.ExpandCollapseItem, barButtonusuarios, barButtoncategorias, barButtomproveedores, barStaticusuario, barStaticrol, barButtonItem4, barStaticItemusuarios, barStaticItemrol, barButtoncerrarsesion, barButtonclientes, barButtonproductos, barButtonventas, barButtondetalleventa, barButtonreportes, barButtoncompras, barButtondetallecompra, barButtonItem9, BTbitacora });
             ribbon.Location = new Point(0, 0);
-            ribbon.Margin = new Padding(3, 2, 3, 2);
+            ribbon.Margin = new Padding(4, 2, 4, 2);
             ribbon.MaxItemId = 28;
             ribbon.Name = "ribbon";
-            ribbon.OptionsMenuMinWidth = 283;
             ribbon.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1, ribbonPage2, ribbonPage3, ribbonPage4 });
             ribbon.QuickToolbarItemLinks.Add(barButtonItem9);
-            ribbon.Size = new Size(903, 158);
+            ribbon.Size = new Size(1054, 193);
             ribbon.StatusBar = ribbonStatusBar;
             ribbon.Click += ribbon_Click;
             // 
@@ -182,58 +180,58 @@
             barButtonclientes.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
             barButtonclientes.ItemClick += barButtonclientes_ItemClick;
             // 
-            // barButtonItem2
+            // barButtonproductos
             // 
-            barButtonItem2.Caption = "Productos";
-            barButtonItem2.Id = 19;
-            barButtonItem2.ImageOptions.Image = (Image)resources.GetObject("barButtonItem2.ImageOptions.Image");
-            barButtonItem2.Name = "barButtonItem2";
-            barButtonItem2.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            barButtonItem2.ItemClick += barButtonItem2_ItemClick_1;
+            barButtonproductos.Caption = "Productos";
+            barButtonproductos.Id = 19;
+            barButtonproductos.ImageOptions.Image = (Image)resources.GetObject("barButtonproductos.ImageOptions.Image");
+            barButtonproductos.Name = "barButtonproductos";
+            barButtonproductos.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            barButtonproductos.ItemClick += barButtonItem2_ItemClick_1;
             // 
-            // barButtonItem3
+            // barButtonventas
             // 
-            barButtonItem3.Caption = "Ventas";
-            barButtonItem3.Id = 20;
-            barButtonItem3.ImageOptions.Image = (Image)resources.GetObject("barButtonItem3.ImageOptions.Image");
-            barButtonItem3.Name = "barButtonItem3";
-            barButtonItem3.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            barButtonItem3.ItemClick += barButtonItem3_ItemClick_1;
+            barButtonventas.Caption = "Ventas";
+            barButtonventas.Id = 20;
+            barButtonventas.ImageOptions.Image = (Image)resources.GetObject("barButtonventas.ImageOptions.Image");
+            barButtonventas.Name = "barButtonventas";
+            barButtonventas.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            barButtonventas.ItemClick += barButtonItem3_ItemClick_1;
             // 
-            // barButtonItem5
+            // barButtondetalleventa
             // 
-            barButtonItem5.Caption = "Detalles de la venta";
-            barButtonItem5.Id = 21;
-            barButtonItem5.ImageOptions.Image = (Image)resources.GetObject("barButtonItem5.ImageOptions.Image");
-            barButtonItem5.Name = "barButtonItem5";
-            barButtonItem5.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large | DevExpress.XtraBars.Ribbon.RibbonItemStyles.SmallWithoutText;
-            barButtonItem5.ItemClick += barButtonItem5_ItemClick;
+            barButtondetalleventa.Caption = "Detalles de la venta";
+            barButtondetalleventa.Id = 21;
+            barButtondetalleventa.ImageOptions.Image = (Image)resources.GetObject("barButtondetalleventa.ImageOptions.Image");
+            barButtondetalleventa.Name = "barButtondetalleventa";
+            barButtondetalleventa.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large | DevExpress.XtraBars.Ribbon.RibbonItemStyles.SmallWithoutText;
+            barButtondetalleventa.ItemClick += barButtonItem5_ItemClick;
             // 
-            // barButtonItem6
+            // barButtonreportes
             // 
-            barButtonItem6.Caption = "Reportes";
-            barButtonItem6.Id = 22;
-            barButtonItem6.ImageOptions.Image = (Image)resources.GetObject("barButtonItem6.ImageOptions.Image");
-            barButtonItem6.Name = "barButtonItem6";
-            barButtonItem6.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            barButtonItem6.ItemClick += barButtonItem6_ItemClick;
+            barButtonreportes.Caption = "Reportes";
+            barButtonreportes.Id = 22;
+            barButtonreportes.ImageOptions.Image = (Image)resources.GetObject("barButtonreportes.ImageOptions.Image");
+            barButtonreportes.Name = "barButtonreportes";
+            barButtonreportes.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            barButtonreportes.ItemClick += barButtonItem6_ItemClick;
             // 
-            // barButtonItem7
+            // barButtoncompras
             // 
-            barButtonItem7.Caption = "Compras";
-            barButtonItem7.Id = 23;
-            barButtonItem7.ImageOptions.Image = (Image)resources.GetObject("barButtonItem7.ImageOptions.Image");
-            barButtonItem7.Name = "barButtonItem7";
-            barButtonItem7.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            barButtonItem7.ItemClick += barButtonItem7_ItemClick;
+            barButtoncompras.Caption = "Compras";
+            barButtoncompras.Id = 23;
+            barButtoncompras.ImageOptions.Image = (Image)resources.GetObject("barButtoncompra.ImageOptions.Image");
+            barButtoncompras.Name = "barButtoncompras";
+            barButtoncompras.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            barButtoncompras.ItemClick += barButtonItem7_ItemClick;
             // 
-            // barButtonItem8
+            // barButtondetallecompra
             // 
-            barButtonItem8.Caption = "Detalle de la compra";
-            barButtonItem8.Id = 24;
-            barButtonItem8.ImageOptions.Image = (Image)resources.GetObject("barButtonItem8.ImageOptions.Image");
-            barButtonItem8.Name = "barButtonItem8";
-            barButtonItem8.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            barButtondetallecompra.Caption = "Detalle de la compra";
+            barButtondetallecompra.Id = 24;
+            barButtondetallecompra.ImageOptions.Image = (Image)resources.GetObject("barButtondetallecompra.ImageOptions.Image");
+            barButtondetallecompra.Name = "barButtondetallecompra";
+            barButtondetallecompra.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
             // 
             // barButtonItem9
             // 
@@ -243,6 +241,15 @@
             barButtonItem9.Name = "barButtonItem9";
             barButtonItem9.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
             barButtonItem9.ItemClick += barButtonItem9_ItemClick;
+            // 
+            // BTbitacora
+            // 
+            BTbitacora.Caption = "Bitacora";
+            BTbitacora.Id = 27;
+            BTbitacora.ImageOptions.Image = (Image)resources.GetObject("BTbitacora.ImageOptions.Image");
+            BTbitacora.ImageOptions.LargeImage = (Image)resources.GetObject("BTbitacora.ImageOptions.LargeImage");
+            BTbitacora.Name = "BTbitacora";
+            BTbitacora.ItemClick += BTbitacora_ItemClick;
             // 
             // ribbonPage1
             // 
@@ -262,8 +269,13 @@
             // 
             // ribbonPageGroup8
             // 
-            ribbonPageGroup8.ItemLinks.Add(barButtonItem6);
+            ribbonPageGroup8.ItemLinks.Add(barButtonreportes);
             ribbonPageGroup8.Name = "ribbonPageGroup8";
+            // 
+            // BItacora
+            // 
+            BItacora.ItemLinks.Add(BTbitacora);
+            BItacora.Name = "BItacora";
             // 
             // ribbonPage2
             // 
@@ -283,7 +295,7 @@
             // 
             // ribbonPageGroup5
             // 
-            ribbonPageGroup5.ItemLinks.Add(barButtonItem2);
+            ribbonPageGroup5.ItemLinks.Add(barButtonproductos);
             ribbonPageGroup5.Name = "ribbonPageGroup5";
             // 
             // ribbonPage3
@@ -294,12 +306,12 @@
             // 
             // ribbonPageGroup6
             // 
-            ribbonPageGroup6.ItemLinks.Add(barButtonItem3);
+            ribbonPageGroup6.ItemLinks.Add(barButtonventas);
             ribbonPageGroup6.Name = "ribbonPageGroup6";
             // 
             // ribbonPageGroup7
             // 
-            ribbonPageGroup7.ItemLinks.Add(barButtonItem5);
+            ribbonPageGroup7.ItemLinks.Add(barButtondetalleventa);
             ribbonPageGroup7.Name = "ribbonPageGroup7";
             // 
             // ribbonPage4
@@ -310,46 +322,33 @@
             // 
             // ribbonPageGroup9
             // 
-            ribbonPageGroup9.ItemLinks.Add(barButtonItem7);
+            ribbonPageGroup9.ItemLinks.Add(barButtoncompras);
             ribbonPageGroup9.Name = "ribbonPageGroup9";
             // 
             // ribbonPageGroup10
             // 
-            ribbonPageGroup10.ItemLinks.Add(barButtonItem8);
+            ribbonPageGroup10.ItemLinks.Add(barButtondetallecompra);
             ribbonPageGroup10.Name = "ribbonPageGroup10";
             // 
             // panelContenedor
             // 
             panelContenedor.Dock = DockStyle.Fill;
-            panelContenedor.Location = new Point(0, 158);
-            panelContenedor.Margin = new Padding(3, 2, 3, 2);
+            panelContenedor.Location = new Point(0, 193);
+            panelContenedor.Margin = new Padding(4, 2, 4, 2);
             panelContenedor.Name = "panelContenedor";
-            panelContenedor.Size = new Size(903, 283);
+            panelContenedor.Size = new Size(1054, 349);
             panelContenedor.TabIndex = 2;
             panelContenedor.Paint += panelContenedor_Paint;
             // 
-            // BItacora
-            // 
-            BItacora.ItemLinks.Add(BTbitacora);
-            BItacora.Name = "BItacora";
-            BItacora.Text = "Bitacora";
-            // 
-            // BTbitacora
-            // 
-            BTbitacora.Caption = "barButtonItem10";
-            BTbitacora.Id = 27;
-            BTbitacora.Name = "BTbitacora";
-            BTbitacora.ItemClick += BTbitacora_ItemClick;
-            // 
             // menu
             // 
-            AutoScaleDimensions = new SizeF(6F, 13F);
+            AutoScaleDimensions = new SizeF(7F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(903, 465);
+            ClientSize = new Size(1054, 572);
             Controls.Add(panelContenedor);
             Controls.Add(ribbon);
             Controls.Add(ribbonStatusBar);
-            Margin = new Padding(3, 2, 3, 2);
+            Margin = new Padding(4, 2, 4, 2);
             Name = "menu";
             Ribbon = ribbon;
             StartPosition = FormStartPosition.CenterScreen;
@@ -384,19 +383,19 @@
         private DevExpress.XtraBars.BarButtonItem barButtonItem1;
         private DevExpress.XtraBars.BarButtonItem barButtonclientes;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup4;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem2;
+        private DevExpress.XtraBars.BarButtonItem barButtonproductos;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup5;
         private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage3;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup6;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem3;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem5;
+        private DevExpress.XtraBars.BarButtonItem barButtonventas;
+        private DevExpress.XtraBars.BarButtonItem barButtondetalleventa;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup7;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem6;
+        private DevExpress.XtraBars.BarButtonItem barButtonreportes;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup8;
         private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage4;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup9;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem7;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem8;
+        private DevExpress.XtraBars.BarButtonItem barButtoncompras;
+        private DevExpress.XtraBars.BarButtonItem barButtondetallecompra;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup10;
         private DevExpress.XtraBars.BarButtonItem barButtonItem9;
         private DevExpress.XtraBars.BarButtonItem BTbitacora;

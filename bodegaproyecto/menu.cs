@@ -59,8 +59,16 @@ namespace bodegaproyecto
 
             // Bloquear los botones primero
             barButtonusuarios.Enabled = false;
+            barButtonclientes.Enabled = false;
+            barButtonreportes.Enabled = false;
+            BTbitacora.Enabled = false;
             barButtoncategorias.Enabled = false;
             barButtomproveedores.Enabled = false;
+            barButtonproductos.Enabled = false;
+            barButtoncompras.Enabled = false;
+            barButtondetallecompra.Enabled = false;
+            barButtonventas.Enabled = false;
+            barButtondetalleventa.Enabled = false;
 
 
 
@@ -70,8 +78,17 @@ namespace bodegaproyecto
 
                 case "administrador":
                     barButtonusuarios.Enabled = true;
+                    barButtonclientes.Enabled = true;
+                    barButtonreportes.Enabled = true;
+                    BTbitacora.Enabled = true;
                     barButtoncategorias.Enabled = true;
                     barButtomproveedores.Enabled = true;
+                    barButtonproductos.Enabled = true;
+                    barButtoncompras.Enabled = true;
+                    barButtondetallecompra.Enabled = true;
+                    barButtonventas.Enabled = true;
+                    barButtondetalleventa.Enabled = true;
+
 
                     break;
 
@@ -80,6 +97,11 @@ namespace bodegaproyecto
                 case "supervisor":
                     barButtoncategorias.Enabled = true;
                     barButtomproveedores.Enabled = true;
+                    barButtonproductos.Enabled = true;
+                    barButtonventas.Enabled = true;
+                    barButtondetalleventa.Enabled = true;
+                    barButtoncompras.Enabled = true;
+                    barButtondetallecompra.Enabled = true;
 
                     break;
 
@@ -89,6 +111,10 @@ namespace bodegaproyecto
 
                     barButtoncategorias.Enabled = true;
                     barButtomproveedores.Enabled = true;
+                    barButtonproductos.Enabled = true;
+                    barButtoncompras.Enabled = true;
+                    barButtondetallecompra.Enabled = true;
+
 
                     break;
 
@@ -96,7 +122,9 @@ namespace bodegaproyecto
 
                 case "vendedor":
 
-                    // No tiene acceso todavía
+                    barButtonventas.Enabled = true;
+                    barButtondetalleventa.Enabled = true;
+
 
                     break;
 
@@ -104,7 +132,8 @@ namespace bodegaproyecto
 
                 case "cajero":
 
-                    // No tiene acceso todavía
+                    barButtonventas.Enabled = true;
+                    barButtondetalleventa.Enabled = true;
 
                     break;
 
@@ -286,7 +315,15 @@ namespace bodegaproyecto
         private void BTbitacora_ItemClick(object sender, ItemClickEventArgs e)
         {
             pbitacora frm = new pbitacora();
-            frm.ShowDialog();
+            frm.TopLevel = false;
+            frm.FormBorderStyle = FormBorderStyle.None;
+            frm.Dock = DockStyle.Fill;
+
+            panelContenedor.Controls.Clear();
+
+            panelContenedor.Controls.Add(frm);
+
+            frm.Show();
         }
     }
 }

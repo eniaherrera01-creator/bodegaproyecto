@@ -67,34 +67,64 @@ namespace bodegaproyecto
             dgvCompras.Columns[2].HeaderText = "Proveedor";
             dgvCompras.Columns[3].HeaderText = "Total";
 
+            dgvCompras.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvCompras.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvCompras.MultiSelect = false;
+            dgvCompras.ReadOnly = true;
+            dgvCompras.AllowUserToAddRows = false;
+            dgvCompras.AllowUserToDeleteRows = false;
+
+
             // dgvDetalleCompra: producto, cantidad, precio unit, isv, subtotal
             dgvDetalleCompra.Columns[0].HeaderText = "Producto";
             dgvDetalleCompra.Columns[1].HeaderText = "Cantidad";
             dgvDetalleCompra.Columns[2].HeaderText = "Precio Unit.";
             dgvDetalleCompra.Columns[3].HeaderText = "ISV";
             dgvDetalleCompra.Columns[4].HeaderText = "Subtotal";
+
+            dgvDetalleCompra.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvDetalleCompra.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvDetalleCompra.MultiSelect = false;
+            dgvDetalleCompra.ReadOnly = true;
+            dgvDetalleCompra.AllowUserToAddRows = false;
+            dgvDetalleCompra.AllowUserToDeleteRows = false;
+
         }
 
         private void CargarUsuarios()
         {
             try
             {
-                using (SqlConnection conn = ConexionBD.ObtenerConexion())
+                using (SqlConnection cn = ConexionBD.ObtenerConexion())
                 {
-                    string sql = "SELECT id_usuario, Nombre FROM Usuario ORDER BY Nombre";
-                    SqlDataAdapter da = new SqlDataAdapter(sql, conn);
+                    if (cn.State != ConnectionState.Open)
+                        cn.Open();
+
+                    string consulta = @"
+                SELECT id_usuario, usuario
+                FROM Usuario
+                WHERE usuario = @usuario";
+
+                    SqlCommand cmd = new SqlCommand(consulta, cn);
+                    cmd.Parameters.AddWithValue("@usuario", menu.UsuarioActual);
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
-                    cmbUsuario.DisplayMember = "Nombre";
-                    cmbUsuario.ValueMember = "id_usuario";
                     cmbUsuario.DataSource = dt;
+                    cmbUsuario.DisplayMember = "usuario";
+                    cmbUsuario.ValueMember = "id_usuario";
+
+                    if (dt.Rows.Count > 0)
+                        cmbUsuario.SelectedIndex = 0;
+
+                    cmbUsuario.Enabled = false;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar usuarios: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al cargar usuario: " + ex.Message);
             }
         }
 
