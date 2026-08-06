@@ -55,6 +55,7 @@ namespace bodegaproyecto
             btnBuscarProducto.Click += btnBuscarProducto_Click;
             txtBuscar.TextChanged += txtBuscar_TextChanged;
             dgvVentas.CellClick += dgvVentas_CellClick;
+            dgvDetallesVentas.CellDoubleClick += dgvDetallesVentas_CellDoubleClick;
             nudCantidad.ValueChanged += nudCantidad_ValueChanged;
             btnAgregarProducto.Click += btnAgregarProducto_Click;
             dgvDetallesVentas.CellClick += dgvDetallesVentas_CellClick;
@@ -62,6 +63,54 @@ namespace bodegaproyecto
             btnNuevoCliente.Click += btnNuevoCliente_Click;
             cmbTipoCliente.SelectedIndexChanged += cmbTipoCliente_SelectedIndexChanged;
             this.Load += Ventas_Load;
+        }
+
+        private void dgvDetallesVentas_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            // Verificar que haya una fila válida seleccionada
+            if (e.RowIndex < 0 || e.RowIndex >= detalleVenta.Rows.Count)
+                return;
+
+            // Solo permitir eliminar si estamos en modo NUEVA venta (no en edición)
+            if (!modoNuevo)
+            {
+                MessageBox.Show(
+                    "Solo puede eliminar productos de una venta que está creando.\n" +
+                    "Para modificar una venta existente, edite la cantidad directamente.",
+                    "Aviso",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                return;
+            }
+
+            // Obtener la fila seleccionada
+            DataRow fila = detalleVenta.Rows[e.RowIndex];
+            string producto = fila["Producto"].ToString();
+            int cantidad = Convert.ToInt32(fila["Cantidad"]);
+
+            // Confirmar eliminación
+            DialogResult resultado = MessageBox.Show(
+                $"¿Desea eliminar el producto \"{producto}\" (Cantidad: {cantidad}) del detalle?",
+                "Confirmar eliminación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (resultado == DialogResult.Yes)
+            {
+                // Eliminar la fila del DataTable
+                detalleVenta.Rows.RemoveAt(e.RowIndex);
+
+                // Refrescar el DataGridView (se actualiza automáticamente porque está enlazado)
+                // Pero forzamos la actualización de la vista
+                dgvDetallesVentas.Refresh();
+
+                // Recalcular totales
+                CalcularTotales();
+
+                // Registrar en bitácora (opcional)
+                Bitacora.Registrar("Ventas", "Eliminar producto",
+                    $"Se eliminó el producto {producto} del detalle de la venta nueva.");
+            }
         }
 
         private void LimpiarFormulario()

@@ -87,6 +87,13 @@ namespace bodegaproyecto
                 return false;
             }
 
+            if (txtDNI.Text.Length != 13 || !txtDNI.Text.All(char.IsDigit))
+            {
+                MessageBox.Show("El DNI debe contener exactamente 13 números.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtDNI.Focus();
+                return false;
+            }
+
 
             if (string.IsNullOrWhiteSpace(txtTelefono.Text))
             {
