@@ -42,7 +42,7 @@
             dataGridView1.Margin = new Padding(3, 4, 3, 4);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(1519, 744);
+            dataGridView1.Size = new Size(1773, 804);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
@@ -54,7 +54,7 @@
             pnlTitulo.Location = new Point(0, 0);
             pnlTitulo.Margin = new Padding(4);
             pnlTitulo.Name = "pnlTitulo";
-            pnlTitulo.Size = new Size(1585, 69);
+            pnlTitulo.Size = new Size(1837, 69);
             pnlTitulo.TabIndex = 1;
             // 
             // lblTitulo
@@ -73,7 +73,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1585, 896);
+            ClientSize = new Size(1837, 931);
             Controls.Add(pnlTitulo);
             Controls.Add(dataGridView1);
             Margin = new Padding(3, 4, 3, 4);

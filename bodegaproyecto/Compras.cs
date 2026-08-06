@@ -41,12 +41,13 @@ namespace bodegaproyecto
             txtBuscarCompra.TextChanged += txtBuscarCompra_TextChanged;
             btnBuscarProveedor.Click += btnBuscarProveedor_Click;
             btnBuscarProducto.Click += btnBuscarProducto_Click;
-            btnAgregarProducto.Click += btnAgregarProducto_Click;
             btnGuardar.Click += btnGuardar_Click;
             btnCancelar.Click += btnCancelar_Click;
             dgvDetalleCompra.CellDoubleClick += dgvDetalleCompra_CellDoubleClick;
 
             this.Load += Compras_Load;
+
+
         }
 
         // ================== CARGA INICIAL ==================
@@ -55,6 +56,7 @@ namespace bodegaproyecto
             ConfigurarColumnasGrids();
             CargarUsuarios();
             CargarCompras();
+            LimpiarFormularioCompra();
             HabilitarFormularioCompra(false);
         }
 
@@ -181,7 +183,8 @@ namespace bodegaproyecto
 
         private void btnRefrescar_Click(object sender, EventArgs e)
         {
-            CargarCompras(txtBuscarCompra.Text.Trim());
+            LimpiarFormularioCompra();
+            HabilitarFormularioCompra(false);
         }
 
         // ================== SELECCIÓN DE UNA COMPRA EXISTENTE ==================
@@ -370,12 +373,10 @@ namespace bodegaproyecto
                                 idProductoSeleccionado = Convert.ToInt32(reader["id_producto"]);
                                 txtProducto.Text = reader["Nombre_Producto"].ToString();
                                 txtStockActual.Text = reader["Stock"].ToString();
-                                impuestoProductoSeleccionado = reader["impuesto"] == DBNull.Value
-                                    ? 0m : Convert.ToDecimal(reader["impuesto"]);
-
-                                txtCosto.Text = Convert.ToDecimal(reader["Precio_Compra"])
-                                    .ToString("0.00", CultureInfo.InvariantCulture);
-                                // esto dispara txtCosto_TextChanged y calcula el ISV
+                                impuestoProductoSeleccionado = 0m;
+                                txtIsvProducto.Text = impuestoProductoSeleccionado.ToString("0.##", CultureInfo.InvariantCulture); // <-- NUEVA LÍNEA
+                                txtIsvProducto.Text = "0";
+                                txtCosto.Text = Convert.ToDecimal(reader["Precio_Compra"]).ToString("0.00", CultureInfo.InvariantCulture);
                             }
                             else
                             {
@@ -383,7 +384,7 @@ namespace bodegaproyecto
                                 txtProducto.Clear();
                                 txtStockActual.Clear();
                                 txtCosto.Clear();
-                                txtIsvProducto.Text = "0.00";
+                                txtIsvProducto.Text = "0";
                                 MessageBox.Show("No se encontró ningún producto con ese criterio.",
                                     "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
@@ -400,70 +401,94 @@ namespace bodegaproyecto
 
         private void txtCosto_TextChanged(object sender, EventArgs e)
         {
-            decimal costo;
-            if (decimal.TryParse(txtCosto.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out costo))
-            {
-                decimal isv = Math.Round(costo * (impuestoProductoSeleccionado / 100m), 2);
-                txtIsvProducto.Text = isv.ToString("0.00", CultureInfo.InvariantCulture);
-            }
-            else
-            {
-                txtIsvProducto.Text = "0.00";
-            }
+
         }
+
+        private bool agregandoProducto = false;
 
         // ================== AGREGAR PRODUCTO AL DETALLE ==================
         private void btnAgregarProducto_Click(object sender, EventArgs e)
         {
-            if (idProductoSeleccionado == 0)
-            {
-                MessageBox.Show("Primero busque y seleccione un producto.", "Aviso",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
 
-            decimal costo;
-            if (!decimal.TryParse(txtCosto.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out costo) || costo <= 0)
+            if (agregandoProducto) return; // Evita reentrada
+            agregandoProducto = true;
+            try
             {
-                MessageBox.Show("Ingrese un costo válido.", "Aviso",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            int cantidad = (int)nudCantidad.Value;
-            decimal isvUnit = Math.Round(costo * (impuestoProductoSeleccionado / 100m), 2);
-
-            // si el producto ya estaba en el detalle, se suma la cantidad
-            var existente = detalleActual.FirstOrDefault(x => x.IdProducto == idProductoSeleccionado);
-            if (existente != null)
-            {
-                existente.Cantidad += cantidad;
-                existente.PrecioUnitario = costo;
-                existente.IsvUnitario = isvUnit;
-            }
-            else
-            {
-                detalleActual.Add(new DetalleLinea
+                if (idProductoSeleccionado == 0)
                 {
-                    IdProducto = idProductoSeleccionado,
-                    Producto = txtProducto.Text,
-                    Cantidad = cantidad,
-                    PrecioUnitario = costo,
-                    IsvUnitario = isvUnit,
-                    EsNuevo = true
-                });
+                    MessageBox.Show("Primero busque y seleccione un producto.", "Aviso",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                decimal costo;
+                if (!decimal.TryParse(txtCosto.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out costo) || costo <= 0)
+                {
+                    MessageBox.Show("Ingrese un costo válido.", "Aviso",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+
+
+                // NUEVO: Validar y obtener el porcentaje de ISV ingresado en el txtIsvProducto
+                decimal porcentajeIsv = 0m;
+                if (!decimal.TryParse(txtIsvProducto.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out porcentajeIsv) || porcentajeIsv < 0)
+                {
+                    MessageBox.Show("Ingrese un porcentaje de ISV válido (ejemplo: 15).", "Aviso",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+
+                int cantidad = (int)nudCantidad.Value;
+                // NUEVO: Calcular el valor del ISV unitario en Lempiras basándose en el porcentaje escrito
+                decimal isvUnit = Math.Round(costo * (porcentajeIsv / 100m), 2);
+
+                // si el producto ya estaba en el detalle, se suma la cantidad
+                var existente = detalleActual.FirstOrDefault(x => x.IdProducto == idProductoSeleccionado);
+                if (existente != null)
+                {
+                    existente.Cantidad += cantidad;
+                    existente.PrecioUnitario = costo;
+                    existente.IsvUnitario = isvUnit;
+                }
+                else
+                {
+                    detalleActual.Add(new DetalleLinea
+                    {
+                        IdProducto = idProductoSeleccionado,
+                        Producto = txtProducto.Text,
+                        Cantidad = cantidad,
+                        PrecioUnitario = costo,
+                        IsvUnitario = isvUnit,
+                        EsNuevo = true
+                    });
+                }
+
+                RefrescarGridDetalle();
+                RecalcularTotales();
+
+                // MENSAJE DE ÉXITO AGREGADO:
+                MessageBox.Show("Producto agregado correctamente al detalle.", "Éxito",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                LimpiarPanelProducto();
+                // ... todo tu código actual (incluidas validaciones y agregado) ...
+            }
+            finally
+            {
+                agregandoProducto = false;
             }
 
-            RefrescarGridDetalle();
-            RecalcularTotales();
-            LimpiarPanelProducto();
+
         }
 
         private void dgvDetalleCompra_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
             if (e.RowIndex >= detalleActual.Count) return;
-       
+
 
             var linea = detalleActual[e.RowIndex];
             if (!linea.EsNuevo)
@@ -534,7 +559,7 @@ namespace bodegaproyecto
         // ================== GUARDAR ==================
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-           
+
             if (idProveedorSeleccionado == 0)
 
             {
@@ -635,7 +660,7 @@ namespace bodegaproyecto
             txtBuscarProducto.Clear();
             txtProducto.Clear();
             txtCosto.Clear();
-            txtIsvProducto.Text = "0.00";
+            txtIsvProducto.Text = "0"; // Muestra 0 como porcentaje inicial
             txtStockActual.Clear();
             nudCantidad.Value = 1;
             idProductoSeleccionado = 0;

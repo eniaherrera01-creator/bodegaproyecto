@@ -94,8 +94,9 @@
             pnlTitulo.Controls.Add(lblTitulo);
             pnlTitulo.Dock = DockStyle.Top;
             pnlTitulo.Location = new Point(0, 0);
+            pnlTitulo.Margin = new Padding(4, 4, 4, 4);
             pnlTitulo.Name = "pnlTitulo";
-            pnlTitulo.Size = new Size(1252, 55);
+            pnlTitulo.Size = new Size(1565, 69);
             pnlTitulo.TabIndex = 0;
             // 
             // lblTitulo
@@ -103,9 +104,10 @@
             lblTitulo.AutoSize = true;
             lblTitulo.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             lblTitulo.ForeColor = Color.White;
-            lblTitulo.Location = new Point(20, 12);
+            lblTitulo.Location = new Point(25, 15);
+            lblTitulo.Margin = new Padding(4, 0, 4, 0);
             lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(120, 30);
+            lblTitulo.Size = new Size(149, 37);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "COMPRAS";
             // 
@@ -127,9 +129,11 @@
             grpDatosCompra.Controls.Add(cmbUsuario);
             grpDatosCompra.FlatStyle = FlatStyle.Flat;
             grpDatosCompra.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            grpDatosCompra.Location = new Point(15, 70);
+            grpDatosCompra.Location = new Point(19, 88);
+            grpDatosCompra.Margin = new Padding(4, 4, 4, 4);
             grpDatosCompra.Name = "grpDatosCompra";
-            grpDatosCompra.Size = new Size(230, 540);
+            grpDatosCompra.Padding = new Padding(4, 4, 4, 4);
+            grpDatosCompra.Size = new Size(288, 675);
             grpDatosCompra.TabIndex = 1;
             grpDatosCompra.TabStop = false;
             grpDatosCompra.Text = "Datos de la Compra";
@@ -138,19 +142,21 @@
             // 
             lblIdCompra.AutoSize = true;
             lblIdCompra.Font = new Font("Segoe UI", 9F);
-            lblIdCompra.Location = new Point(15, 30);
+            lblIdCompra.Location = new Point(19, 38);
+            lblIdCompra.Margin = new Padding(4, 0, 4, 0);
             lblIdCompra.Name = "lblIdCompra";
-            lblIdCompra.Size = new Size(64, 15);
+            lblIdCompra.Size = new Size(81, 20);
             lblIdCompra.TabIndex = 0;
             lblIdCompra.Text = "ID Compra";
             // 
             // txtIdCompra
             // 
             txtIdCompra.Font = new Font("Segoe UI", 9F);
-            txtIdCompra.Location = new Point(15, 50);
+            txtIdCompra.Location = new Point(19, 62);
+            txtIdCompra.Margin = new Padding(4, 4, 4, 4);
             txtIdCompra.Name = "txtIdCompra";
             txtIdCompra.ReadOnly = true;
-            txtIdCompra.Size = new Size(200, 23);
+            txtIdCompra.Size = new Size(249, 27);
             txtIdCompra.TabIndex = 0;
             txtIdCompra.Text = "(Automático)";
             // 
@@ -158,9 +164,10 @@
             // 
             lblFecha.AutoSize = true;
             lblFecha.Font = new Font("Segoe UI", 9F);
-            lblFecha.Location = new Point(15, 85);
+            lblFecha.Location = new Point(19, 106);
+            lblFecha.Margin = new Padding(4, 0, 4, 0);
             lblFecha.Name = "lblFecha";
-            lblFecha.Size = new Size(38, 15);
+            lblFecha.Size = new Size(47, 20);
             lblFecha.TabIndex = 1;
             lblFecha.Text = "Fecha";
             // 
@@ -168,27 +175,30 @@
             // 
             dtpFecha.Font = new Font("Segoe UI", 9F);
             dtpFecha.Format = DateTimePickerFormat.Short;
-            dtpFecha.Location = new Point(15, 105);
+            dtpFecha.Location = new Point(19, 131);
+            dtpFecha.Margin = new Padding(4, 4, 4, 4);
             dtpFecha.Name = "dtpFecha";
-            dtpFecha.Size = new Size(200, 23);
+            dtpFecha.Size = new Size(249, 27);
             dtpFecha.TabIndex = 1;
             // 
             // lblBuscarProveedor
             // 
             lblBuscarProveedor.AutoSize = true;
             lblBuscarProveedor.Font = new Font("Segoe UI", 9F);
-            lblBuscarProveedor.Location = new Point(15, 140);
+            lblBuscarProveedor.Location = new Point(19, 175);
+            lblBuscarProveedor.Margin = new Padding(4, 0, 4, 0);
             lblBuscarProveedor.Name = "lblBuscarProveedor";
-            lblBuscarProveedor.Size = new Size(99, 15);
+            lblBuscarProveedor.Size = new Size(124, 20);
             lblBuscarProveedor.TabIndex = 2;
             lblBuscarProveedor.Text = "Buscar Proveedor";
             // 
             // txtBuscarProveedor
             // 
             txtBuscarProveedor.Font = new Font("Segoe UI", 9F);
-            txtBuscarProveedor.Location = new Point(15, 160);
+            txtBuscarProveedor.Location = new Point(19, 200);
+            txtBuscarProveedor.Margin = new Padding(4, 4, 4, 4);
             txtBuscarProveedor.Name = "txtBuscarProveedor";
-            txtBuscarProveedor.Size = new Size(155, 23);
+            txtBuscarProveedor.Size = new Size(193, 27);
             txtBuscarProveedor.TabIndex = 2;
             // 
             // btnBuscarProveedor
@@ -197,9 +207,10 @@
             btnBuscarProveedor.FlatStyle = FlatStyle.Flat;
             btnBuscarProveedor.Font = new Font("Segoe UI", 9F);
             btnBuscarProveedor.ForeColor = Color.White;
-            btnBuscarProveedor.Location = new Point(176, 159);
+            btnBuscarProveedor.Location = new Point(220, 199);
+            btnBuscarProveedor.Margin = new Padding(4, 4, 4, 4);
             btnBuscarProveedor.Name = "btnBuscarProveedor";
-            btnBuscarProveedor.Size = new Size(39, 25);
+            btnBuscarProveedor.Size = new Size(49, 31);
             btnBuscarProveedor.TabIndex = 3;
             btnBuscarProveedor.Text = "🔍";
             btnBuscarProveedor.UseVisualStyleBackColor = false;
@@ -208,47 +219,52 @@
             // 
             lblProveedor.AutoSize = true;
             lblProveedor.Font = new Font("Segoe UI", 9F);
-            lblProveedor.Location = new Point(15, 195);
+            lblProveedor.Location = new Point(19, 244);
+            lblProveedor.Margin = new Padding(4, 0, 4, 0);
             lblProveedor.Name = "lblProveedor";
-            lblProveedor.Size = new Size(61, 15);
+            lblProveedor.Size = new Size(77, 20);
             lblProveedor.TabIndex = 4;
             lblProveedor.Text = "Proveedor";
             // 
             // txtProveedor
             // 
             txtProveedor.Font = new Font("Segoe UI", 9F);
-            txtProveedor.Location = new Point(15, 215);
+            txtProveedor.Location = new Point(19, 269);
+            txtProveedor.Margin = new Padding(4, 4, 4, 4);
             txtProveedor.Name = "txtProveedor";
             txtProveedor.ReadOnly = true;
-            txtProveedor.Size = new Size(200, 23);
+            txtProveedor.Size = new Size(249, 27);
             txtProveedor.TabIndex = 4;
             // 
             // lblTelefono
             // 
             lblTelefono.AutoSize = true;
             lblTelefono.Font = new Font("Segoe UI", 9F);
-            lblTelefono.Location = new Point(15, 250);
+            lblTelefono.Location = new Point(19, 312);
+            lblTelefono.Margin = new Padding(4, 0, 4, 0);
             lblTelefono.Name = "lblTelefono";
-            lblTelefono.Size = new Size(52, 15);
+            lblTelefono.Size = new Size(67, 20);
             lblTelefono.TabIndex = 5;
             lblTelefono.Text = "Teléfono";
             // 
             // txtTelefono
             // 
             txtTelefono.Font = new Font("Segoe UI", 9F);
-            txtTelefono.Location = new Point(15, 270);
+            txtTelefono.Location = new Point(19, 338);
+            txtTelefono.Margin = new Padding(4, 4, 4, 4);
             txtTelefono.Name = "txtTelefono";
             txtTelefono.ReadOnly = true;
-            txtTelefono.Size = new Size(200, 23);
+            txtTelefono.Size = new Size(249, 27);
             txtTelefono.TabIndex = 5;
             // 
             // lblUsuario
             // 
             lblUsuario.AutoSize = true;
             lblUsuario.Font = new Font("Segoe UI", 9F);
-            lblUsuario.Location = new Point(15, 305);
+            lblUsuario.Location = new Point(19, 381);
+            lblUsuario.Margin = new Padding(4, 0, 4, 0);
             lblUsuario.Name = "lblUsuario";
-            lblUsuario.Size = new Size(47, 15);
+            lblUsuario.Size = new Size(59, 20);
             lblUsuario.TabIndex = 6;
             lblUsuario.Text = "Usuario";
             // 
@@ -256,9 +272,10 @@
             // 
             cmbUsuario.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbUsuario.Font = new Font("Segoe UI", 9F);
-            cmbUsuario.Location = new Point(15, 325);
+            cmbUsuario.Location = new Point(19, 406);
+            cmbUsuario.Margin = new Padding(4, 4, 4, 4);
             cmbUsuario.Name = "cmbUsuario";
-            cmbUsuario.Size = new Size(200, 23);
+            cmbUsuario.Size = new Size(249, 28);
             cmbUsuario.TabIndex = 6;
             // 
             // btnGuardar
@@ -267,9 +284,10 @@
             btnGuardar.FlatStyle = FlatStyle.Flat;
             btnGuardar.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
             btnGuardar.ForeColor = Color.White;
-            btnGuardar.Location = new Point(15, 430);
+            btnGuardar.Location = new Point(19, 538);
+            btnGuardar.Margin = new Padding(4, 4, 4, 4);
             btnGuardar.Name = "btnGuardar";
-            btnGuardar.Size = new Size(102, 33);
+            btnGuardar.Size = new Size(128, 41);
             btnGuardar.TabIndex = 8;
             btnGuardar.Text = "💾 Guardar";
             btnGuardar.UseVisualStyleBackColor = false;
@@ -279,9 +297,10 @@
             btnCancelar.BackColor = Color.FromArgb(230, 230, 230);
             btnCancelar.FlatStyle = FlatStyle.Flat;
             btnCancelar.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
-            btnCancelar.Location = new Point(126, 430);
+            btnCancelar.Location = new Point(158, 538);
+            btnCancelar.Margin = new Padding(4, 4, 4, 4);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(105, 33);
+            btnCancelar.Size = new Size(131, 41);
             btnCancelar.TabIndex = 9;
             btnCancelar.Text = "✖ Cancelar";
             btnCancelar.UseVisualStyleBackColor = false;
@@ -300,9 +319,11 @@
             grpDetalleCompra.Controls.Add(btnCancelar);
             grpDetalleCompra.FlatStyle = FlatStyle.Flat;
             grpDetalleCompra.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            grpDetalleCompra.Location = new Point(255, 70);
+            grpDetalleCompra.Location = new Point(319, 88);
+            grpDetalleCompra.Margin = new Padding(4, 4, 4, 4);
             grpDetalleCompra.Name = "grpDetalleCompra";
-            grpDetalleCompra.Size = new Size(730, 540);
+            grpDetalleCompra.Padding = new Padding(4, 4, 4, 4);
+            grpDetalleCompra.Size = new Size(912, 675);
             grpDetalleCompra.TabIndex = 2;
             grpDetalleCompra.TabStop = false;
             grpDetalleCompra.Text = "Detalle de la Compra";
@@ -313,9 +334,10 @@
             btnNuevoCompra.FlatStyle = FlatStyle.Flat;
             btnNuevoCompra.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
             btnNuevoCompra.ForeColor = Color.White;
-            btnNuevoCompra.Location = new Point(15, 30);
+            btnNuevoCompra.Location = new Point(19, 38);
+            btnNuevoCompra.Margin = new Padding(4, 4, 4, 4);
             btnNuevoCompra.Name = "btnNuevoCompra";
-            btnNuevoCompra.Size = new Size(95, 30);
+            btnNuevoCompra.Size = new Size(119, 38);
             btnNuevoCompra.TabIndex = 0;
             btnNuevoCompra.Text = "+ Nuevo";
             btnNuevoCompra.UseVisualStyleBackColor = false;
@@ -325,9 +347,10 @@
             btnEditarCompra.BackColor = Color.White;
             btnEditarCompra.FlatStyle = FlatStyle.Flat;
             btnEditarCompra.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
-            btnEditarCompra.Location = new Point(118, 30);
+            btnEditarCompra.Location = new Point(148, 38);
+            btnEditarCompra.Margin = new Padding(4, 4, 4, 4);
             btnEditarCompra.Name = "btnEditarCompra";
-            btnEditarCompra.Size = new Size(95, 30);
+            btnEditarCompra.Size = new Size(119, 38);
             btnEditarCompra.TabIndex = 1;
             btnEditarCompra.Text = "✎ Editar";
             btnEditarCompra.UseVisualStyleBackColor = false;
@@ -337,9 +360,10 @@
             btnRefrescar.BackColor = Color.White;
             btnRefrescar.FlatStyle = FlatStyle.Flat;
             btnRefrescar.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
-            btnRefrescar.Location = new Point(221, 30);
+            btnRefrescar.Location = new Point(276, 38);
+            btnRefrescar.Margin = new Padding(4, 4, 4, 4);
             btnRefrescar.Name = "btnRefrescar";
-            btnRefrescar.Size = new Size(105, 30);
+            btnRefrescar.Size = new Size(131, 38);
             btnRefrescar.TabIndex = 2;
             btnRefrescar.Text = "↻ Refrescar";
             btnRefrescar.UseVisualStyleBackColor = false;
@@ -347,10 +371,11 @@
             // txtBuscarCompra
             // 
             txtBuscarCompra.Font = new Font("Segoe UI", 9F);
-            txtBuscarCompra.Location = new Point(500, 33);
+            txtBuscarCompra.Location = new Point(625, 41);
+            txtBuscarCompra.Margin = new Padding(4, 4, 4, 4);
             txtBuscarCompra.Name = "txtBuscarCompra";
             txtBuscarCompra.PlaceholderText = "Buscar compra...";
-            txtBuscarCompra.Size = new Size(210, 23);
+            txtBuscarCompra.Size = new Size(262, 27);
             txtBuscarCompra.TabIndex = 3;
             // 
             // dgvCompras
@@ -368,14 +393,15 @@
             dgvCompras.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvCompras.ColumnHeadersHeight = 29;
             dgvCompras.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn6, dataGridViewTextBoxColumn7, dataGridViewTextBoxColumn8, dataGridViewTextBoxColumn9 });
-            dgvCompras.Location = new Point(15, 70);
+            dgvCompras.Location = new Point(19, 88);
+            dgvCompras.Margin = new Padding(4, 4, 4, 4);
             dgvCompras.MultiSelect = false;
             dgvCompras.Name = "dgvCompras";
             dgvCompras.ReadOnly = true;
             dgvCompras.RowHeadersVisible = false;
             dgvCompras.RowHeadersWidth = 51;
             dgvCompras.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvCompras.Size = new Size(695, 130);
+            dgvCompras.Size = new Size(869, 162);
             dgvCompras.TabIndex = 4;
             dgvCompras.SelectionChanged += dgvCompras_SelectionChanged;
             // 
@@ -422,14 +448,15 @@
             dgvDetalleCompra.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvDetalleCompra.ColumnHeadersHeight = 29;
             dgvDetalleCompra.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn3, dataGridViewTextBoxColumn4, dataGridViewTextBoxColumn5 });
-            dgvDetalleCompra.Location = new Point(15, 215);
+            dgvDetalleCompra.Location = new Point(19, 269);
+            dgvDetalleCompra.Margin = new Padding(4, 4, 4, 4);
             dgvDetalleCompra.MultiSelect = false;
             dgvDetalleCompra.Name = "dgvDetalleCompra";
             dgvDetalleCompra.ReadOnly = true;
             dgvDetalleCompra.RowHeadersVisible = false;
             dgvDetalleCompra.RowHeadersWidth = 51;
             dgvDetalleCompra.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvDetalleCompra.Size = new Size(695, 200);
+            dgvDetalleCompra.Size = new Size(869, 250);
             dgvDetalleCompra.TabIndex = 5;
             // 
             // dataGridViewTextBoxColumn1
@@ -476,18 +503,20 @@
             pnlTotales.Controls.Add(lblIsvValor);
             pnlTotales.Controls.Add(lblTotalTexto);
             pnlTotales.Controls.Add(lblTotalValor);
-            pnlTotales.Location = new Point(430, 430);
+            pnlTotales.Location = new Point(538, 538);
+            pnlTotales.Margin = new Padding(4, 4, 4, 4);
             pnlTotales.Name = "pnlTotales";
-            pnlTotales.Size = new Size(280, 95);
+            pnlTotales.Size = new Size(350, 118);
             pnlTotales.TabIndex = 6;
             // 
             // lblSubtotalTexto
             // 
             lblSubtotalTexto.AutoSize = true;
             lblSubtotalTexto.Font = new Font("Segoe UI", 10F);
-            lblSubtotalTexto.Location = new Point(15, 10);
+            lblSubtotalTexto.Location = new Point(19, 12);
+            lblSubtotalTexto.Margin = new Padding(4, 0, 4, 0);
             lblSubtotalTexto.Name = "lblSubtotalTexto";
-            lblSubtotalTexto.Size = new Size(63, 19);
+            lblSubtotalTexto.Size = new Size(78, 23);
             lblSubtotalTexto.TabIndex = 0;
             lblSubtotalTexto.Text = "Subtotal:";
             // 
@@ -495,9 +524,10 @@
             // 
             lblSubtotalValor.AutoSize = true;
             lblSubtotalValor.Font = new Font("Segoe UI", 10F);
-            lblSubtotalValor.Location = new Point(140, 10);
+            lblSubtotalValor.Location = new Point(175, 12);
+            lblSubtotalValor.Margin = new Padding(4, 0, 4, 0);
             lblSubtotalValor.Name = "lblSubtotalValor";
-            lblSubtotalValor.Size = new Size(50, 19);
+            lblSubtotalValor.Size = new Size(58, 23);
             lblSubtotalValor.TabIndex = 1;
             lblSubtotalValor.Text = "L. 0.00";
             // 
@@ -505,9 +535,10 @@
             // 
             lblIsvTexto.AutoSize = true;
             lblIsvTexto.Font = new Font("Segoe UI", 10F);
-            lblIsvTexto.Location = new Point(15, 38);
+            lblIsvTexto.Location = new Point(19, 48);
+            lblIsvTexto.Margin = new Padding(4, 0, 4, 0);
             lblIsvTexto.Name = "lblIsvTexto";
-            lblIsvTexto.Size = new Size(32, 19);
+            lblIsvTexto.Size = new Size(39, 23);
             lblIsvTexto.TabIndex = 2;
             lblIsvTexto.Text = "ISV:";
             // 
@@ -515,9 +546,10 @@
             // 
             lblIsvValor.AutoSize = true;
             lblIsvValor.Font = new Font("Segoe UI", 10F);
-            lblIsvValor.Location = new Point(140, 38);
+            lblIsvValor.Location = new Point(175, 48);
+            lblIsvValor.Margin = new Padding(4, 0, 4, 0);
             lblIsvValor.Name = "lblIsvValor";
-            lblIsvValor.Size = new Size(50, 19);
+            lblIsvValor.Size = new Size(58, 23);
             lblIsvValor.TabIndex = 3;
             lblIsvValor.Text = "L. 0.00";
             // 
@@ -526,9 +558,10 @@
             lblTotalTexto.AutoSize = true;
             lblTotalTexto.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             lblTotalTexto.ForeColor = Color.FromArgb(0, 123, 255);
-            lblTotalTexto.Location = new Point(15, 65);
+            lblTotalTexto.Location = new Point(19, 81);
+            lblTotalTexto.Margin = new Padding(4, 0, 4, 0);
             lblTotalTexto.Name = "lblTotalTexto";
-            lblTotalTexto.Size = new Size(60, 21);
+            lblTotalTexto.Size = new Size(77, 28);
             lblTotalTexto.TabIndex = 4;
             lblTotalTexto.Text = "TOTAL:";
             // 
@@ -537,9 +570,10 @@
             lblTotalValor.AutoSize = true;
             lblTotalValor.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             lblTotalValor.ForeColor = Color.FromArgb(0, 123, 255);
-            lblTotalValor.Location = new Point(140, 65);
+            lblTotalValor.Location = new Point(175, 81);
+            lblTotalValor.Margin = new Padding(4, 0, 4, 0);
             lblTotalValor.Name = "lblTotalValor";
-            lblTotalValor.Size = new Size(57, 21);
+            lblTotalValor.Size = new Size(74, 28);
             lblTotalValor.TabIndex = 5;
             lblTotalValor.Text = "L. 0.00";
             // 
@@ -562,9 +596,11 @@
             grpAgregarProducto.Controls.Add(btnAgregarProducto);
             grpAgregarProducto.FlatStyle = FlatStyle.Flat;
             grpAgregarProducto.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            grpAgregarProducto.Location = new Point(1000, 70);
+            grpAgregarProducto.Location = new Point(1250, 88);
+            grpAgregarProducto.Margin = new Padding(4, 4, 4, 4);
             grpAgregarProducto.Name = "grpAgregarProducto";
-            grpAgregarProducto.Size = new Size(258, 377);
+            grpAgregarProducto.Padding = new Padding(4, 4, 4, 4);
+            grpAgregarProducto.Size = new Size(322, 471);
             grpAgregarProducto.TabIndex = 3;
             grpAgregarProducto.TabStop = false;
             grpAgregarProducto.Text = "Agregar Producto";
@@ -573,18 +609,20 @@
             // 
             lblBuscarProducto.AutoSize = true;
             lblBuscarProducto.Font = new Font("Segoe UI", 9F);
-            lblBuscarProducto.Location = new Point(15, 30);
+            lblBuscarProducto.Location = new Point(19, 38);
+            lblBuscarProducto.Margin = new Padding(4, 0, 4, 0);
             lblBuscarProducto.Name = "lblBuscarProducto";
-            lblBuscarProducto.Size = new Size(94, 15);
+            lblBuscarProducto.Size = new Size(116, 20);
             lblBuscarProducto.TabIndex = 0;
             lblBuscarProducto.Text = "Buscar Producto";
             // 
             // txtBuscarProducto
             // 
             txtBuscarProducto.Font = new Font("Segoe UI", 9F);
-            txtBuscarProducto.Location = new Point(15, 50);
+            txtBuscarProducto.Location = new Point(19, 62);
+            txtBuscarProducto.Margin = new Padding(4, 4, 4, 4);
             txtBuscarProducto.Name = "txtBuscarProducto";
-            txtBuscarProducto.Size = new Size(175, 23);
+            txtBuscarProducto.Size = new Size(218, 27);
             txtBuscarProducto.TabIndex = 0;
             // 
             // btnBuscarProducto
@@ -593,9 +631,10 @@
             btnBuscarProducto.FlatStyle = FlatStyle.Flat;
             btnBuscarProducto.Font = new Font("Segoe UI", 9F);
             btnBuscarProducto.ForeColor = Color.White;
-            btnBuscarProducto.Location = new Point(196, 49);
+            btnBuscarProducto.Location = new Point(245, 61);
+            btnBuscarProducto.Margin = new Padding(4, 4, 4, 4);
             btnBuscarProducto.Name = "btnBuscarProducto";
-            btnBuscarProducto.Size = new Size(39, 25);
+            btnBuscarProducto.Size = new Size(49, 31);
             btnBuscarProducto.TabIndex = 1;
             btnBuscarProducto.Text = "🔍";
             btnBuscarProducto.UseVisualStyleBackColor = false;
@@ -604,37 +643,41 @@
             // 
             lblProducto.AutoSize = true;
             lblProducto.Font = new Font("Segoe UI", 9F);
-            lblProducto.Location = new Point(15, 85);
+            lblProducto.Location = new Point(19, 106);
+            lblProducto.Margin = new Padding(4, 0, 4, 0);
             lblProducto.Name = "lblProducto";
-            lblProducto.Size = new Size(56, 15);
+            lblProducto.Size = new Size(69, 20);
             lblProducto.TabIndex = 2;
             lblProducto.Text = "Producto";
             // 
             // txtProducto
             // 
             txtProducto.Font = new Font("Segoe UI", 9F);
-            txtProducto.Location = new Point(15, 105);
+            txtProducto.Location = new Point(19, 131);
+            txtProducto.Margin = new Padding(4, 4, 4, 4);
             txtProducto.Name = "txtProducto";
             txtProducto.ReadOnly = true;
-            txtProducto.Size = new Size(220, 23);
+            txtProducto.Size = new Size(274, 27);
             txtProducto.TabIndex = 2;
             // 
             // lblCosto
             // 
             lblCosto.AutoSize = true;
             lblCosto.Font = new Font("Segoe UI", 9F);
-            lblCosto.Location = new Point(15, 140);
+            lblCosto.Location = new Point(19, 175);
+            lblCosto.Margin = new Padding(4, 0, 4, 0);
             lblCosto.Name = "lblCosto";
-            lblCosto.Size = new Size(58, 15);
+            lblCosto.Size = new Size(71, 20);
             lblCosto.TabIndex = 3;
             lblCosto.Text = "Costo (L.)";
             // 
             // txtCosto
             // 
             txtCosto.Font = new Font("Segoe UI", 9F);
-            txtCosto.Location = new Point(15, 160);
+            txtCosto.Location = new Point(19, 200);
+            txtCosto.Margin = new Padding(4, 4, 4, 4);
             txtCosto.Name = "txtCosto";
-            txtCosto.Size = new Size(220, 23);
+            txtCosto.Size = new Size(274, 27);
             txtCosto.TabIndex = 3;
             txtCosto.TextChanged += txtCosto_TextChanged;
             // 
@@ -642,19 +685,20 @@
             // 
             lblIsvProducto.AutoSize = true;
             lblIsvProducto.Font = new Font("Segoe UI", 9F);
-            lblIsvProducto.Location = new Point(15, 195);
+            lblIsvProducto.Location = new Point(19, 244);
+            lblIsvProducto.Margin = new Padding(4, 0, 4, 0);
             lblIsvProducto.Name = "lblIsvProducto";
-            lblIsvProducto.Size = new Size(43, 15);
+            lblIsvProducto.Size = new Size(54, 20);
             lblIsvProducto.TabIndex = 4;
             lblIsvProducto.Text = "ISV (L.)";
             // 
             // txtIsvProducto
             // 
             txtIsvProducto.Font = new Font("Segoe UI", 9F);
-            txtIsvProducto.Location = new Point(15, 215);
+            txtIsvProducto.Location = new Point(19, 269);
+            txtIsvProducto.Margin = new Padding(4, 4, 4, 4);
             txtIsvProducto.Name = "txtIsvProducto";
-            txtIsvProducto.ReadOnly = true;
-            txtIsvProducto.Size = new Size(220, 23);
+            txtIsvProducto.Size = new Size(274, 27);
             txtIsvProducto.TabIndex = 4;
             txtIsvProducto.Text = "0.00";
             // 
@@ -662,39 +706,43 @@
             // 
             lblStockActual.AutoSize = true;
             lblStockActual.Font = new Font("Segoe UI", 9F);
-            lblStockActual.Location = new Point(15, 250);
+            lblStockActual.Location = new Point(19, 312);
+            lblStockActual.Margin = new Padding(4, 0, 4, 0);
             lblStockActual.Name = "lblStockActual";
-            lblStockActual.Size = new Size(73, 15);
+            lblStockActual.Size = new Size(91, 20);
             lblStockActual.TabIndex = 5;
             lblStockActual.Text = "Stock Actual";
             // 
             // txtStockActual
             // 
             txtStockActual.Font = new Font("Segoe UI", 9F);
-            txtStockActual.Location = new Point(15, 270);
+            txtStockActual.Location = new Point(19, 338);
+            txtStockActual.Margin = new Padding(4, 4, 4, 4);
             txtStockActual.Name = "txtStockActual";
             txtStockActual.ReadOnly = true;
-            txtStockActual.Size = new Size(105, 23);
+            txtStockActual.Size = new Size(130, 27);
             txtStockActual.TabIndex = 5;
             // 
             // lblCantidad
             // 
             lblCantidad.AutoSize = true;
             lblCantidad.Font = new Font("Segoe UI", 9F);
-            lblCantidad.Location = new Point(130, 250);
+            lblCantidad.Location = new Point(162, 312);
+            lblCantidad.Margin = new Padding(4, 0, 4, 0);
             lblCantidad.Name = "lblCantidad";
-            lblCantidad.Size = new Size(55, 15);
+            lblCantidad.Size = new Size(69, 20);
             lblCantidad.TabIndex = 6;
             lblCantidad.Text = "Cantidad";
             // 
             // nudCantidad
             // 
             nudCantidad.Font = new Font("Segoe UI", 9F);
-            nudCantidad.Location = new Point(130, 270);
+            nudCantidad.Location = new Point(162, 338);
+            nudCantidad.Margin = new Padding(4, 4, 4, 4);
             nudCantidad.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
             nudCantidad.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             nudCantidad.Name = "nudCantidad";
-            nudCantidad.Size = new Size(105, 23);
+            nudCantidad.Size = new Size(131, 27);
             nudCantidad.TabIndex = 6;
             nudCantidad.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
@@ -704,10 +752,10 @@
             btnAgregarProducto.FlatStyle = FlatStyle.Flat;
             btnAgregarProducto.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
             btnAgregarProducto.ForeColor = Color.White;
-            btnAgregarProducto.Location = new Point(15, 305);
-            btnAgregarProducto.Margin = new Padding(4);
+            btnAgregarProducto.Location = new Point(19, 381);
+            btnAgregarProducto.Margin = new Padding(5, 5, 5, 5);
             btnAgregarProducto.Name = "btnAgregarProducto";
-            btnAgregarProducto.Size = new Size(231, 30);
+            btnAgregarProducto.Size = new Size(289, 38);
             btnAgregarProducto.TabIndex = 7;
             btnAgregarProducto.Text = "➕ Agregar Producto";
             btnAgregarProducto.UseVisualStyleBackColor = false;
@@ -715,13 +763,14 @@
             // 
             // Compras
             // 
-            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleDimensions = new SizeF(120F, 120F);
             AutoScaleMode = AutoScaleMode.Dpi;
-            ClientSize = new Size(1252, 599);
+            ClientSize = new Size(1565, 749);
             Controls.Add(grpAgregarProducto);
             Controls.Add(grpDetalleCompra);
             Controls.Add(grpDatosCompra);
             Controls.Add(pnlTitulo);
+            Margin = new Padding(4, 4, 4, 4);
             Name = "Compras";
             Text = "Módulo de Compras";
             WindowState = FormWindowState.Maximized;

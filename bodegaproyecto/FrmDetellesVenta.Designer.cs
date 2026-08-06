@@ -136,7 +136,7 @@
             btnBuscar.FlatStyle = FlatStyle.Flat;
             btnBuscar.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnBuscar.ForeColor = Color.White;
-            btnBuscar.Location = new Point(23, 149);
+            btnBuscar.Location = new Point(45, 148);
             btnBuscar.Name = "btnBuscar";
             btnBuscar.Size = new Size(120, 35);
             btnBuscar.TabIndex = 2;
@@ -199,7 +199,7 @@
             btnBuscarFecha.FlatStyle = FlatStyle.Flat;
             btnBuscarFecha.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnBuscarFecha.ForeColor = Color.White;
-            btnBuscarFecha.Location = new Point(23, 194);
+            btnBuscarFecha.Location = new Point(45, 185);
             btnBuscarFecha.Name = "btnBuscarFecha";
             btnBuscarFecha.Size = new Size(150, 35);
             btnBuscarFecha.TabIndex = 8;
