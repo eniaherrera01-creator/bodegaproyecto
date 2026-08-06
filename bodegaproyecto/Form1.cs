@@ -273,6 +273,31 @@ CREATE TABLE Cliente (
     Fecha_Registro DATETIME NOT NULL DEFAULT GETDATE(),
     Estado BIT NOT NULL DEFAULT 1
 );
+CREATE TABLE Bitacora
+(
+    id_bitacora  INT IDENTITY(1,1) PRIMARY KEY,
+    fecha        DATETIME NOT NULL DEFAULT GETDATE(),
+    usuario      VARCHAR(50) NOT NULL,
+    modulo       VARCHAR(100) NOT NULL,
+    accion       VARCHAR(100) NOT NULL,
+    descripcion  VARCHAR(255) NOT NULL
+);
+CREATE TABLE Reembolso
+(
+    id_reembolso    INT IDENTITY(1,1) PRIMARY KEY,
+    fecha_reembolso DATETIME NOT NULL DEFAULT GETDATE(),
+    descripcion     VARCHAR(255) NOT NULL,
+    id_venta        INT NOT NULL,
+    id_usuario      INT NOT NULL,
+    id_producto     INT NOT NULL,
+    cantidad        INT NOT NULL,
+
+    FOREIGN KEY (id_venta)    REFERENCES Venta(id_venta),
+    FOREIGN KEY (id_usuario)  REFERENCES Usuario(id_usuario),
+    FOREIGN KEY (id_producto) REFERENCES Producto(id_producto)
+);
+
+
 
 INSERT INTO Cliente
 (
