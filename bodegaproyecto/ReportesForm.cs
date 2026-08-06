@@ -10,19 +10,78 @@ namespace bodegaproyecto
 {
     public partial class ReportesForm : Form
     {
+
+        private bool cargandoFormulario = false;
         public ReportesForm()
         {
             InitializeComponent();
+            cbReporte.SelectedIndexChanged += cbReporte_SelectedIndexChanged;
+            cbCategoria.SelectedIndexChanged += cbCategoria_SelectedIndexChanged;
+
+
         }
 
         private void ReportesForm_Load(object sender, EventArgs e)
         {
+            cargandoFormulario = true;
+
             CargarCategorias();
 
-            cbReporte.SelectedIndex = 0;
+            if (cbReporte.Items.Count > 0)
+                cbReporte.SelectedIndex = 0;
+
             cbCategoria.Enabled = false;
+            cbCategoria.SelectedIndex = -1;
+
+            cargandoFormulario = false;
 
             GenerarReporte();
+        }
+
+        private void cbReporte_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cargandoFormulario)
+                return;
+
+            if (cbReporte.SelectedItem == null)
+                return;
+
+            string tipoReporte = cbReporte.SelectedItem.ToString();
+
+            if (tipoReporte == "Productos por categoría")
+            {
+                cbCategoria.Enabled = true;
+
+                if (cbCategoria.SelectedIndex == -1)
+                {
+                    dgvReporte.DataSource = null;
+                    return;
+                }
+            }
+            else
+            {
+                cbCategoria.Enabled = false;
+                cbCategoria.SelectedIndex = -1;
+            }
+
+            GenerarReporte();
+        }
+
+        private void cbCategoria_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cargandoFormulario)
+                return;
+
+            if (cbReporte.SelectedItem == null)
+                return;
+
+            if (cbReporte.SelectedItem.ToString() == "Productos por categoría")
+            {
+                if (cbCategoria.SelectedIndex != -1)
+                {
+                    GenerarReporte();
+                }
+            }
         }
 
         private void CargarCategorias()
@@ -130,10 +189,21 @@ namespace bodegaproyecto
             }
         }
 
+        private void btnExportarPDF_Click(object sender, EventArgs e)
+        {
+            if (dgvReporte.DataSource == null || dgvReporte.Rows.Count == 0)
+            {
+                MessageBox.Show("Primero genere una vista previa con datos.",
+                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            ExportarPDF();
+        }
+
         private void btnGenerar_Click(object sender, EventArgs e)
         {
-            ExportarPDF();
-
+            GenerarReporte();
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
@@ -156,10 +226,9 @@ namespace bodegaproyecto
             {
                 cbCategoria.Enabled = true;
 
-                if (cbCategoria.SelectedIndex == -1)
+                if (cbCategoria.SelectedIndex == -1 || cbCategoria.SelectedValue == null)
                 {
-                    MessageBox.Show("Seleccione una categoría para generar el reporte.",
-                        "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    dgvReporte.DataSource = null;
                     return;
                 }
             }
@@ -190,6 +259,9 @@ namespace bodegaproyecto
 
                         dgvReporte.DataSource = dt;
                         dgvReporte.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                        dgvReporte.ReadOnly = true;
+                        dgvReporte.AllowUserToAddRows = false;
+                        dgvReporte.RowHeadersVisible = false;
                     }
                 }
             }
@@ -202,22 +274,48 @@ namespace bodegaproyecto
 
         private string ObtenerConsulta(string tipoReporte)
         {
+            if (tipoReporte == "Reporte de categorías")
+            {
+                return @"SELECT
+                    id_categoria AS [ID],
+                    Nombre_Categoria AS [Categoría],
+                    Descripcion AS [Descripción],
+                    CASE 
+                        WHEN Estado = 1 THEN 'Activo'
+                        ELSE 'Inactivo'
+                    END AS [Estado]
+                 FROM Categoria
+                 ORDER BY Nombre_Categoria ASC";
+            }
+
+            if (tipoReporte == "Reporte de proveedores")
+            {
+                return @"SELECT
+                    id_proveedor AS [ID],
+                    Nombre AS [Proveedor],
+                    Telefono AS [Teléfono],
+                    Correo AS [Correo],
+                    Direccion AS [Dirección]
+                 FROM Proveedor
+                 ORDER BY Nombre ASC";
+            }
+
             string consultaBase = @"SELECT
-                                        p.id_producto AS [ID],
-                                        p.Nombre_Producto AS [Producto],
-                                        c.Nombre_Categoria AS [Categoría],
-                                        p.Precio_Compra AS [Precio Compra],
-                                        p.Precio_Venta AS [Precio Venta],
-                                        p.Stock AS [Stock],
-                                        p.fecha_vencimiento AS [Fecha Vencimiento],
-                                        p.impuesto AS [Impuesto],
-                                        CASE 
-                                            WHEN p.Estado = 1 THEN 'Activo'
-                                            ELSE 'Inactivo'
-                                        END AS [Estado]
-                                    FROM Producto p
-                                    INNER JOIN Categoria c
-                                    ON p.id_categoria = c.id_categoria ";
+                                p.id_producto AS [ID],
+                                p.Nombre_Producto AS [Producto],
+                                c.Nombre_Categoria AS [Categoría],
+                                p.Precio_Compra AS [Precio Compra],
+                                p.Precio_Venta AS [Precio Venta],
+                                p.Stock AS [Stock],
+                                p.fecha_vencimiento AS [Fecha Vencimiento],
+                                p.impuesto AS [Impuesto],
+                                CASE 
+                                    WHEN p.Estado = 1 THEN 'Activo'
+                                    ELSE 'Inactivo'
+                                END AS [Estado]
+                            FROM Producto p
+                            INNER JOIN Categoria c
+                            ON p.id_categoria = c.id_categoria ";
 
             if (tipoReporte == "Productos activos")
             {
@@ -235,10 +333,47 @@ namespace bodegaproyecto
             {
                 consultaBase += " WHERE p.id_categoria = @categoria ";
             }
+            else if (tipoReporte == "Productos próximos a vencer")
+            {
+                consultaBase += @" WHERE p.fecha_vencimiento >= CAST(GETDATE() AS DATE)
+                           AND p.fecha_vencimiento <= DATEADD(DAY, 30, CAST(GETDATE() AS DATE)) ";
+            }
+            else if (tipoReporte == "Productos vencidos")
+            {
+                consultaBase += " WHERE p.fecha_vencimiento < CAST(GETDATE() AS DATE) ";
+            }
+            else if (tipoReporte == "Productos con mayor stock")
+            {
+                consultaBase += " ORDER BY p.Stock DESC ";
+                return consultaBase;
+            }
+            else if (tipoReporte == "Inventario valorizado")
+            {
+                return @"SELECT
+                    p.id_producto AS [ID],
+                    p.Nombre_Producto AS [Producto],
+                    c.Nombre_Categoria AS [Categoría],
+                    p.Precio_Compra AS [Precio Compra],
+                    p.Precio_Venta AS [Precio Venta],
+                    p.Stock AS [Stock],
+                    (p.Precio_Compra * p.Stock) AS [Valor Compra],
+                    (p.Precio_Venta * p.Stock) AS [Valor Venta],
+                    CASE 
+                        WHEN p.Estado = 1 THEN 'Activo'
+                        ELSE 'Inactivo'
+                    END AS [Estado]
+                 FROM Producto p
+                 INNER JOIN Categoria c
+                 ON p.id_categoria = c.id_categoria
+                 ORDER BY [Valor Venta] DESC";
+            }
 
             consultaBase += " ORDER BY p.Nombre_Producto ASC";
 
             return consultaBase;
         }
+
+
+
     }
 }

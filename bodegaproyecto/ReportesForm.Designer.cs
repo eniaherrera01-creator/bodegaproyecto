@@ -24,6 +24,7 @@
             cbCategoria = new ComboBox();
             btnGenerar = new Button();
             btnLimpiar = new Button();
+            btnExportarPDF = new Button();
             lblListaTitulo = new Label();
             dgvReporte = new DataGridView();
             pnlHeader.SuspendLayout();
@@ -62,6 +63,7 @@
             panelFiltros.Controls.Add(cbCategoria);
             panelFiltros.Controls.Add(btnGenerar);
             panelFiltros.Controls.Add(btnLimpiar);
+            panelFiltros.Controls.Add(btnExportarPDF);
             panelFiltros.Location = new Point(25, 80);
             panelFiltros.Name = "panelFiltros";
             panelFiltros.Size = new Size(1150, 120);
@@ -82,7 +84,7 @@
             cbReporte.DropDownStyle = ComboBoxStyle.DropDownList;
             cbReporte.Font = new Font("Segoe UI", 10F);
             cbReporte.FormattingEnabled = true;
-            cbReporte.Items.AddRange(new object[] { "Inventario general", "Productos activos", "Productos inactivos", "Productos con bajo stock", "Productos por categoría" });
+            cbReporte.Items.AddRange(new object[] {"Inventario general","Productos activos","Productos inactivos","Productos con bajo stock","Productos por categoría","Productos próximos a vencer","Productos vencidos","Productos con mayor stock","Inventario valorizado","Reporte de categorías","Reporte de proveedores"});
             cbReporte.Location = new Point(20, 50);
             cbReporte.Name = "cbReporte";
             cbReporte.Size = new Size(280, 31);
@@ -116,11 +118,11 @@
             btnGenerar.FlatStyle = FlatStyle.Flat;
             btnGenerar.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnGenerar.ForeColor = Color.White;
-            btnGenerar.Location = new Point(650, 48);
+            btnGenerar.Location = new Point(625, 50);
             btnGenerar.Name = "btnGenerar";
             btnGenerar.Size = new Size(212, 35);
             btnGenerar.TabIndex = 4;
-            btnGenerar.Text = "Generar reportes a pdf";
+            btnGenerar.Text = "Generar vista previa";
             btnGenerar.UseVisualStyleBackColor = false;
             btnGenerar.Click += btnGenerar_Click;
             // 
@@ -131,13 +133,29 @@
             btnLimpiar.FlatStyle = FlatStyle.Flat;
             btnLimpiar.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnLimpiar.ForeColor = Color.FromArgb(26, 115, 232);
-            btnLimpiar.Location = new Point(900, 50);
+            btnLimpiar.Location = new Point(995, 50);
             btnLimpiar.Name = "btnLimpiar";
             btnLimpiar.Size = new Size(150, 35);
             btnLimpiar.TabIndex = 5;
             btnLimpiar.Text = "Limpiar";
             btnLimpiar.UseVisualStyleBackColor = false;
             btnLimpiar.Click += btnLimpiar_Click;
+            // 
+            // btnExportarPDF
+            // 
+            btnExportarPDF.BackColor = Color.FromArgb(26, 115, 232);
+            btnExportarPDF.Cursor = Cursors.Hand;
+            btnExportarPDF.FlatAppearance.BorderSize = 0;
+            btnExportarPDF.FlatStyle = FlatStyle.Flat;
+            btnExportarPDF.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnExportarPDF.ForeColor = Color.White;
+            btnExportarPDF.Location = new Point(849, 50);
+            btnExportarPDF.Name = "btnExportarPDF";
+            btnExportarPDF.Size = new Size(140, 35);
+            btnExportarPDF.TabIndex = 6;
+            btnExportarPDF.Text = "Exportar PDF";
+            btnExportarPDF.UseVisualStyleBackColor = false;
+            btnExportarPDF.Click += btnExportarPDF_Click;
             // 
             // lblListaTitulo
             // 
@@ -189,6 +207,8 @@
             PerformLayout();
         }
 
+       
+
         private Panel pnlHeader;
         private Label lblTitulo;
         private Panel panelFiltros;
@@ -200,5 +220,6 @@
         private Button btnLimpiar;
         private Label lblListaTitulo;
         private DataGridView dgvReporte;
+        private Button btnExportarPDF;
     }
 }
